@@ -1,15 +1,15 @@
-# CDViz Community Transformers
+# CDviz Community Transformers
 
-Community-contributed transformers for [cdviz-collector](https://github.com/cdviz-dev/cdviz-collector) that convert various event sources into [CDEvents](https://cdevents.dev).
+Community driven transformers for [cdviz-collector](https://github.com/cdviz-dev/cdviz-collector) that convert various event sources into [CDEvents](https://cdevents.dev).
 
 ## Available Transformers
 
-| Transformer | Source | Description |
-|-------------|--------|-------------|
-| [github_events](./github_events/) | GitHub Webhooks | Converts GitHub events (workflow runs, issues, PRs, releases) to CDEvents |
-| [argocd_notifications](./argocd_notifications/) | ArgoCD Webhooks | Converts ArgoCD application lifecycle events to CDEvents |
-| [kubewatch_cloudevents](./kubewatch_cloudevents/) | Kubernetes Events | Converts Kubewatch CloudEvents to CDEvents |
-| [passthrough](./passthrough/) | CDEvents | Passthrough transformer for existing CDEvents |
+| Transformer                                       | Source            | Description                                                               |
+| ------------------------------------------------- | ----------------- | ------------------------------------------------------------------------- |
+| [github_events](./github_events/)                 | GitHub Webhooks   | Converts GitHub events (workflow runs, issues, PRs, releases) to CDEvents |
+| [argocd_notifications](./argocd_notifications/)   | ArgoCD Webhooks   | Converts ArgoCD application lifecycle events to CDEvents                  |
+| [kubewatch_cloudevents](./kubewatch_cloudevents/) | Kubernetes Events | Converts Kubewatch CloudEvents to CDEvents                                |
+| [passthrough](./passthrough/)                     | CDEvents          | Passthrough transformer for existing CDEvents                             |
 
 ## Usage
 
@@ -75,6 +75,8 @@ Contributions are welcome! Each transformer should include:
 - `inputs/` - Sample input events
 - `outputs/` - Expected output CDEvents
 - `README.md` - Documentation with usage examples
+
+And a command into the `.mise.toml` to test/review the transformer against its inputs.
 
 ## License
 
