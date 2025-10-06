@@ -1,0 +1,33 @@
+---
+# inspiration:
+# - [Tips for Faster Rust CI Builds | corrode Rust Consulting](https://corrode.dev/blog/tips-for-faster-ci-builds/)
+name: ci
+
+on:
+  # Run at least once a week (every Monday at 12:30
+  schedule:
+    - cron: "30 12 * * 1"
+  push:
+    branches-ignore:
+      - "release-plz-*"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    # "ubuntu-22.04-arm" vs "ubuntu-latest"
+    # - faster? (not sure 10min for both with cold cache, and 4min (+1min) for arm on 90% cache'hit)
+    # - fewer available => longer "queued times"
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: mozilla-actions/sccache-action@v0.0.9
+      - uses: jdx/mise-action@v2
+      - run: mise run --jobs 1 ci
+        shell: bash
