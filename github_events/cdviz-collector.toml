@@ -17,3 +17,15 @@
 [transformers.github_events]
 type = "vrl"
 template_file = "./transformer.vrl"
+
+# # Configure remote repository
+# [remote.transformers-community]
+# type = "github"
+# owner = "cdviz-dev"
+# repo = "transformers-community"
+# reference = "main"  # Optional: specify branch, tag, or commit
+
+# # Use remote transformer
+# [transformers.github_events]
+# type = "vrl"
+# template_rfile = "transformers-community:///github_events/transformer.vrl"
