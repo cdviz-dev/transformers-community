@@ -47,23 +47,36 @@ The repository is composed of multiple subfolders / modules.
 mise install
 
 # to have list of tasks
-mise tasks
+mise tasks --all
 
 # to run a task
 mise run {{task}}
 
 # to run the CI tasks
-mise run ci
+mise run :ci
 ```
 
 ## How to test
 
 ```bash
-mise run test
+mise run :test
 ```
 
-## How to release
+OR for a specific sub module
 
-???
+```bash
+mise run '//submodule:test'
+
+# OR
+
+cd submodule
+mise run :test
+```
+
+To review test (and accept/reject changes in output)
+
+```bash
+mise run '//submodule:test' --mode review
+```
 
 [issue]: https://github.com/cdviz-dev/cdviz-collector/issues "CDviz collector's issue tracker"

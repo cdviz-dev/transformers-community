@@ -1,0 +1,11 @@
+[tasks."test"]
+description = "run the transformation example kubewatch_cloudevents (cloudevents) (use `--mode review` to review and update)"
+run = """cdviz-collector \
+  transform \
+  --disable-otel \
+  --mode {{option(name="mode", default="check")}} \
+  --config ./cdviz-collector.toml \
+  -t kubewatch_metadata,kubewatch_cloudevents \
+  --input ./inputs \
+  --output ./outputs
+"""

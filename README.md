@@ -48,20 +48,20 @@ Each transformer includes sample inputs and expected outputs for testing:
 
 ```bash
 # Test all transformers
-mise run test
+mise run :test
 
 # Test specific transformer
-mise run test:transform:github_events
+mise run //github_events:test
 
 # Review and update expected outputs
-mise run test:transform:github_events -- --mode review
+mise run //github_events:test -- --mode review
 ```
 
 ### Code Style
 
 ```bash
 # Format code
-mise run format
+mise run :format
 ```
 
 See [AGENTS.md](./AGENTS.md) for detailed guidelines on code style and conventions.
@@ -75,8 +75,7 @@ Contributions are welcome! Each transformer should include:
 - `inputs/` - Sample input events
 - `outputs/` - Expected output CDEvents
 - `README.md` - Documentation with usage examples
-
-And a command into the `.mise.toml` to test/review the transformer against its inputs.
+- `mise.toml` - Task to test/review the transformer against its inputs.
 
 ## License
 

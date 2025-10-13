@@ -1,0 +1,30 @@
+# CDviz Monorepo Configuration
+min_version = "2025.10.6" # "2025.9.7"
+experimental_monorepo_root = true
+
+[settings]
+experimental = true
+
+[tools]
+"dprint" = "latest"
+"ubi:davidB/json-simple-obfuscator" = "latest"
+"ubi:cdviz-dev/cdviz-collector" = "latest"
+
+[tasks."format"]
+alias = "fmt"
+depends = [":obfuscate"]
+description = "Format the code and sort dependencies"
+run = "dprint fmt"
+
+[tasks.obfuscate]
+description = "obfuscate some data into the samples"
+run = "json-simple-obfuscator */inputs/*/*.json"
+
+[tasks."test"]
+description = "run all 'test' tasks of sub module"
+depends = ["//...:test"]
+
+[tasks."ci"]
+depends = [":test"]
+run = "cdviz-collector --version"
+description = "set of tasks run by CI"
