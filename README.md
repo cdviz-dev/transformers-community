@@ -22,7 +22,7 @@ Add to your `cdviz-collector.toml`:
 type = "github"
 owner = "cdviz-dev"
 repo = "transformers-community"
-# reference = "main"  # Optional: pin to specific branch/tag
+# token = "gh...."  # Optional: github token
 
 [transformers]
 github_events = { type = "vrl", template_rfile = "transformers-community:///github_events/transformer.vrl" }
