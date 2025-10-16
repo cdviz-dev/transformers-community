@@ -77,7 +77,7 @@ if includes(["Deployment", "StatefulSet", "DaemonSet"], .body.data.kind) && (.bo
             "context": {
               "version": "0.4.1",
               "id": id,
-              "source": "/kubewatch",
+              "source": .metadata.context.source,
               "type": type,
               "timestamp": ts,
             },
@@ -110,7 +110,7 @@ if includes(["Deployment", "StatefulSet", "DaemonSet"], .body.data.kind) && (.bo
             "context": {
               "version": "0.4.1",
               "id": id,
-              "source": "/kubewatch",
+              "source": .metadata.context.source,
               "type": "dev.cdevents.service.removed.0.2.0",
               "timestamp": ts,
             },

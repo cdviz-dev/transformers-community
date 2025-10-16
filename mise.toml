@@ -8,7 +8,7 @@ experimental = true
 [tools]
 "dprint" = "latest"
 "ubi:davidB/json-simple-obfuscator" = "latest"
-"ubi:cdviz-dev/cdviz-collector" = "latest"
+"ubi:cdviz-dev/cdviz-collector" = "0.19.1"
 
 [tasks."format"]
 alias = "fmt"
