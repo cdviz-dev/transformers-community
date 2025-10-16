@@ -26,7 +26,6 @@
 # ## Rules:
 #
 # - `context.id` is computed by the collector (using content id, CID computed)
-# - `context.source` is the collector, not an url from github
 # - `subject.id` is the api url of the entity, except for artifacts usiong the package url (PURL)
 # - `subject.source` is empty, all information are in the `subject.id` (global id)
 # - `customData.github` follow the hierarchy of the github event, but only provides few fields
@@ -35,7 +34,7 @@
 bodies = []
 context_id = "0" # "0" to let collector generate an id (alternative reuse github event id: .headers["X-GitHub-Delivery"])
 # context_source = "https://api.github.com/repos/{{ .body.repository.full_name }}" ?? ""
-context_source = "/github" # TODO: use collector URL or cdviz source's id
+context_source = .metadata.context.source
 repo_full_name = string!(.body.repository.full_name)
 sender = .body.sender.login
 custom_data = {

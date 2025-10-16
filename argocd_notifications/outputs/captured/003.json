@@ -1,7 +1,7 @@
 {
   "context": {
     "id": "0",
-    "source": "/argocd",
+    "source": "http://cdviz-collector.example.com?source=cli-transform",
     "timestamp": "2025-10-02T16:06:22.646120Z",
     "type": "dev.cdevents.incident.detected.0.1.0",
     "version": "0.4.1"

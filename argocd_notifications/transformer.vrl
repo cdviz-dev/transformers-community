@@ -25,18 +25,16 @@
 # ## Rules (aligned with kubewatch transformer):
 #
 # - `context.id` is computed by the collector (using content id, CID computed)
-# - `context.source` is `/argocd` (following kubewatch pattern)
 # - `subject.id` follows pattern: `namespace/resource_name`
 # - `subject.source` is empty, all information are in the `subject.id` (global id)
 # - `customData.argocd` follows the hierarchy of the ArgoCD event
 # - `environment.id` comes from `.metadata.environment_id` with fallback to app.spec.destination.server
 #
 
-id = "0"
 context = {
     "version": "0.4.1",
     "id": "0", # "0" to let collector generate an id
-    "source": "/argocd",
+    "source": .metadata.context.source,
     # "timestamp": "", # empty or undef to let collector generate if not set later
 }
 
