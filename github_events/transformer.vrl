@@ -137,6 +137,11 @@ if exists(.body.package) {
       }
       pkgs = [purl_to_string!(purl_obj)]
     }
+    custom_data.github.package = {
+      "package_version" : {
+        "package_url" : .body.package.package_version.package_url
+      }
+    }
     bodies = map_values(pkgs) -> |pkg|{
       {
         "context": {
@@ -150,7 +155,6 @@ if exists(.body.package) {
         },
         "subject": {
           "id": pkg,
-          "source": .body.package.package_version.package_url,
           "type": "artifact",
           "content": {
             "user": sender,

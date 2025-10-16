@@ -8,6 +8,11 @@
   },
   "customData": {
     "github": {
+      "package": {
+        "package_version": {
+          "package_url": "ghcr.io/aaaaa-aaa/aaaaa-aaaaaaaaa:1.1.1"
+        }
+      },
       "repository": {
         "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa"
       },
@@ -21,7 +26,6 @@
       "user": "aaaaaa-aaaaaaa[aaa]"
     },
     "id": "pkg:oci/aaaaa-aaaaaaaaa@aaa111:aaa111aa1a11a1aa11a1aa11111aa11a1a111aaa11a111a111a1a1a1a11a1111?repository_url=ghcr.io/aaaaa-aaa&tag=1.1.1",
-    "source": "ghcr.io/aaaaa-aaa/aaaaa-aaaaaaaaa:1.1.1",
     "type": "artifact"
   }
 }
