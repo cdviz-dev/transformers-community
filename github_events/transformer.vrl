@@ -169,9 +169,11 @@ if exists(.body.package) {
     ts = parse_timestamp(.body.release.published_at, "%+") ?? now()
     ts = format_timestamp!(ts, format: "%+")
     version = .body.release.tag_name
+    repo_parts = split(repo_full_name, "/")
     purl_obj = {
       "type": "github",
-      "name": repo_full_name,
+      "namespace": repo_parts[0],
+      "name": repo_parts[1],
       "version": version
     }
     pkg = purl_to_string(purl_obj) ?? ""
