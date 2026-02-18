@@ -35,7 +35,6 @@ bodies = []
 context_id = "0" # "0" to let collector generate an id (alternative reuse github event id: .headers["X-GitHub-Delivery"])
 # context_source = "https://api.github.com/repos/{{ .body.repository.full_name }}" ?? ""
 context_source = .metadata.context.source
-repo_full_name = string!(.body.repository.full_name)
 sender = .body.sender.login
 custom_data = {
   "github": {
@@ -96,6 +95,7 @@ if exists(.body.package) {
     } else if package_type == "maven" {
       # [Apache Maven registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-apache-maven-registry)
       # [Gradle registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-gradle-registry)
+      repo_full_name = string!(.body.repository.full_name)
       version = .body.package.package_version.version
       purl_obj = {
         "type": "maven",
@@ -168,6 +168,7 @@ if exists(.body.package) {
   if .body.action == "published" {
     ts = parse_timestamp(.body.release.published_at, "%+") ?? now()
     ts = format_timestamp!(ts, format: "%+")
+    repo_full_name = string!(.body.repository.full_name)
     version = .body.release.tag_name
     repo_parts = split(repo_full_name, "/")
     purl_obj = {
@@ -209,6 +210,7 @@ if exists(.body.package) {
   # https://docs.github.com/en/webhooks/webhook-events-and-payloads#workflow_run
   ts = parse_timestamp(.body.workflow_run.updated_at, "%+") ?? now()
   ts = format_timestamp!(ts, format: "%+")
+  repo_full_name = string!(.body.repository.full_name)
   body = {
     "context": {
       "version": "0.4.1",
@@ -239,6 +241,7 @@ if exists(.body.package) {
   }
 } else if exists(.body.workflow_job) {
   # https://docs.github.com/en/webhooks/webhook-events-and-payloads#workflow_job
+  repo_full_name = string!(.body.repository.full_name)
   body = {
     "context": {
       "version": "0.4.1",
