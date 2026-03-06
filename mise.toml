@@ -1,14 +1,23 @@
 # CDviz Monorepo Configuration
-min_version = "2025.10.6" # "2025.9.7"
+min_version = "2025.10.6"  # "2025.9.7"
 experimental_monorepo_root = true
 
 [settings]
 experimental = true
 
+[monorepo]
+config_roots = [
+  "argocd_notifications",
+  "cdevents/*",
+  "github_events",
+  "kubewatch_cloudevents",
+  "passthrough",
+]
+
 [tools]
 "dprint" = "latest"
 "ubi:davidB/json-simple-obfuscator" = "latest"
-"ubi:cdviz-dev/cdviz-collector" = "0.26.0"
+"ubi:cdviz-dev/cdviz-collector" = "0.27.0"
 
 [tasks."format"]
 alias = "fmt"

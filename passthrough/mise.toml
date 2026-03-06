@@ -7,5 +7,5 @@ run = """cdviz-collector \
   --config ./cdviz-collector.toml \
   -t passthrough \
   --input ./inputs \
-  --output ./outputs
+  --output ./inputs
 """
