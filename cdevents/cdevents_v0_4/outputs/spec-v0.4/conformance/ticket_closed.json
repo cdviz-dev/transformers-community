@@ -1,0 +1,65 @@
+{
+  "context": {
+    "id": "F4BD2B55-B6F6-4F44-AF72-BD2D0E7A8708",
+    "links": [
+      {
+        "linkKind": "TRIGGER",
+        "linkType": "RELATION",
+        "tags": {
+          "foo1": "bar",
+          "foo2": "bar"
+        },
+        "target": {
+          "contextId": "5328c37f-bb7e-4bb7-84ea-9f5f85e4a7ce"
+        }
+      },
+      {
+        "from": {
+          "contextId": "5328c37f-bb7e-4bb7-84ea-9f5f85e4a7ce"
+        },
+        "linkType": "PATH",
+        "tags": {
+          "foo1": "bar",
+          "foo2": "bar"
+        }
+      },
+      {
+        "from": {
+          "contextId": "5328c37f-bb7e-4bb7-84ea-9f5f85e4a7ce"
+        },
+        "linkType": "END",
+        "tags": {
+          "foo1": "bar",
+          "foo2": "bar"
+        }
+      }
+    ],
+    "schemaUri": "https://myorg.com/schema/custom",
+    "source": "/ticketing/system",
+    "specversion": "0.5.0",
+    "timestamp": "2022-11-11T13:52:20.079Z",
+    "type": "dev.cdevents.ticket.closed.0.2.0"
+  },
+  "subject": {
+    "content": {
+      "assignees": [
+        "Bob"
+      ],
+      "creator": "Alice",
+      "group": "security",
+      "labels": [
+        "bug"
+      ],
+      "milestone": "123",
+      "priority": "high",
+      "resolution": "completed",
+      "summary": "New CVE-123 detected",
+      "ticketType": "task",
+      "updatedBy": "Bob",
+      "uri": "https://example.issues.com/ticket123"
+    },
+    "id": "ticket-123",
+    "source": "/ticketing/system",
+    "type": "ticket"
+  }
+}

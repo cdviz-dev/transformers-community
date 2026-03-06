@@ -1,0 +1,85 @@
+# Migrates CDEvents from spec v0.4 to v0.5
+# Keeps context.id (not creating a new CDEvent, just migrating spec version)
+# Renames context.version to context.specversion
+# Events NOT in v0.4 format (v0.3, v0.5, ...) are returned unchanged via [.]
+# This allows safe chaining: v0.3→v0.4 then v0.4→v0.5 handles any version correctly
+type_map = {
+  "dev.cdevents.artifact.deleted.0.1.0": "dev.cdevents.artifact.deleted.0.2.0",
+  "dev.cdevents.artifact.downloaded.0.1.0": "dev.cdevents.artifact.downloaded.0.2.0",
+  "dev.cdevents.artifact.packaged.0.2.0": "dev.cdevents.artifact.packaged.0.3.0",
+  "dev.cdevents.artifact.published.0.2.0": "dev.cdevents.artifact.published.0.3.0",
+  "dev.cdevents.artifact.signed.0.2.0": "dev.cdevents.artifact.signed.0.3.0",
+  "dev.cdevents.branch.created.0.2.0": "dev.cdevents.branch.created.0.3.0",
+  "dev.cdevents.branch.deleted.0.2.0": "dev.cdevents.branch.deleted.0.3.0",
+  "dev.cdevents.build.finished.0.2.0": "dev.cdevents.build.finished.0.3.0",
+  "dev.cdevents.build.queued.0.2.0": "dev.cdevents.build.queued.0.3.0",
+  "dev.cdevents.build.started.0.2.0": "dev.cdevents.build.started.0.3.0",
+  "dev.cdevents.change.abandoned.0.2.0": "dev.cdevents.change.abandoned.0.3.0",
+  "dev.cdevents.change.created.0.3.0": "dev.cdevents.change.created.0.4.0",
+  "dev.cdevents.change.merged.0.2.0": "dev.cdevents.change.merged.0.3.0",
+  "dev.cdevents.change.reviewed.0.2.0": "dev.cdevents.change.reviewed.0.3.0",
+  "dev.cdevents.change.updated.0.2.0": "dev.cdevents.change.updated.0.3.0",
+  "dev.cdevents.environment.created.0.2.0": "dev.cdevents.environment.created.0.3.0",
+  "dev.cdevents.environment.deleted.0.2.0": "dev.cdevents.environment.deleted.0.3.0",
+  "dev.cdevents.environment.modified.0.2.0": "dev.cdevents.environment.modified.0.3.0",
+  "dev.cdevents.incident.detected.0.2.0": "dev.cdevents.incident.detected.0.3.0",
+  "dev.cdevents.incident.reported.0.2.0": "dev.cdevents.incident.reported.0.3.0",
+  "dev.cdevents.incident.resolved.0.2.0": "dev.cdevents.incident.resolved.0.3.0",
+  "dev.cdevents.pipelinerun.finished.0.2.0": "dev.cdevents.pipelinerun.finished.0.3.0",
+  "dev.cdevents.pipelinerun.queued.0.2.0": "dev.cdevents.pipelinerun.queued.0.3.0",
+  "dev.cdevents.pipelinerun.started.0.2.0": "dev.cdevents.pipelinerun.started.0.3.0",
+  "dev.cdevents.repository.created.0.2.0": "dev.cdevents.repository.created.0.3.0",
+  "dev.cdevents.repository.deleted.0.2.0": "dev.cdevents.repository.deleted.0.3.0",
+  "dev.cdevents.repository.modified.0.2.0": "dev.cdevents.repository.modified.0.3.0",
+  "dev.cdevents.service.deployed.0.2.0": "dev.cdevents.service.deployed.0.3.0",
+  "dev.cdevents.service.published.0.2.0": "dev.cdevents.service.published.0.3.0",
+  "dev.cdevents.service.removed.0.2.0": "dev.cdevents.service.removed.0.3.0",
+  "dev.cdevents.service.rolledback.0.2.0": "dev.cdevents.service.rolledback.0.3.0",
+  "dev.cdevents.service.upgraded.0.2.0": "dev.cdevents.service.upgraded.0.3.0",
+  "dev.cdevents.taskrun.finished.0.2.0": "dev.cdevents.taskrun.finished.0.3.0",
+  "dev.cdevents.taskrun.started.0.2.0": "dev.cdevents.taskrun.started.0.3.0",
+  "dev.cdevents.testcaserun.finished.0.2.0": "dev.cdevents.testcaserun.finished.0.3.0",
+  "dev.cdevents.testcaserun.queued.0.2.0": "dev.cdevents.testcaserun.queued.0.3.0",
+  "dev.cdevents.testcaserun.skipped.0.1.0": "dev.cdevents.testcaserun.skipped.0.2.0",
+  "dev.cdevents.testcaserun.started.0.2.0": "dev.cdevents.testcaserun.started.0.3.0",
+  "dev.cdevents.testoutput.published.0.2.0": "dev.cdevents.testoutput.published.0.3.0",
+  "dev.cdevents.testsuiterun.finished.0.2.0": "dev.cdevents.testsuiterun.finished.0.3.0",
+  "dev.cdevents.testsuiterun.queued.0.2.0": "dev.cdevents.testsuiterun.queued.0.3.0",
+  "dev.cdevents.testsuiterun.started.0.2.0": "dev.cdevents.testsuiterun.started.0.3.0",
+  "dev.cdevents.ticket.closed.0.1.0": "dev.cdevents.ticket.closed.0.2.0",
+  "dev.cdevents.ticket.created.0.1.0": "dev.cdevents.ticket.created.0.2.0",
+  "dev.cdevents.ticket.updated.0.1.0": "dev.cdevents.ticket.updated.0.2.0"
+}
+
+# Pass through events that are not v0.4 (v0.3 has context.version "0.3.0", v0.5+ has context.specversion)
+if !exists(.body.context.version) || .body.context.version != "0.4.1" {
+  [.]
+} else {
+  body = .body
+  del(body.context.version)
+  body.context.specversion = "0.5.0"
+  body.context.type = get(type_map, [string!(body.context.type)]) ?? body.context.type
+
+  # v0.5 renames subject.content.url to subject.content.uri for environment, pipelineRun, repository, taskRun
+  if exists(body.subject.content.url) {
+    body.subject.content.uri = del(body.subject.content.url)
+  }
+
+  # v0.5 renames test outcomes: testCaseRun "pass" -> "success", testSuiteRun "fail" -> "failure"
+  if contains(string!(body.context.type), "testcaserun.finished") {
+    if exists(body.subject.content.outcome) && body.subject.content.outcome == "pass" {
+      body.subject.content.outcome = "success"
+    }
+  }
+  if contains(string!(body.context.type), "testsuiterun.finished") {
+    if exists(body.subject.content.outcome) && body.subject.content.outcome == "fail" {
+      body.subject.content.outcome = "failure"
+    }
+  }
+
+  [{
+    "metadata": .metadata,
+    "headers": .headers,
+    "body": body,
+  }]
+}

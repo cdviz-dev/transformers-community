@@ -1,0 +1,2 @@
+[transformers]
+cdevents_v0_4_to_v0_5 = { type = "vrl", template_file = "./to_v0_5.vrl" }
