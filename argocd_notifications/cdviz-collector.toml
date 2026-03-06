@@ -14,6 +14,9 @@
 # # token override by environment variable reads from the secret
 # "authorization" = { type = "signature", signature_encoding = "base64", signature_on = "body", signature_prefix = "Bearer ", token = "changeme" }
 
+[transformers]
+argocd_notifications = { type = "vrl", template_file = "./to_v0_4.vrl" }
+
 # the argocd_metadata transformer will add information not available from input events
 # the added information will be available in the metadata, then used by following transformers
 [transformers.argocd_metadata]
@@ -29,7 +32,3 @@ template = """
   "body": .body,
 }]
 """
-
-[transformers.argocd_notifications]
-type = "vrl"
-template_file = "./transformer.vrl"

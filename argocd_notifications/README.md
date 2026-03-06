@@ -314,9 +314,8 @@ template = """
 """
 
 # Main transformer detects event type and transforms to CDEvents
-[transformers.argocd_notifications]
-type = "vrl"
-template_file = "./transformer.vrl"
+[transformers]
+argocd_notifications = { type = "vrl", template_file = "./to_v0_4.vrl"}
 ```
 
 **Webhook source configuration** (in main `cdviz-collector.toml`):

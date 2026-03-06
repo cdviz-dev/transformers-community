@@ -16,9 +16,8 @@ Migrates CDEvents from spec **v0.4** to spec **v0.5**.
 ## Usage
 
 ```toml
-[transformers.cdevents_v0.4_to_v0.5]
-type = "vrl"
-template_file = "./transformer.vrl"
+[transformers]
+cdevents_v0_4_to_v0_5 = { type = "vrl", template_file = "./to_v0_5.vrl"}
 ```
 
 Or using the remote repository:
@@ -30,7 +29,7 @@ owner = "cdviz-dev"
 repo = "transformers-community"
 
 [transformers]
-cdevents_v0_4_to_v0_5 = { type = "vrl", template_rfile = "transformers-community:///cdevents/cdevents_v0_4_to_v0_5/transformer.vrl"}
+cdevents_v0_4_to_v0_5 = { type = "vrl", template_rfile = "transformers-community:///cdevents/cdevents_v0_4/to_v0_5.vrl"}
 ```
 
 ## Supported event types (45)

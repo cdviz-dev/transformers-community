@@ -49,7 +49,9 @@ mise run :ci
 ### Repository Structure
 
 Each transformer is a self-contained directory with:
-- `transformer.vrl` - VRL transformation logic (main implementation)
+
+- `to_v0_x.vrl` - VRL transformation logic to convert to CDEvents v0.x
+- `transformer.vrl` - legacy / deprecated it's a symlink to `to_v0_4.vrl`, keep for backward compatibility
 - `cdviz-collector.toml` - Configuration example showing how to use the transformer
 - `inputs/` - Sample input events (JSON files organized by event type)
 - `outputs/` - Expected CDEvents output (used for testing)
@@ -65,7 +67,8 @@ Transformers convert source events to CDEvents using VRL. The pattern is:
 3. Map to CDEvents schema with proper field conventions
 4. Preserve source-specific data in `customData.<source>` hierarchy
 
-Example from github_events/transformer.vrl:
+Example from github_events/to_v0_x.vrl:
+
 - Detects event type by checking for specific fields (e.g., `.body.package`, `.body.workflow_run`)
 - Extracts timestamps and converts to ISO format
 - Builds CDEvents JSON with proper `context`, `subject`, and `customData` structure
@@ -81,12 +84,14 @@ The `cdviz-collector transform` command processes all JSON files in `inputs/` di
 ## CDEvents Field Conventions (Critical Rules)
 
 ### context.id
+
 - Set to `"0"` (or omit) to enable automatic content-based ID generation by cdviz-collector
 - DO NOT manually generate IDs or reuse source event IDs
 - **Exception**: Keep `context.id` when the transformer is NOT creating a new CDEvent (filtering, normalizing, validating, or adding customData)
 - This ensures reproducible, deterministic IDs based on event content
 
 ### context.source
+
 - Use the URI of the cdviz-collector service that creates or modifies the event
 - This identifies where the event was created/modified, not the original triggering system
 - Value depends on cdviz-collector's running mode:
@@ -97,11 +102,13 @@ The `cdviz-collector transform` command processes all JSON files in `inputs/` di
 - Customize using `http.root_url` in `cdviz-collector.toml`
 
 ### context.timestamp
+
 - Extract timestamp from source event data when available (e.g., `.body.workflow_run.updated_at`)
 - Parse and format as ISO 8601: `parse_timestamp(..., "%+")` then `format_timestamp!(..., format: "%+")`
 - Avoid `now()` or automatic timestamps to ensure reproducible outputs for testing
 
 ### subject.id
+
 - Use globally unique, hierarchical URI/URL identifying the subject entity
 - Can be a URL, PURL, or absolute path starting with `/`
 - Prefer API URIs over human-facing view URIs
@@ -113,9 +120,11 @@ The `cdviz-collector transform` command processes all JSON files in `inputs/` di
   - For artifacts: Use PURL format (see artifactId section)
 
 ### subject.type
+
 - Must match CDEvents subject types: `artifact`, `pipelineRun`, `taskRun`, `ticket`, `change`, `branch`, etc.
 
 ### environment.id
+
 - Follow same rules as `subject.id` - it's a reference to an environment subject
 - Often subjects don't know their environment, so this may need to be injected
 - Define as absolute path starting with `/` for consistency
@@ -125,6 +134,7 @@ The `cdviz-collector transform` command processes all JSON files in `inputs/` di
 - **Why**: Enables environment-level dashboards, filtering, and alerts
 
 ### artifactId
+
 - Follow Package URL (PURL) specification: `pkg:type/namespace/name@version?qualifiers`
 - Use appropriate type if supported, otherwise fallback to `generic`
 - Common types: `oci`, `npm`, `maven`, `gem`, `nuget`, `github`
@@ -136,11 +146,13 @@ The `cdviz-collector transform` command processes all JSON files in `inputs/` di
   - Generic: `pkg:generic/my-app@1.2.3`
 
 **Common PURL Pitfalls**:
+
 - **Digest vs Tag**: Use image digest for immutability, NOT source code commit SHA
 - **OCI Namespace**: `pkg:oci/` does NOT support namespace in path - use `repository_url` query parameter
 - **Type-Specific Rules**: Each PURL type has unique encoding rules - consult the specification
 
 ### customData
+
 - Preserve source-specific information not covered by CDEvents standard fields
 - Structure as JSON object with source name at first level: `customData.github`, `customData.argocd`
 - For webhook events, mirror original event structure (complete or filtered)
@@ -161,7 +173,7 @@ The `cdviz-collector transform` command processes all JSON files in `inputs/` di
 
 1. Add sample input JSON file to `inputs/<event-type>/`
 2. Add expected output JSON file to `outputs/<event-type>/`
-3. Update transformer.vrl with new event detection logic (typically an `else if exists(.body.field_name)` block)
+3. Update to_v0_x.vrl with new event detection logic (typically an `else if exists(.body.field_name)` block)
 4. Map source fields to CDEvents schema following field conventions from RULES.md
 5. Extract timestamps from input data (avoid `now()` for reproducibility)
 6. Run `mise run :test -- --mode review` to validate and accept outputs
@@ -170,7 +182,7 @@ The `cdviz-collector transform` command processes all JSON files in `inputs/` di
 ### Creating a New Transformer
 
 1. Create directory with transformer name
-2. Add `transformer.vrl` with transformation logic
+2. Add `to_v0_x.vrl` with transformation logic (v0_x is the target version of CDEvents)
 3. Add `cdviz-collector.toml` with configuration example
 4. Create `inputs/` and `outputs/` directories with test cases
 5. Add `mise.toml` with test task (copy pattern from existing transformers)

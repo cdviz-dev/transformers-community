@@ -26,9 +26,11 @@ repo = "transformers-community"
 # token = "gh...."  # Optional: github token
 
 [transformers]
-github_events = { type = "vrl", template_rfile = "transformers-community:///github_events/transformer.vrl" }
-kubewatch_cloudevents = { type = "vrl", template_rfile = "transformers-community:///kubewatch_cloudevents/transformer.vrl" }
-argocd_notifications = { type = "vrl", template_rfile = "transformers-community:///argocd_notifications/transformer.vrl" }
+github_events = { type = "vrl", template_rfile = "transformers-community:///github_events/to_v0_4.vrl" }
+kubewatch_cloudevents = { type = "vrl", template_rfile = "transformers-community:///kubewatch_cloudevents/to_v0_4.vrl" }
+argocd_notifications = { type = "vrl", template_rfile = "transformers-community:///argocd_notifications/to_v0_4.vrl" }
+cdevents_v0_3_to_v0_4 = { type = "vrl", template_rfile = "transformers-community:///cdevents/cdevents_v0_3/to_v0_4.vrl"}
+cdevents_v0_4_to_v0_5 = { type = "vrl", template_rfile = "transformers-community:///cdevents/cdevents_v0_4/to_v0_5.vrl"}
 ```
 
 ### Use Transformers Locally
@@ -36,9 +38,8 @@ argocd_notifications = { type = "vrl", template_rfile = "transformers-community:
 Clone the repository and reference transformers directly:
 
 ```toml
-[transformers.github_events]
-type = "vrl"
-template_file = "./path/to/transformers-community/github_events/transformer.vrl"
+[transformers]
+github_events = { type = "vrl", template_file = "./path/to/transformers-community/github_events/to_v0_4.vrl" }
 ```
 
 ## Development
@@ -71,7 +72,8 @@ See [AGENTS.md](./AGENTS.md) for detailed guidelines on code style and conventio
 
 Contributions are welcome! Each transformer should include:
 
-- `transformer.vrl` - VRL transformation logic
+- `to_v0_x.vrl` - VRL transformation logic to convert to CDEvents v0.x
+- `transformer.vrl` - legacy / deprecated it's a symlink to `to_v0_4.vrl`, kept for backward compatibility
 - `cdviz-collector.toml` - Configuration example
 - `inputs/` - Sample input events
 - `outputs/` - Expected output CDEvents
