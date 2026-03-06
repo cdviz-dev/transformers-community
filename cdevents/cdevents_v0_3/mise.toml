@@ -1,0 +1,39 @@
+[tasks.test]
+description = "run all tests for cdevents_v0_3_to_v0_4"
+depends = [":test:*"]
+
+[tasks."test:conformance"]
+description = "test v0.3→v0.4 transformation (use `--mode overwrite` to update expected outputs)"
+run = """cdviz-collector \
+  transform \
+  --disable-otel \
+  --mode {{option(name="mode", default="check")}} \
+  --config ./cdviz-collector.toml \
+  -t cdevents_v0_3_to_v0_4 \
+  --input ../inputs/spec-v0.3/conformance \
+  --output ./outputs/spec-v0.3/conformance
+"""
+
+[tasks."test:passthrough:v0_4"]
+description = "test that v0.4 events pass through unchanged"
+run = """cdviz-collector \
+  transform \
+  --disable-otel \
+  --mode check \
+  --config ./cdviz-collector.toml \
+  -t cdevents_v0_3_to_v0_4 \
+  --input ../inputs/spec-v0.4/conformance \
+  --output ../inputs/spec-v0.4/conformance
+"""
+
+[tasks."test:passthrough:v0_5"]
+description = "test that v0.5 events pass through unchanged"
+run = """cdviz-collector \
+  transform \
+  --disable-otel \
+  --mode check \
+  --config ./cdviz-collector.toml \
+  -t cdevents_v0_3_to_v0_4 \
+  --input ../inputs/spec-v0.5/conformance \
+  --output ../inputs/spec-v0.5/conformance
+"""

@@ -9,6 +9,7 @@ Community driven transformers for [cdviz-collector](https://github.com/cdviz-dev
 | [github_events](./github_events/)                 | GitHub Webhooks   | Converts GitHub events (workflow runs, issues, PRs, releases) to CDEvents |
 | [argocd_notifications](./argocd_notifications/)   | ArgoCD Webhooks   | Converts ArgoCD application lifecycle events to CDEvents                  |
 | [kubewatch_cloudevents](./kubewatch_cloudevents/) | Kubernetes Events | Converts Kubewatch CloudEvents to CDEvents                                |
+| [cdevents](./cdevents/)                           | CDEvents          | Convert CDEvents from a version to the next version (can be chained)      |
 | [passthrough](./passthrough/)                     | CDEvents          | Passthrough transformer for existing CDEvents                             |
 
 ## Usage
