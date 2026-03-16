@@ -10,7 +10,8 @@
 # id = "000-kubewatch"
 
 [transformers]
-kubewatch_cloudevents = { type = "vrl", template_file = "./to_v0_4.vrl" }
+kubewatch_cloudevents_0_4 = { type = "vrl", template_file = "./to_v0_4.vrl" }
+kubewatch_cloudevents_0_5 = { type = "vrl", template_file = "./to_v0_5.vrl" }
 
 # the kubewatch_metadata transformer will add information not available from input events
 # the added information will be available in the metadata, then used by following transformers

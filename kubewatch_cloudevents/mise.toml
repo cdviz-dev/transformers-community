@@ -1,11 +1,26 @@
 [tasks."test"]
+depends = [":test:*"]
+
+[tasks."test:0_4"]
 description = "run the transformation example kubewatch_cloudevents (cloudevents) (use `--mode review` to review and update)"
 run = """cdviz-collector \
   transform \
   --disable-otel \
   --mode {{option(name="mode", default="check")}} \
   --config ./cdviz-collector.toml \
-  -t kubewatch_metadata,kubewatch_cloudevents \
+  -t kubewatch_metadata,kubewatch_cloudevents_0_4 \
   --input ./inputs \
-  --output ./outputs
+  --output ./outputs/0_4
+"""
+
+[tasks."test:0_5"]
+description = "run the transformation example kubewatch_cloudevents (cloudevents) (use `--mode review` to review and update)"
+run = """cdviz-collector \
+  transform \
+  --disable-otel \
+  --mode {{option(name="mode", default="check")}} \
+  --config ./cdviz-collector.toml \
+  -t kubewatch_metadata,kubewatch_cloudevents_0_5 \
+  --input ./inputs \
+  --output ./outputs/0_5
 """

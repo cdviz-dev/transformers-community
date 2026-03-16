@@ -1,0 +1,16 @@
+{
+  "context": {
+    "specversion": "0.5.0",
+    "timestamp": "2024-12-18T17:58:39.674637507+00:00",
+    "type": "dev.cdevents.service.upgraded.0.3.0"
+  },
+  "subject": {
+    "content": {
+      "artifactId": "pkg:oci/aaaaaaaaa?repository_url=docker.io/robustadev&tag=v2.9.0",
+      "environment": {
+        "id": "cluster/A-dev"
+      }
+    },
+    "id": "/aaaaaaaaa/aaaaaaaaa/aaaaaaaaa"
+  }
+}
