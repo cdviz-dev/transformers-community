@@ -1,0 +1,39 @@
+{
+  "context": {
+    "specversion": "0.5.0",
+    "timestamp": "2025-01-24T14:31:36+00:00",
+    "type": "dev.cdevents.artifact.published.0.3.0"
+  },
+  "customData": {
+    "github": {
+      "package": {
+        "package_version": {
+          "package_url": "ghcr.io/aaaaa-aaa/aaaaa-aaaaaaaaa:1.1.1"
+        }
+      },
+      "repository": {
+        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa"
+      },
+      "sender": {
+        "login": "aaaaaa-aaaaaaa[aaa]"
+      }
+    },
+    "links": [
+      {
+        "linkKind": "storedAt",
+        "target": {
+          "subject": {
+            "id": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa",
+            "type": "repository"
+          }
+        }
+      }
+    ]
+  },
+  "subject": {
+    "content": {
+      "user": "aaaaaa-aaaaaaa[aaa]"
+    },
+    "id": "pkg:oci/aaaaa-aaaaaaaaa@aaa111:aaa111aa1a11a1aa11a1aa11111aa11a1a111aaa11a111a111a1a1a1a11a1111?repository_url=ghcr.io/aaaaa-aaa&tag=1.1.1"
+  }
+}

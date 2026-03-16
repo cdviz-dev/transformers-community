@@ -1,0 +1,36 @@
+{
+  "context": {
+    "specversion": "0.5.0",
+    "timestamp": "2025-05-21T17:35:21+00:00",
+    "type": "dev.cdevents.change.merged.0.3.0"
+  },
+  "customData": {
+    "github": {
+      "repository": {
+        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa"
+      },
+      "sender": {
+        "login": "aaaaaA"
+      }
+    },
+    "links": [
+      {
+        "linkKind": "storedAt",
+        "target": {
+          "subject": {
+            "id": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa",
+            "type": "repository"
+          }
+        }
+      }
+    ]
+  },
+  "subject": {
+    "content": {
+      "repository": {
+        "id": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa"
+      }
+    },
+    "id": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/pulls/97"
+  }
+}

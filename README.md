@@ -26,7 +26,7 @@ repo = "transformers-community"
 # token = "gh...."  # Optional: github token
 
 [transformers]
-github_events = { type = "vrl", template_rfile = "transformers-community:///github_events/to_v0_4.vrl" }
+github_events = { type = "vrl", template_rfile = "transformers-community:///github_events/to_v0_5.vrl" }
 kubewatch_cloudevents = { type = "vrl", template_rfile = "transformers-community:///kubewatch_cloudevents/to_v0_4.vrl" }
 argocd_notifications = { type = "vrl", template_rfile = "transformers-community:///argocd_notifications/to_v0_4.vrl" }
 cdevents_v0_3_to_v0_4 = { type = "vrl", template_rfile = "transformers-community:///cdevents/cdevents_v0_3/to_v0_4.vrl"}
@@ -39,7 +39,7 @@ Clone the repository and reference transformers directly:
 
 ```toml
 [transformers]
-github_events = { type = "vrl", template_file = "./path/to/transformers-community/github_events/to_v0_4.vrl" }
+github_events = { type = "vrl", template_file = "./path/to/transformers-community/github_events/to_v0_5.vrl" }
 ```
 
 ## Development

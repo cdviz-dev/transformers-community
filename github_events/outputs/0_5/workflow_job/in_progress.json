@@ -1,0 +1,47 @@
+{
+  "context": {
+    "specversion": "0.5.0",
+    "timestamp": "1015-01-11T19:01:11+00:00",
+    "type": "dev.cdevents.taskrun.started.0.3.0"
+  },
+  "customData": {
+    "github": {
+      "repository": {
+        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa"
+      },
+      "sender": {
+        "login": "aaaaaA"
+      }
+    },
+    "links": [
+      {
+        "linkKind": "storedAt",
+        "target": {
+          "subject": {
+            "id": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa",
+            "type": "repository"
+          }
+        }
+      },
+      {
+        "linkKind": "runsIn",
+        "target": {
+          "subject": {
+            "id": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/actions/runs/11111111111/attempts/1",
+            "type": "pipelinerun"
+          }
+        }
+      }
+    ]
+  },
+  "subject": {
+    "content": {
+      "pipelineRun": {
+        "id": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/actions/runs/11111111111/attempts/1"
+      },
+      "taskName": "aaaaa-aaa/aaaaa-aaaaaaaaa/AaaaAaaaaa/AaaaAaaaaa",
+      "uri": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/actions/runs/11111111111/job/11111111111"
+    },
+    "id": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/actions/jobs/11111111111"
+  }
+}

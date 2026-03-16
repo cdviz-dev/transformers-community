@@ -15,4 +15,5 @@
 # "x-hub-signature-256" = { type = "signature", signature_encoding = "hex", signature_on = "body", signature_prefix = "sha256=", token = "changeme" }
 
 [transformers]
-github_events = { type = "vrl", template_file = "./to_v0_4.vrl" }
+github_events_0_4 = { type = "vrl", template_file = "./to_v0_4.vrl" }
+github_events_0_5 = { type = "vrl", template_file = "./to_v0_5.vrl" }
