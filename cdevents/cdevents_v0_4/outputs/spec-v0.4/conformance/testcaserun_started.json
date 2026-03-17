@@ -58,7 +58,6 @@
       }
     },
     "id": "myTestCaseRun123",
-    "source": "/event/source/123",
-    "type": "testCaseRun"
+    "source": "/event/source/123"
   }
 }

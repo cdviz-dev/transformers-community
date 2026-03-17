@@ -61,7 +61,6 @@
       }
     },
     "id": "incident-123",
-    "source": "/monitoring/prod1",
-    "type": "incident"
+    "source": "/monitoring/prod1"
   }
 }

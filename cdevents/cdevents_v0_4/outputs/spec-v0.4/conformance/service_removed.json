@@ -48,7 +48,6 @@
       }
     },
     "id": "mySubject123",
-    "source": "/event/source/123",
-    "type": "service"
+    "source": "/event/source/123"
   }
 }

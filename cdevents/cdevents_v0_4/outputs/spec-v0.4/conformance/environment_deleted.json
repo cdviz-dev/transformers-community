@@ -46,7 +46,6 @@
       "name": "testEnv"
     },
     "id": "mySubject123",
-    "source": "/event/source/123",
-    "type": "environment"
+    "source": "/event/source/123"
   }
 }

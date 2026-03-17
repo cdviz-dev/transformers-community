@@ -49,7 +49,6 @@
       "uri": "https://www.example.com/mySubject123"
     },
     "id": "mySubject123",
-    "source": "/event/source/123",
-    "type": "pipelineRun"
+    "source": "/event/source/123"
   }
 }

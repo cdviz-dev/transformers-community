@@ -1,6 +1,5 @@
 # Migrates CDEvents from spec v0.4 to v0.5
 # Keeps context.id (not creating a new CDEvent, just migrating spec version)
-# Renames context.version to context.specversion
 # Events NOT in v0.4 format (v0.3, v0.5, ...) are returned unchanged via [.]
 # This allows safe chaining: v0.3→v0.4 then v0.4→v0.5 handles any version correctly
 type_map = {
@@ -56,9 +55,15 @@ if !exists(.body.context.version) || .body.context.version != "0.4.1" {
   [.]
 } else {
   body = .body
+  # renames context.version to context.specversion
   del(body.context.version)
   body.context.specversion = "0.5.0"
+
+  # updates context.type
   body.context.type = get(type_map, [string!(body.context.type)]) ?? body.context.type
+
+  # removes subject.type
+  del(body.subject.type)
 
   # v0.5 renames subject.content.url to subject.content.uri for environment, pipelineRun, repository, taskRun
   if exists(body.subject.content.url) {
