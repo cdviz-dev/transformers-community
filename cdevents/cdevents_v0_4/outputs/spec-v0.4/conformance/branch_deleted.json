@@ -49,7 +49,6 @@
       }
     },
     "id": "mySubject123",
-    "source": "/event/source/123",
-    "type": "branch"
+    "source": "/event/source/123"
   }
 }

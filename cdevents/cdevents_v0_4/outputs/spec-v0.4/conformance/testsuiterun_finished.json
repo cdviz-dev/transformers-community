@@ -57,7 +57,6 @@
       }
     },
     "id": "myTestSuiteRun123",
-    "source": "/event/source/123",
-    "type": "testSuiteRun"
+    "source": "/event/source/123"
   }
 }

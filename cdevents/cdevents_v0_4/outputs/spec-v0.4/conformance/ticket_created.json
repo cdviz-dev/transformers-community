@@ -57,7 +57,6 @@
       "uri": "https://example.issues.com/ticket123"
     },
     "id": "ticket-123",
-    "source": "/ticketing/system",
-    "type": "ticket"
+    "source": "/ticketing/system"
   }
 }

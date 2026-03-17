@@ -51,7 +51,6 @@
       }
     },
     "id": "testrunreport-12123",
-    "source": "/event/source/testrunreport-12123",
-    "type": "testOutput"
+    "source": "/event/source/testrunreport-12123"
   }
 }

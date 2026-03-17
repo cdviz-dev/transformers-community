@@ -50,7 +50,6 @@
       }
     },
     "id": "mySubject123",
-    "source": "/event/source/123",
-    "type": "change"
+    "source": "/event/source/123"
   }
 }

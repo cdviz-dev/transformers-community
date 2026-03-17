@@ -44,7 +44,6 @@
   "subject": {
     "content": {},
     "id": "mySubject123",
-    "source": "/event/source/123",
-    "type": "build"
+    "source": "/event/source/123"
   }
 }

@@ -52,7 +52,6 @@
       "uri": "https://www.example.com/mySubject123"
     },
     "id": "mySubject123",
-    "source": "/event/source/123",
-    "type": "taskRun"
+    "source": "/event/source/123"
   }
 }
