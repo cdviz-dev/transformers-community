@@ -208,7 +208,7 @@ eg: `taskName`, `pipelineName`
 
 - Avoid redoncy between `customData.links` and required info under `subject.content` or `context.links`
 - Structure as a JSON object with the source name at the first level (`github`, `argocd`, etc.)
-- For webhook events, mirror the original event structure under the first level (can be complete or filtered)
+- For webhook events, mirror the original event structure under the first level (can be complete or filtered, the purpose is to allow post-processing to be able to extract information if needed)
 - Additional first-level keys may be added for information useful to other consumers
 
 ## Rules for Transformers

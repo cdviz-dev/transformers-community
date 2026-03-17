@@ -47,14 +47,7 @@ custom_data = {
       }
     }
   ],
-  "github": {
-    "repository": {
-      "url": .body.repository.url,
-    },
-    "sender": {
-      "login": .body.sender.login,
-    },
-  }
+  "github": .body
 }
 
 # test existance of a field to determine the event type (alternative: .headers["X-GitHub-Event"])
