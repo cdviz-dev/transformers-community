@@ -155,10 +155,10 @@ Guidelines:
 
 eg: `taskName`, `pipelineName`
 
-- Use a global name (considere a larger scope like a company, organisation)
+- Use a global name (consider a larger scope like a company, organization)
 - Use `/` to compose a name like a path (or `subject.id`) from general (left) to specific (right)
 
-**Why** : Names can be used in larger scope dashboard or to group subjects. Often local name are duplicate between lower scope (eg same task name `test`, `publish`,... and pipeline' name are reused between project / repository)
+**Why**: Names can be used in larger scope dashboard or to group subjects. Often local name are duplicated between lower scope (eg same task names `test`, `publish`,... and pipeline names are reused between project / repository)
 
 ### Use `customData`
 
@@ -206,7 +206,7 @@ eg: `taskName`, `pipelineName`
   ]}
   ```
 
-- Avoid redoncy between `customData.links` and required info under `subject.content` or `context.links`
+- Avoid redundancy between `customData.links` and required info under `subject.content` or `context.links`
 - Structure as a JSON object with the source name at the first level (`github`, `argocd`, etc.)
 - For webhook events, mirror the original event structure under the first level (can be complete or filtered, the purpose is to allow post-processing to be able to extract information if needed)
 - Additional first-level keys may be added for information useful to other consumers
