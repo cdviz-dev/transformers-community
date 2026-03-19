@@ -15,7 +15,8 @@
 # "authorization" = { type = "signature", signature_encoding = "base64", signature_on = "body", signature_prefix = "Bearer ", token = "changeme" }
 
 [transformers]
-argocd_notifications = { type = "vrl", template_file = "./to_v0_4.vrl" }
+argocd_notifications_0_4 = { type = "vrl", template_file = "./to_v0_4.vrl" }
+argocd_notifications_0_5 = { type = "vrl", template_file = "./to_v0_5.vrl" }
 
 # the argocd_metadata transformer will add information not available from input events
 # the added information will be available in the metadata, then used by following transformers
