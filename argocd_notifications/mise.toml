@@ -1,11 +1,26 @@
 [tasks."test"]
+depends = [":test:*"]
+
+[tasks."test:0_4"]
 description = "run the transformation example argocd_notifications (use `--mode review` to review and update)"
 run = """cdviz-collector \
   transform \
   --disable-otel \
   --mode {{option(name="mode", default="check")}} \
   --config ./cdviz-collector.toml \
-  -t argocd_metadata,argocd_notifications \
+  -t argocd_metadata,argocd_notifications_0_4 \
   --input ./inputs \
-  --output ./outputs
+  --output ./outputs/0_4
+"""
+
+[tasks."test:0_5"]
+description = "run the transformation example argocd_notifications to v0.5 (use `--mode review` to review and update)"
+run = """cdviz-collector \
+  transform \
+  --disable-otel \
+  --mode {{option(name="mode", default="check")}} \
+  --config ./cdviz-collector.toml \
+  -t argocd_metadata,argocd_notifications_0_5 \
+  --input ./inputs \
+  --output ./outputs/0_5
 """
