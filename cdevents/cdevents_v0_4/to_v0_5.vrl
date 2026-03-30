@@ -71,13 +71,10 @@ if !exists(.body.context.version) || .body.context.version != "0.4.1" {
   }
 
   # v0.5 renames test outcomes: testCaseRun "pass" -> "success", testSuiteRun "fail" -> "failure"
-  if contains(string!(body.context.type), "testcaserun.finished") {
+  if contains(string!(body.context.type), "testcaserun.finished") || contains(string!(body.context.type), "testsuiterun.finished") {
     if exists(body.subject.content.outcome) && body.subject.content.outcome == "pass" {
       body.subject.content.outcome = "success"
-    }
-  }
-  if contains(string!(body.context.type), "testsuiterun.finished") {
-    if exists(body.subject.content.outcome) && body.subject.content.outcome == "fail" {
+    } else if exists(body.subject.content.outcome) && body.subject.content.outcome == "fail" {
       body.subject.content.outcome = "failure"
     }
   }
