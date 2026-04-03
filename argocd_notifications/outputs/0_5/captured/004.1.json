@@ -687,6 +687,6 @@
         "id": "https://kubernetes.default.svc"
       }
     },
-    "id": "/argocd/aaaaa-aaaaaaaaa/aaaaa-aaaaaaaaa"
+    "id": "/cdviz-dev/aaaaa-aaaaaaaaa/aaaaa-aaaaaaaaa"
   }
 }

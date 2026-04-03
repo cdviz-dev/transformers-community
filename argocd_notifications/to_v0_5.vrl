@@ -30,6 +30,8 @@
 # - `customData.argocd` mirrors the full ArgoCD webhook payload
 # - `environment.id` comes from `.metadata.environment_id` with fallback to app.spec.destination.server
 #
+# ## Configuration
+# - if `.metadata.argocd_notifications.ignore_containers == true`, then no events are emitted per container
 
 context = {
     "specversion": "0.5.0",
@@ -40,8 +42,13 @@ output = []
 
 # Extract common fields from ArgoCD webhook payload using safe null coalescing
 app_name = .body.app.metadata.name
-app_namespace = .body.app.metadata.namespace || "default"
-app_server = .body.app.spec.destination.server || ""
+app_namespace = .body.app.spec.destination.namespace || .body.app.metadata.namespace || "default"
+environment_id = .metadata.environment_id || .body.app.spec.destination.server || ""
+images = if .metadata.argocd_notifications.ignore_containers == true {
+  []
+} else {
+  array!(.body.app.status.summary.images || [])
+}
 
 # Detect current operation state and health
 operation_phase = .body.app.status.operationState.phase
@@ -101,7 +108,7 @@ if !is_null(deletion_timestamp) {
         "id": "/" + string!(app_namespace) + "/" + string!(app_name),
         "content": {
           "environment": {
-            "id": .metadata.environment_id || .body.app.spec.destination.server || "",
+            "id": environment_id,
           }
         }
       },
@@ -110,7 +117,6 @@ if !is_null(deletion_timestamp) {
   })
 
   # START: Emit one event per container for service.removed
-  images = array!(.body.app.status.summary.images || [])
   container_events = map_values(images) -> |image_str| {
     purl_obj = purl_from_oci_image!(image_str)
     image_name = purl_obj.name
@@ -125,7 +131,7 @@ if !is_null(deletion_timestamp) {
             "id": container_subject_id,
             "content": {
                 "environment": {
-                    "id": .metadata.environment_id || .body.app.spec.destination.server || "",
+                    "id": environment_id,
                 }
             }
         },
@@ -164,7 +170,7 @@ if !is_null(deletion_timestamp) {
           "content": {
             "artifactId": artifact_id,
             "environment": {
-              "id": .metadata.environment_id,
+              "id": environment_id,
             }
           }
         },
@@ -173,7 +179,6 @@ if !is_null(deletion_timestamp) {
     })
 
     # START: Emit one event per container
-    images = array!(.body.app.status.summary.images || [])
     container_events = map_values(images) -> |image_str| {
       purl_obj = purl_from_oci_image!(image_str)
       image_name = purl_obj.name
@@ -182,7 +187,7 @@ if !is_null(deletion_timestamp) {
 
       subject_content = {
         "environment": {
-            "id": .metadata.environment_id,
+            "id": environment_id,
         }
       }
       subject_content.artifactId = container_artifact_id
@@ -216,7 +221,7 @@ if !is_null(deletion_timestamp) {
           "content": {
             "description": operation.message || "Sync operation failed",
             "environment": {
-              "id": .metadata.environment_id,
+              "id": environment_id,
             }
           }
         },
@@ -253,7 +258,7 @@ if !is_null(deletion_timestamp) {
           "content": {
             "description": .body.app.status.health.message || "Health status degraded",
             "environment": {
-              "id": .metadata.environment_id,
+              "id": environment_id,
             }
           }
         },
@@ -275,7 +280,7 @@ if !is_null(deletion_timestamp) {
           "content": {
             "artifactId": artifact_id,
             "environment": {
-              "id": .metadata.environment_id,
+              "id": environment_id,
             }
           }
         },
@@ -284,7 +289,6 @@ if !is_null(deletion_timestamp) {
     })
 
     # START: Emit one event per container
-    images = array!(.body.app.status.summary.images || [])
     container_events = map_values(images) -> |image_str| {
       purl_obj = purl_from_oci_image!(image_str)
       image_name = purl_obj.name
@@ -293,7 +297,7 @@ if !is_null(deletion_timestamp) {
 
       subject_content = {
         "environment": {
-            "id": .metadata.environment_id,
+            "id": environment_id,
         }
       }
       subject_content.artifactId = container_artifact_id
@@ -332,7 +336,7 @@ if !is_null(deletion_timestamp) {
         "content": {
           "artifactId": artifact_id,
           "environment": {
-            "id": .metadata.environment_id || .body.app.spec.destination.server || "",
+            "id": environment_id,
           }
         }
       },
@@ -341,7 +345,6 @@ if !is_null(deletion_timestamp) {
   })
 
   # START: Emit one event per container
-  images = array!(.body.app.status.summary.images || [])
   container_events = map_values(images) -> |image_str| {
     purl_obj = purl_from_oci_image!(image_str)
     image_name = purl_obj.name
@@ -350,7 +353,7 @@ if !is_null(deletion_timestamp) {
 
     subject_content = {
         "environment": {
-            "id": .metadata.environment_id || .body.app.spec.destination.server || "",
+            "id": environment_id,
         }
     }
     subject_content.artifactId = container_artifact_id
