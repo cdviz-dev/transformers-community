@@ -687,6 +687,6 @@
         "id": "https://kubernetes.default.svc"
       }
     },
-    "id": "/argocd/aaaaa-aaaaaaaaa/kubewatch"
+    "id": "/cdviz-dev/aaaaa-aaaaaaaaa/kubewatch"
   }
 }

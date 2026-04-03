@@ -40,8 +40,8 @@ output = []
 
 # Extract common fields from ArgoCD webhook payload using safe null coalescing
 app_name = .body.app.metadata.name
-app_namespace = .body.app.metadata.namespace || "default"
-app_server = .body.app.spec.destination.server || ""
+app_namespace = .body.app.spec.destination.namespace || .body.app.metadata.namespace || "default"
+environment_id = .metadata.environment_id || .body.app.spec.destination.server || ""
 
 # Detect current operation state and health
 operation_phase = .body.app.status.operationState.phase
@@ -101,7 +101,7 @@ if !is_null(deletion_timestamp) {
         "id": "/" + string!(app_namespace) + "/" + string!(app_name),
         "content": {
           "environment": {
-            "id": .metadata.environment_id || .body.app.spec.destination.server || "",
+            "id": environment_id,
           }
         }
       },
@@ -125,7 +125,7 @@ if !is_null(deletion_timestamp) {
             "id": container_subject_id,
             "content": {
                 "environment": {
-                    "id": .metadata.environment_id || .body.app.spec.destination.server || "",
+                    "id": environment_id,
                 }
             }
         },
@@ -164,7 +164,7 @@ if !is_null(deletion_timestamp) {
           "content": {
             "artifactId": artifact_id,
             "environment": {
-              "id": .metadata.environment_id,
+              "id": environment_id,
             }
           }
         },
@@ -182,7 +182,7 @@ if !is_null(deletion_timestamp) {
 
       subject_content = {
         "environment": {
-            "id": .metadata.environment_id,
+            "id": environment_id,
         }
       }
       subject_content.artifactId = container_artifact_id
@@ -216,7 +216,7 @@ if !is_null(deletion_timestamp) {
           "content": {
             "description": operation.message || "Sync operation failed",
             "environment": {
-              "id": .metadata.environment_id,
+              "id": environment_id,
             }
           }
         },
@@ -253,7 +253,7 @@ if !is_null(deletion_timestamp) {
           "content": {
             "description": .body.app.status.health.message || "Health status degraded",
             "environment": {
-              "id": .metadata.environment_id,
+              "id": environment_id,
             }
           }
         },
@@ -275,7 +275,7 @@ if !is_null(deletion_timestamp) {
           "content": {
             "artifactId": artifact_id,
             "environment": {
-              "id": .metadata.environment_id,
+              "id": environment_id,
             }
           }
         },
@@ -293,7 +293,7 @@ if !is_null(deletion_timestamp) {
 
       subject_content = {
         "environment": {
-            "id": .metadata.environment_id,
+            "id": environment_id,
         }
       }
       subject_content.artifactId = container_artifact_id
@@ -332,7 +332,7 @@ if !is_null(deletion_timestamp) {
         "content": {
           "artifactId": artifact_id,
           "environment": {
-            "id": .metadata.environment_id || .body.app.spec.destination.server || "",
+            "id": environment_id,
           }
         }
       },
@@ -350,7 +350,7 @@ if !is_null(deletion_timestamp) {
 
     subject_content = {
         "environment": {
-            "id": .metadata.environment_id || .body.app.spec.destination.server || "",
+            "id": environment_id,
         }
     }
     subject_content.artifactId = container_artifact_id

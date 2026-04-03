@@ -170,6 +170,6 @@
         "id": "https://kubernetes.default.svc"
       }
     },
-    "id": "/argocd/aaaaaaa"
+    "id": "/aaaaaaa/aaaaaaa"
   }
 }

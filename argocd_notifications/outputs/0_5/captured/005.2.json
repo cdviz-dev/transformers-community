@@ -319,6 +319,6 @@
         "id": "https://kubernetes.default.svc"
       }
     },
-    "id": "/argocd/aaaaa-aa/cloudnative-pg"
+    "id": "/cdviz-dev/aaaaa-aa/cloudnative-pg"
   }
 }
