@@ -158,6 +158,20 @@ if !is_null(deletion_timestamp) {
   context.timestamp = ts
 
   if operation_phase == "Succeeded" && health_status == "Healthy" {
+    # Skip if same revision was already deployed (re-sync without version change).
+    # history[-1] = just deployed, history[-2] = previous deployment.
+    # Only applies to git-source apps where revision is non-empty.
+    history = array!(.body.app.status.history || [])
+    history_len = length!(history)
+    is_resync = if revision != "" && history_len >= 2 {
+      prev_entry = slice!(history, history_len - 2, history_len - 1)
+      prev_rev = string(prev_entry[0].revision) ?? ""
+      revision == prev_rev
+    } else {
+      false
+    }
+
+    if !is_resync {
     # Successful deployment
     context.type = "dev.cdevents.service.deployed.0.3.0"
     output = push(output, {
@@ -207,6 +221,7 @@ if !is_null(deletion_timestamp) {
     }
     output = append(output, container_events)
     # END: Emit one event per container
+  } # end !is_resync
 
   } else if operation_phase == "Failed" || operation_phase == "Error" {
     # Sync operation failed → incident.detected
