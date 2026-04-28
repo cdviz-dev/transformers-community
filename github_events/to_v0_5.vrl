@@ -230,7 +230,15 @@ if exists(.body.package) {
     bodies = [body]
   } else if .body.action == "completed" {
     body.context.type = "dev.cdevents.pipelinerun.finished.0.3.0"
-    body.subject.content.outcome = .body.workflow_run.conclusion # action_required, cancelled, failure, neutral, skipped, stale, success, timed_out, startup_failure, null
+    outcome = .body.workflow_run.conclusion # action_required, cancelled, failure, neutral, skipped, stale, success, timed_out, startup_failure, null
+    outcome_mapping = {
+      "cancelled": "cancel", "skipped": "cancel", "stale": "cancel",
+      "timed_out": "error", "startup_failure": "error", "action_required": "error",
+      "success": "success", "neutral": "success",
+      "failure": "failure"
+    }
+    mapped = get(outcome_mapping, [outcome]) ?? null
+    if !is_null(mapped) { body.subject.content.outcome = string!(mapped) }
     bodies = [body]
   }
 } else if exists(.body.workflow_job) {
@@ -274,7 +282,15 @@ if exists(.body.package) {
     ts = format_timestamp!(ts, format: "%+")
     body.context.timestamp = ts
     body.context.type = "dev.cdevents.taskrun.finished.0.3.0"
-    body.subject.content.outcome = .body.workflow_job.conclusion # success, failure, null, skipped, cancelled, action_required, neutral, timed_out
+    outcome = .body.workflow_job.conclusion # success, failure, null, skipped, cancelled, action_required, neutral, timed_out
+    outcome_mapping = {
+      "cancelled": "cancel", "skipped": "cancel", "stale": "cancel",
+      "timed_out": "error", "startup_failure": "error", "action_required": "error",
+      "success": "success", "neutral": "success",
+      "failure": "failure"
+    }
+    mapped = get(outcome_mapping, [outcome]) ?? null
+    if !is_null(mapped) { body.subject.content.outcome = string!(mapped) }
     bodies = [body]
   }
 } else if exists(.body.issue) {
