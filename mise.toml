@@ -16,8 +16,8 @@ config_roots = [
 
 [tools]
 "dprint" = "latest"
-"ubi:davidB/json-simple-obfuscator" = "latest"
-"ubi:cdviz-dev/cdviz-collector" = "0.35.0"
+"github:davidB/json-simple-obfuscator" = "latest"
+"github:cdviz-dev/cdviz-collector" = "0.35.0"
 
 [tasks."format"]
 alias = "fmt"
