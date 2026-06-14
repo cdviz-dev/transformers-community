@@ -1,0 +1,139 @@
+# Convert GitHub REST API /repos/{owner}/{repo}/pulls response to CDEvents
+#
+# Input: paginated response from GET /repos/{owner}/{repo}/pulls?state=all
+#   .body = [{...}, ...]  (bare array)
+#
+# | done | GitHub REST field                        | CDEvent           |
+# | ---- | ---------------------------------------- | ----------------- |
+# | [x]  | state == open                            | change:created    |
+# | [x]  | state == closed && merged_at != null     | change:merged     |
+# | [x]  | state == closed && merged_at == null     | change:abandoned  |
+#
+# Rules:
+# - context.id is computed by the collector (content-based CID)
+# - subject.id = pr.url (API URL)
+# - timestamp from pr.created_at / pr.merged_at / pr.closed_at
+
+items = array(.body) ?? []
+bodies = map_values(items) -> |pr| {
+  if pr.state == "open" {
+    ts = parse_timestamp(pr.created_at, "%+") ?? now()
+    ts = format_timestamp!(ts, format: "%+")
+    repo_url = to_string(pr.base.repo.url) ?? ""
+
+    {
+      "context": {
+        "specversion": "0.5.0",
+        "type": "dev.cdevents.change.created.0.3.0",
+        "timestamp": ts,
+      },
+      "subject": {
+        "id": to_string!(pr.url),
+        "content": {
+          "repository": { "id": repo_url },
+          "description": to_string(pr.title) ?? "",
+        },
+      },
+      "customData": {
+        "links": [{
+          "linkKind": "storedAt",
+          "target": { "subject": { "type": "repository", "id": repo_url } },
+        }],
+        "github": {
+          "pull_request": {
+            "number": pr.number,
+            "state": pr.state,
+            "title": pr.title,
+            "url": pr.url,
+            "html_url": pr.html_url,
+            "user": { "login": pr.user.login },
+            "head": { "ref": pr.head.ref, "sha": pr.head.sha },
+            "base": { "ref": pr.base.ref },
+          },
+        },
+      },
+    }
+  } else if pr.state == "closed" && !is_nullish(pr.merged_at) {
+    ts = parse_timestamp(pr.merged_at, "%+") ?? now()
+    ts = format_timestamp!(ts, format: "%+")
+    repo_url = to_string(pr.base.repo.url) ?? ""
+
+    {
+      "context": {
+        "specversion": "0.5.0",
+        "type": "dev.cdevents.change.merged.0.3.0",
+        "timestamp": ts,
+      },
+      "subject": {
+        "id": to_string!(pr.url),
+        "content": {
+          "repository": { "id": repo_url },
+        },
+      },
+      "customData": {
+        "links": [{
+          "linkKind": "storedAt",
+          "target": { "subject": { "type": "repository", "id": repo_url } },
+        }],
+        "github": {
+          "pull_request": {
+            "number": pr.number,
+            "state": pr.state,
+            "title": pr.title,
+            "url": pr.url,
+            "html_url": pr.html_url,
+            "merged_at": pr.merged_at,
+            "merge_commit_sha": pr.merge_commit_sha,
+            "user": { "login": pr.user.login },
+            "head": { "ref": pr.head.ref, "sha": pr.head.sha },
+            "base": { "ref": pr.base.ref },
+          },
+        },
+      },
+    }
+  } else if pr.state == "closed" {
+    ts = parse_timestamp(pr.closed_at, "%+") ?? now()
+    ts = format_timestamp!(ts, format: "%+")
+    repo_url = to_string(pr.base.repo.url) ?? ""
+
+    {
+      "context": {
+        "specversion": "0.5.0",
+        "type": "dev.cdevents.change.abandoned.0.3.0",
+        "timestamp": ts,
+      },
+      "subject": {
+        "id": to_string!(pr.url),
+        "content": {
+          "repository": { "id": repo_url },
+        },
+      },
+      "customData": {
+        "links": [{
+          "linkKind": "storedAt",
+          "target": { "subject": { "type": "repository", "id": repo_url } },
+        }],
+        "github": {
+          "pull_request": {
+            "number": pr.number,
+            "state": pr.state,
+            "title": pr.title,
+            "url": pr.url,
+            "html_url": pr.html_url,
+            "closed_at": pr.closed_at,
+            "user": { "login": pr.user.login },
+            "head": { "ref": pr.head.ref, "sha": pr.head.sha },
+            "base": { "ref": pr.base.ref },
+          },
+        },
+      },
+    }
+  } else {
+    null
+  }
+}
+bodies = filter(bodies) -> |_index, body| { !is_null(body) }
+
+map_values(bodies) -> |body| {
+  { "metadata": .metadata, "headers": .headers, "body": body }
+}

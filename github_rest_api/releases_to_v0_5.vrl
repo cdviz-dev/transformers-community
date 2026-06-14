@@ -1,0 +1,130 @@
+# Convert GitHub REST API /repos/{owner}/{repo}/releases response to CDEvents
+#
+# Input: paginated response from GET /repos/{owner}/{repo}/releases
+#   .body = [{...}, ...]  (bare array)
+#
+# | done | GitHub REST field   | CDEvent              |
+# | ---- | ------------------- | -------------------- |
+# | [x]  | any release         | artifact:published   |
+# | [x]  | each release asset  | artifact:published   |
+#
+# Rules:
+# - context.id is computed by the collector (content-based CID)
+# - subject.id (release) = PURL pkg:github/{owner}/{repo}@{tag_name}
+# - subject.id (asset)   = PURL pkg:generic/{owner}/{repo}/{asset_name}@{tag_name}?download_url=..&checksum=sha256:..
+#   (asset_name in the PURL name keeps each asset a distinct coordinate; download_url/checksum
+#    are qualifiers and do NOT disambiguate identity)
+# - timestamp from release.published_at (release) / asset.published_at, falling back to
+#   release.published_at (asset — assets have no publish field of their own in older payloads)
+# - draft releases are skipped
+
+items = array(.body) ?? []
+# each release yields the release artifact + one artifact per asset
+events = map_values(items) -> |release| {
+  if bool!(release.draft || false) {
+    []
+  } else {
+    ts = parse_timestamp(release.published_at, "%+") ?? now()
+    ts = format_timestamp!(ts, format: "%+")
+    repo_url = to_string(release.url) ?? ""
+    # strip /releases/{id} to get repo url
+    repo_url = replace(repo_url, r'/releases/\d+', "")
+    tag_name = to_string!(release.tag_name)
+    repo_parts = split(string!(release.url), "/")
+    # url format: https://api.github.com/repos/{owner}/{repo}/releases/{id}
+    owner = string(repo_parts[4]) ?? "unknown"
+    repo_name = string(repo_parts[5]) ?? "unknown"
+    user = to_string(release.author.login) ?? ""
+    links = [{
+      "linkKind": "storedAt",
+      "target": { "subject": { "type": "repository", "id": repo_url } },
+    }]
+    purl_obj = {
+      "type": "github",
+      "namespace": owner,
+      "name": repo_name,
+      "version": tag_name,
+    }
+    pkg = purl_to_string(purl_obj) ?? ""
+
+    release_body = {
+      "context": {
+        "specversion": "0.5.0",
+        "type": "dev.cdevents.artifact.published.0.3.0",
+        "timestamp": ts,
+      },
+      "subject": {
+        "id": pkg,
+        "content": {
+          "user": user,
+        },
+      },
+      "customData": {
+        "links": links,
+        "github": {
+          "release": {
+            "url": release.url,
+            "tag_name": release.tag_name,
+            "name": release.name,
+            "draft": release.draft,
+            "prerelease": release.prerelease,
+            "published_at": release.published_at,
+          },
+        },
+      },
+    }
+
+    asset_bodies = map_values(array(release.assets) ?? []) -> |asset| {
+      asset_ts = parse_timestamp(asset.created_at, "%+") ?? parse_timestamp(release.published_at, "%+") ?? now()
+      asset_ts = format_timestamp!(asset_ts, format: "%+")
+      qualifiers = { "download_url": to_string!(asset.browser_download_url) }
+      if !is_nullish(asset.digest) {
+        # asset.digest is already "sha256:...", the PURL checksum format
+        qualifiers.checksum = to_string!(asset.digest)
+      }
+      # the asset file name makes each asset a distinct PURL coordinate; without it all
+      # assets of a release collapse to pkg:generic/{repo}@{tag} (qualifiers are not part of
+      # PURL identity), producing several artifact.published for the same coordinate.
+      asset_purl_obj = {
+        "type": "generic",
+        "namespace": owner + "/" + repo_name,
+        "name": to_string!(asset.name),
+        "version": tag_name,
+        "qualifiers": qualifiers,
+      }
+      {
+        "context": {
+          "specversion": "0.5.0",
+          "type": "dev.cdevents.artifact.published.0.3.0",
+          "timestamp": asset_ts,
+        },
+        "subject": {
+          "id": purl_to_string!(asset_purl_obj),
+          "content": {
+            "user": user,
+          },
+        },
+        "customData": {
+          "links": links,
+          "github": {
+            "asset": {
+              "name": asset.name,
+              "content_type": asset.content_type,
+              "size": asset.size,
+              "browser_download_url": asset.browser_download_url,
+              "digest": asset.digest,
+            },
+          },
+        },
+      }
+    }
+
+    flatten([[release_body], asset_bodies])
+  }
+}
+bodies = flatten(events)
+bodies = filter(bodies) -> |_index, body| { !is_null(body) }
+
+map_values(bodies) -> |body| {
+  { "metadata": .metadata, "headers": .headers, "body": body }
+}

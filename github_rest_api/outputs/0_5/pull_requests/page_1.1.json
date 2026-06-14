@@ -1,0 +1,49 @@
+{
+  "context": {
+    "specversion": "0.5.0",
+    "timestamp": "2024-12-12T15:23:44+00:00",
+    "type": "dev.cdevents.change.merged.0.3.0"
+  },
+  "customData": {
+    "github": {
+      "pull_request": {
+        "base": {
+          "ref": "aaaa"
+        },
+        "head": {
+          "ref": "first-publish",
+          "sha": "a55f593243c6072c95cf832395e2ca803d45424f"
+        },
+        "html_url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/pull/4",
+        "merge_commit_sha": "e6257d5ec03ecfe588ddb97aa22d7c85e8a7d999",
+        "merged_at": "2024-12-12T15:23:44Z",
+        "number": 4,
+        "state": "closed",
+        "title": "ci: use a non default GITHUB_TOKEN to trigger workflow",
+        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/pulls/4",
+        "user": {
+          "login": "aaaaaA"
+        }
+      }
+    },
+    "links": [
+      {
+        "linkKind": "storedAt",
+        "target": {
+          "subject": {
+            "id": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa",
+            "type": "repository"
+          }
+        }
+      }
+    ]
+  },
+  "subject": {
+    "content": {
+      "repository": {
+        "id": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa"
+      }
+    },
+    "id": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/pulls/4"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "context": {
+    "specversion": "0.5.0",
+    "timestamp": "2026-06-12T14:01:08+00:00",
+    "type": "dev.cdevents.artifact.published.0.3.0"
+  },
+  "customData": {
+    "github": {
+      "asset": {
+        "browser_download_url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.11.3/aaaaa-aaaaaaaaa.aa",
+        "content_type": "application/x-ruby",
+        "digest": "sha256:475205a32351476134e0ac3bdce88cac97dd4874186ff5ec616160846420f5c9",
+        "name": "aaaaa-aaaaaaaaa.aa",
+        "size": 2224
+      }
+    },
+    "links": [
+      {
+        "linkKind": "storedAt",
+        "target": {
+          "subject": {
+            "id": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa",
+            "type": "repository"
+          }
+        }
+      }
+    ]
+  },
+  "subject": {
+    "content": {
+      "user": "aaaaaa-aaaaaaa[aab]"
+    },
+    "id": "pkg:generic/aaaaa-aaa/aaaaa-aaaaaaaaa/aaaaa-aaaaaaaaa.aa@1.11.3?checksum=sha256:475205a32351476134e0ac3bdce88cac97dd4874186ff5ec616160846420f5c9&download_url=https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.11.3/aaaaa-aaaaaaaaa.aa"
+  }
+}

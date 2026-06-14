@@ -1,0 +1,41 @@
+# GitHub REST API transformers — one transformer per endpoint type.
+# Use with http_polling sources for backfill or polling-only setups.
+# Ready-to-use multi-pass discovery sources live in `cdviz-collector.sources.example.toml`
+# (kept separate so this file stays loadable by `cdviz-collector transform` in tests).
+# See README.md for source configuration examples.
+
+[transformers.github_rest_workflow_runs]
+type = "vrl"
+template_file = "./workflow_runs_to_v0_5.vrl"
+
+[transformers.github_rest_pull_requests]
+type = "vrl"
+template_file = "./pull_requests_to_v0_5.vrl"
+
+[transformers.github_rest_releases]
+type = "vrl"
+template_file = "./releases_to_v0_5.vrl"
+
+[transformers.github_rest_package_versions]
+type = "vrl"
+template_file = "./package_versions_to_v0_5.vrl"
+
+[transformers.github_rest_issues]
+type = "vrl"
+template_file = "./issues_to_v0_5.vrl"
+
+[transformers.github_rest_deployments]
+type = "vrl"
+template_file = "./deployments_to_v0_5.vrl"
+
+[transformers.github_rest_repositories]
+type = "vrl"
+template_file = "./repositories_to_v0_5.vrl"
+
+[transformers.github_rest_environments]
+type = "vrl"
+template_file = "./environments_to_v0_5.vrl"
+
+# [transformers.github_rest_branches]
+# type = "vrl"
+# template_file = "./branches_to_v0_5.vrl"

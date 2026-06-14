@@ -1,0 +1,35 @@
+{
+  "context": {
+    "specversion": "0.5.0",
+    "timestamp": "2026-06-03T08:07:42+00:00",
+    "type": "dev.cdevents.artifact.published.0.3.0"
+  },
+  "customData": {
+    "github": {
+      "asset": {
+        "browser_download_url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.11.2/aaaaaa.aaa.aa",
+        "content_type": "application/x-gtar",
+        "digest": "sha256:7c10cc709abcebffa0899496c04c776ea396b2bbc1f37f4fb0aa7b72ff6a3f52",
+        "name": "aaaaaa.aaa.aa",
+        "size": 926530
+      }
+    },
+    "links": [
+      {
+        "linkKind": "storedAt",
+        "target": {
+          "subject": {
+            "id": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa",
+            "type": "repository"
+          }
+        }
+      }
+    ]
+  },
+  "subject": {
+    "content": {
+      "user": "aaaaaa-aaaaaaa[aab]"
+    },
+    "id": "pkg:generic/aaaaa-aaa/aaaaa-aaaaaaaaa/aaaaaa.aaa.aa@1.11.2?checksum=sha256:7c10cc709abcebffa0899496c04c776ea396b2bbc1f37f4fb0aa7b72ff6a3f52&download_url=https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.11.2/aaaaaa.aaa.aa"
+  }
+}

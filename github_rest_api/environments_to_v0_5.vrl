@@ -1,0 +1,55 @@
+# Convert GitHub REST API /repos/{owner}/{repo}/environments response to CDEvents
+#
+# Input: paginated response from GET /repos/{owner}/{repo}/environments
+#   .body = { "total_count": N, "environments": [...] }
+#
+# | done | GitHub REST field | CDEvent                |
+# | ---- | ---------------- | ---------------------- |
+# | [x]  | any environment  | environment:created    |
+#
+# Rules:
+# - context.id is computed by the collector (content-based CID)
+# - subject.id = env.url (API URL, includes repo and env name)
+# - timestamp from env.created_at
+
+items = array(.body.environments) ?? []
+bodies = map_values(items) -> |env| {
+  ts = parse_timestamp(env.created_at, "%+") ?? now()
+  ts = format_timestamp!(ts, format: "%+")
+  env_url = to_string!(env.url)
+  # repo url: strip /environments/{name}
+  repo_url = replace(env_url, r'/environments/[^/]+', "")
+
+  {
+    "context": {
+      "specversion": "0.5.0",
+      "type": "dev.cdevents.environment.created.0.3.0",
+      "timestamp": ts,
+    },
+    "subject": {
+      "id": env_url,
+      "content": {
+        "name": to_string(env.name) ?? "",
+        "uri": env_url,
+      },
+    },
+    "customData": {
+      "links": [{
+        "linkKind": "storedAt",
+        "target": { "subject": { "type": "repository", "id": repo_url } },
+      }],
+      "github": {
+        "environment": {
+          "id": env.id,
+          "name": env.name,
+          "url": env.url,
+          "html_url": env.html_url,
+        },
+      },
+    },
+  }
+}
+
+map_values(bodies) -> |body| {
+  { "metadata": .metadata, "headers": .headers, "body": body }
+}

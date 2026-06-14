@@ -4,13 +4,14 @@ Community driven transformers for [cdviz-collector](https://github.com/cdviz-dev
 
 ## Available Transformers
 
-| Transformer                                       | Source            | Description                                                               |
-| ------------------------------------------------- | ----------------- | ------------------------------------------------------------------------- |
-| [github_events](./github_events/)                 | GitHub Webhooks   | Converts GitHub events (workflow runs, issues, PRs, releases) to CDEvents |
-| [argocd_notifications](./argocd_notifications/)   | ArgoCD Webhooks   | Converts ArgoCD application lifecycle events to CDEvents                  |
-| [kubewatch_cloudevents](./kubewatch_cloudevents/) | Kubernetes Events | Converts Kubewatch CloudEvents to CDEvents                                |
-| [cdevents](./cdevents/)                           | CDEvents          | Convert CDEvents from a version to the next version (can be chained)      |
-| [passthrough](./passthrough/)                     | CDEvents          | Passthrough transformer for existing CDEvents                             |
+| Transformer                                       | Source            | Description                                                                                                                                                                    |
+| ------------------------------------------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [github_events](./github_events/)                 | GitHub Webhooks   | Converts GitHub events (workflow runs, issues, PRs, releases) to CDEvents                                                                                                      |
+| [github_rest_api](./github_rest_api/)             | GitHub REST API   | Converts GitHub REST API responses (workflow runs, PRs, releases, issues, deployments, repositories, environments, branches) to CDEvents — for backfill or polling-only setups |
+| [argocd_notifications](./argocd_notifications/)   | ArgoCD Webhooks   | Converts ArgoCD application lifecycle events to CDEvents                                                                                                                       |
+| [kubewatch_cloudevents](./kubewatch_cloudevents/) | Kubernetes Events | Converts Kubewatch CloudEvents to CDEvents                                                                                                                                     |
+| [cdevents](./cdevents/)                           | CDEvents          | Convert CDEvents from a version to the next version (can be chained)                                                                                                           |
+| [passthrough](./passthrough/)                     | CDEvents          | Passthrough transformer for existing CDEvents                                                                                                                                  |
 
 ## Usage
 

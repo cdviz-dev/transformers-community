@@ -1,0 +1,39 @@
+{
+  "context": {
+    "specversion": "0.5.0",
+    "timestamp": "2024-12-01T10:28:00+00:00",
+    "type": "dev.cdevents.pipelinerun.finished.0.3.0"
+  },
+  "customData": {
+    "github": {
+      "workflow_run": {
+        "conclusion": "success",
+        "head_branch": "main",
+        "head_sha": "aabbccdd11223344aabbccdd11223344aabbccdd",
+        "id": 11111111111,
+        "name": "AA",
+        "status": "completed",
+        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaab/actions/runs/11111111111"
+      }
+    },
+    "links": [
+      {
+        "linkKind": "storedAt",
+        "target": {
+          "subject": {
+            "id": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaab",
+            "type": "repository"
+          }
+        }
+      }
+    ]
+  },
+  "subject": {
+    "content": {
+      "outcome": "success",
+      "pipelineName": "aaaaa-aaa/aaaaa-aaaaaaaab/AA",
+      "uri": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaab/actions/runs/11111111111/attempts/1"
+    },
+    "id": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaab/actions/runs/11111111111/attempts/1"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "context": {
+    "specversion": "0.5.0",
+    "timestamp": "2024-12-12T15:25:45+00:00",
+    "type": "dev.cdevents.change.merged.0.3.0"
+  },
+  "customData": {
+    "github": {
+      "pull_request": {
+        "base": {
+          "ref": "aaaa"
+        },
+        "head": {
+          "ref": "release-plz-2024-12-12T15-01-38Z",
+          "sha": "600c30ad8ab6651f75ebfad4eb3cc01332d4b9da"
+        },
+        "html_url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/pull/3",
+        "merge_commit_sha": "438b9964333a9a72cf0c2b96d1f3827a66c184f7",
+        "merged_at": "2024-12-12T15:25:45Z",
+        "number": 3,
+        "state": "closed",
+        "title": "chore: release v0.2.1",
+        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/pulls/3",
+        "user": {
+          "login": "aaaaaa-aaaaaaa[aab]"
+        }
+      }
+    },
+    "links": [
+      {
+        "linkKind": "storedAt",
+        "target": {
+          "subject": {
+            "id": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa",
+            "type": "repository"
+          }
+        }
+      }
+    ]
+  },
+  "subject": {
+    "content": {
+      "repository": {
+        "id": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa"
+      }
+    },
+    "id": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/pulls/3"
+  }
+}

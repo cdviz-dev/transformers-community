@@ -1,0 +1,28 @@
+{
+  "context": {
+    "specversion": "0.5.0",
+    "timestamp": "2026-06-12T14:01:10+00:00",
+    "type": "dev.cdevents.artifact.published.0.3.0"
+  },
+  "customData": {
+    "github": {
+      "package_version": {
+        "html_url": "https://github.com/orgs/aaaaa-aaa/packages/container/aaaaa-aaaaaaaaa/111111113",
+        "metadata": {
+          "container": {
+            "tags": [
+              "1.11.3",
+              "latest"
+            ]
+          },
+          "package_type": "container"
+        },
+        "name": "aaa111:1111111a111a1111111aa1aaaaa1111a1a11a111111aa11a111111aa11aaaaa1"
+      }
+    }
+  },
+  "subject": {
+    "content": {},
+    "id": "pkg:oci/aaaaa-aaaaaaaaa@aaa111:1111111a111a1111111aa1aaaaa1111a1a11a111111aa11a111111aa11aaaaa1?repository_url=ghcr.io/aaaaa-aaa&tag=1.11.3"
+  }
+}

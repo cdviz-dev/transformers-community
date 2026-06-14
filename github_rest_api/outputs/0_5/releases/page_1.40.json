@@ -1,0 +1,35 @@
+{
+  "context": {
+    "specversion": "0.5.0",
+    "timestamp": "2026-05-31T18:03:01+00:00",
+    "type": "dev.cdevents.artifact.published.0.3.0"
+  },
+  "customData": {
+    "github": {
+      "asset": {
+        "browser_download_url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.11.1/aaaaa-aaaaaaaaa.aa",
+        "content_type": "application/x-ruby",
+        "digest": "sha256:af8b6cec865148fb4aacd11ffcf99152f7ae05e337bc2cfae8f51a5362bfec66",
+        "name": "aaaaa-aaaaaaaaa.aa",
+        "size": 2224
+      }
+    },
+    "links": [
+      {
+        "linkKind": "storedAt",
+        "target": {
+          "subject": {
+            "id": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa",
+            "type": "repository"
+          }
+        }
+      }
+    ]
+  },
+  "subject": {
+    "content": {
+      "user": "aaaaaa-aaaaaaa[aab]"
+    },
+    "id": "pkg:generic/aaaaa-aaa/aaaaa-aaaaaaaaa/aaaaa-aaaaaaaaa.aa@1.11.1?checksum=sha256:af8b6cec865148fb4aacd11ffcf99152f7ae05e337bc2cfae8f51a5362bfec66&download_url=https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.11.1/aaaaa-aaaaaaaaa.aa"
+  }
+}

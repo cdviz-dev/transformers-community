@@ -1,0 +1,323 @@
+# Example sources — multi-pass http_polling discovery for the github_rest_api transformers.
+#
+# Requires a cdviz-collector with the `driver_vrl` request driver (replaces the older
+# `request_vrl` / `follow_link_header` http_polling API; not available in 0.41.0).
+# Kept separate from `cdviz-collector.toml` so the transformer test config stays loadable.
+#
+# To use: merge a block into your collector config (alongside the [transformers.*]
+# definitions from cdviz-collector.toml), set `org`, replace the authorization
+# placeholder with a real token (prefer a file-based secret, e.g.
+# `{ type = "secret", value_file = "/secrets/github_pat_token", prefix = "Bearer " }`),
+# and set `enabled = true`.
+#
+# Routing model (see ../../cdviz-collector/src/sources/http_polling/README.md):
+#   - feedback : hand the response back to driver_vrl to compute more requests; not emitted.
+#   - pipeline : parse the body and forward it to the transformer.
+#   - both     : emit AND feed back (resource pages that must be transformed and paginated).
+# The discovery list (org repos / packages) is routed `feedback` (never transformed); only
+# per-item resource pages reach the transformer. Responses are distinguished by
+# `.request.url` (not `.state`, which is cloned into every request of one driver call).
+# Pagination = re-issue the Link header `rel="next"` URL.
+
+# Repositories: the org repos list IS the event -> route it `pipeline` directly.
+[sources.github_rest_repositories]
+enabled = false
+transformer_refs = ["github_rest_repositories"]
+
+[sources.github_rest_repositories.extractor]
+type             = "http_polling"
+polling_interval = "1h"
+parser           = "json"
+driver_vrl = """
+org = "myorg"
+reqs = []
+if .response == null {
+  reqs = [{ "url": "https://api.github.com/orgs/" + org + "/repos", "query": {"per_page": "100"}, "route": "pipeline" }]
+} else {
+  matched = parse_regex(string(.response.headers.link) ?? "", r'<(?P<next>[^>]+)>;\\s*rel="next"') ?? {}
+  if exists(matched.next) {
+    reqs = [{ "url": matched.next, "route": "pipeline" }]
+  }
+}
+.requests = reqs
+"""
+[sources.github_rest_repositories.extractor.headers]
+authorization          = { type = "secret", value = "Bearer ghp_replace_me" }
+"x-github-api-version" = { type = "static", value = "2022-11-28" }
+
+# Packages -> versions: discover packages per type, fan out to each one's versions.
+[sources.github_rest_packages]
+enabled = false
+transformer_refs = ["github_rest_package_versions"]
+
+[sources.github_rest_packages.extractor]
+type             = "http_polling"
+polling_interval = "1h"
+parser           = "json"
+driver_vrl = """
+org = "myorg"
+reqs = []
+if .response == null {
+  types = ["container", "npm", "maven", "nuget", "rubygems", "docker"]
+  reqs = map_values(types) -> |t| {
+    { "url": "https://api.github.com/orgs/" + org + "/packages", "query": {"package_type": t, "per_page": "100"}, "route": "feedback" }
+  }
+} else {
+  url = string(.request.url) ?? ""
+  is_versions = contains(url, "/versions")
+  matched = parse_regex(string(.response.headers.link) ?? "", r'<(?P<next>[^>]+)>;\\s*rel="next"') ?? {}
+  if exists(matched.next) {
+    reqs = push(reqs, { "url": matched.next, "route": (if is_versions { "both" } else { "feedback" }) })
+  }
+  if !is_versions {
+    for_each(array!(.response.body)) -> |_i, pkg| {
+      reqs = push(reqs, { "url": string!(pkg.url) + "/versions", "query": {"per_page": "100"}, "route": "both" })
+    }
+  }
+}
+.requests = reqs
+"""
+[sources.github_rest_packages.extractor.headers]
+authorization          = { type = "secret", value = "Bearer ghp_replace_me" }
+"x-github-api-version" = { type = "static", value = "2022-11-28" }
+
+# Releases: discover repos -> fetch each repo's releases.
+[sources.github_rest_releases]
+enabled = false
+transformer_refs = ["github_rest_releases"]
+
+[sources.github_rest_releases.extractor]
+type                 = "http_polling"
+polling_interval     = "1h"
+min_request_interval = "720ms"
+parser               = "json"
+driver_vrl = """
+org = "myorg"
+reqs = []
+if .response == null {
+  reqs = [{ "url": "https://api.github.com/orgs/" + org + "/repos", "query": {"per_page": "100"}, "route": "feedback" }]
+} else {
+  url = string(.request.url) ?? ""
+  is_resource = contains(url, "/releases")
+  matched = parse_regex(string(.response.headers.link) ?? "", r'<(?P<next>[^>]+)>;\\s*rel="next"') ?? {}
+  if exists(matched.next) {
+    reqs = push(reqs, { "url": matched.next, "route": (if is_resource { "both" } else { "feedback" }) })
+  }
+  if !is_resource {
+    for_each(array!(.response.body)) -> |_i, repo| {
+      reqs = push(reqs, { "url": string!(repo.url) + "/releases", "query": {"per_page": "100"}, "route": "both" })
+    }
+  }
+}
+.requests = reqs
+"""
+[sources.github_rest_releases.extractor.headers]
+authorization          = { type = "secret", value = "Bearer ghp_replace_me" }
+"x-github-api-version" = { type = "static", value = "2022-11-28" }
+
+# Workflow runs: discover repos -> fetch each repo's actions/runs (created filter).
+[sources.github_rest_workflow_runs]
+enabled = false
+transformer_refs = ["github_rest_workflow_runs"]
+
+[sources.github_rest_workflow_runs.extractor]
+type                 = "http_polling"
+polling_interval     = "1h"
+min_request_interval = "720ms"
+parser               = "json"
+driver_vrl = """
+org = "myorg"
+reqs = []
+if .response == null {
+  reqs = [{ "url": "https://api.github.com/orgs/" + org + "/repos", "query": {"per_page": "100"}, "route": "feedback" }]
+} else {
+  url = string(.request.url) ?? ""
+  is_resource = contains(url, "/actions/runs")
+  matched = parse_regex(string(.response.headers.link) ?? "", r'<(?P<next>[^>]+)>;\\s*rel="next"') ?? {}
+  if exists(matched.next) {
+    reqs = push(reqs, { "url": matched.next, "route": (if is_resource { "both" } else { "feedback" }) })
+  }
+  if !is_resource {
+    created = (">=" + to_string!(.metadata.ts_after)) ?? ""
+    for_each(array!(.response.body)) -> |_i, repo| {
+      reqs = push(reqs, { "url": string!(repo.url) + "/actions/runs", "query": {"per_page": "100", "created": created}, "route": "both" })
+    }
+  }
+}
+.requests = reqs
+"""
+[sources.github_rest_workflow_runs.extractor.headers]
+authorization          = { type = "secret", value = "Bearer ghp_replace_me" }
+"x-github-api-version" = { type = "static", value = "2022-11-28" }
+
+# Pull requests: discover repos -> fetch each repo's pulls (state=all).
+[sources.github_rest_pull_requests]
+enabled = false
+transformer_refs = ["github_rest_pull_requests"]
+
+[sources.github_rest_pull_requests.extractor]
+type                 = "http_polling"
+polling_interval     = "1h"
+min_request_interval = "720ms"
+parser               = "json"
+driver_vrl = """
+org = "myorg"
+reqs = []
+if .response == null {
+  reqs = [{ "url": "https://api.github.com/orgs/" + org + "/repos", "query": {"per_page": "100"}, "route": "feedback" }]
+} else {
+  url = string(.request.url) ?? ""
+  is_resource = contains(url, "/pulls")
+  matched = parse_regex(string(.response.headers.link) ?? "", r'<(?P<next>[^>]+)>;\\s*rel="next"') ?? {}
+  if exists(matched.next) {
+    reqs = push(reqs, { "url": matched.next, "route": (if is_resource { "both" } else { "feedback" }) })
+  }
+  if !is_resource {
+    for_each(array!(.response.body)) -> |_i, repo| {
+      reqs = push(reqs, { "url": string!(repo.url) + "/pulls", "query": {"per_page": "100", "state": "all", "sort": "updated", "direction": "asc"}, "route": "both" })
+    }
+  }
+}
+.requests = reqs
+"""
+[sources.github_rest_pull_requests.extractor.headers]
+authorization          = { type = "secret", value = "Bearer ghp_replace_me" }
+"x-github-api-version" = { type = "static", value = "2022-11-28" }
+
+# Issues: discover repos -> fetch each repo's issues (state=all, since=ts_after).
+[sources.github_rest_issues]
+enabled = false
+transformer_refs = ["github_rest_issues"]
+
+[sources.github_rest_issues.extractor]
+type                 = "http_polling"
+polling_interval     = "1h"
+min_request_interval = "720ms"
+parser               = "json"
+driver_vrl = """
+org = "myorg"
+reqs = []
+if .response == null {
+  reqs = [{ "url": "https://api.github.com/orgs/" + org + "/repos", "query": {"per_page": "100"}, "route": "feedback" }]
+} else {
+  url = string(.request.url) ?? ""
+  is_resource = contains(url, "/issues")
+  matched = parse_regex(string(.response.headers.link) ?? "", r'<(?P<next>[^>]+)>;\\s*rel="next"') ?? {}
+  if exists(matched.next) {
+    reqs = push(reqs, { "url": matched.next, "route": (if is_resource { "both" } else { "feedback" }) })
+  }
+  if !is_resource {
+    since = to_string!(.metadata.ts_after)
+    for_each(array!(.response.body)) -> |_i, repo| {
+      reqs = push(reqs, { "url": string!(repo.url) + "/issues", "query": {"per_page": "100", "state": "all", "since": since}, "route": "both" })
+    }
+  }
+}
+.requests = reqs
+"""
+[sources.github_rest_issues.extractor.headers]
+authorization          = { type = "secret", value = "Bearer ghp_replace_me" }
+"x-github-api-version" = { type = "static", value = "2022-11-28" }
+
+# Deployments: discover repos -> fetch each repo's deployments.
+[sources.github_rest_deployments]
+enabled = false
+transformer_refs = ["github_rest_deployments"]
+
+[sources.github_rest_deployments.extractor]
+type                 = "http_polling"
+polling_interval     = "1h"
+min_request_interval = "720ms"
+parser               = "json"
+driver_vrl = """
+org = "myorg"
+reqs = []
+if .response == null {
+  reqs = [{ "url": "https://api.github.com/orgs/" + org + "/repos", "query": {"per_page": "100"}, "route": "feedback" }]
+} else {
+  url = string(.request.url) ?? ""
+  is_resource = contains(url, "/deployments")
+  matched = parse_regex(string(.response.headers.link) ?? "", r'<(?P<next>[^>]+)>;\\s*rel="next"') ?? {}
+  if exists(matched.next) {
+    reqs = push(reqs, { "url": matched.next, "route": (if is_resource { "both" } else { "feedback" }) })
+  }
+  if !is_resource {
+    for_each(array!(.response.body)) -> |_i, repo| {
+      reqs = push(reqs, { "url": string!(repo.url) + "/deployments", "query": {"per_page": "100"}, "route": "both" })
+    }
+  }
+}
+.requests = reqs
+"""
+[sources.github_rest_deployments.extractor.headers]
+authorization          = { type = "secret", value = "Bearer ghp_replace_me" }
+"x-github-api-version" = { type = "static", value = "2022-11-28" }
+
+# Environments: discover repos -> fetch each repo's environments.
+[sources.github_rest_environments]
+enabled = false
+transformer_refs = ["github_rest_environments"]
+
+[sources.github_rest_environments.extractor]
+type                 = "http_polling"
+polling_interval     = "1h"
+min_request_interval = "720ms"
+parser               = "json"
+driver_vrl = """
+org = "myorg"
+reqs = []
+if .response == null {
+  reqs = [{ "url": "https://api.github.com/orgs/" + org + "/repos", "query": {"per_page": "100"}, "route": "feedback" }]
+} else {
+  url = string(.request.url) ?? ""
+  is_resource = contains(url, "/environments")
+  matched = parse_regex(string(.response.headers.link) ?? "", r'<(?P<next>[^>]+)>;\\s*rel="next"') ?? {}
+  if exists(matched.next) {
+    reqs = push(reqs, { "url": matched.next, "route": (if is_resource { "both" } else { "feedback" }) })
+  }
+  if !is_resource {
+    for_each(array!(.response.body)) -> |_i, repo| {
+      reqs = push(reqs, { "url": string!(repo.url) + "/environments", "query": {"per_page": "100"}, "route": "both" })
+    }
+  }
+}
+.requests = reqs
+"""
+[sources.github_rest_environments.extractor.headers]
+authorization          = { type = "secret", value = "Bearer ghp_replace_me" }
+"x-github-api-version" = { type = "static", value = "2022-11-28" }
+
+# Branches: discover repos -> fetch each repo's branches.
+# (the branch transformer is disabled in cdviz-collector.toml; enable it before using this.)
+[sources.github_rest_branches]
+enabled = false
+transformer_refs = ["github_rest_branches"]
+
+[sources.github_rest_branches.extractor]
+type                 = "http_polling"
+polling_interval     = "1h"
+min_request_interval = "720ms"
+parser               = "json"
+driver_vrl = """
+org = "myorg"
+reqs = []
+if .response == null {
+  reqs = [{ "url": "https://api.github.com/orgs/" + org + "/repos", "query": {"per_page": "100"}, "route": "feedback" }]
+} else {
+  url = string(.request.url) ?? ""
+  is_resource = contains(url, "/branches")
+  matched = parse_regex(string(.response.headers.link) ?? "", r'<(?P<next>[^>]+)>;\\s*rel="next"') ?? {}
+  if exists(matched.next) {
+    reqs = push(reqs, { "url": matched.next, "route": (if is_resource { "both" } else { "feedback" }) })
+  }
+  if !is_resource {
+    for_each(array!(.response.body)) -> |_i, repo| {
+      reqs = push(reqs, { "url": string!(repo.url) + "/branches", "query": {"per_page": "100"}, "route": "both" })
+    }
+  }
+}
+.requests = reqs
+"""
+[sources.github_rest_branches.extractor.headers]
+authorization          = { type = "secret", value = "Bearer ghp_replace_me" }
+"x-github-api-version" = { type = "static", value = "2022-11-28" }

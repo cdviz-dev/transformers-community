@@ -1,0 +1,137 @@
+# Convert GitHub REST API package versions response to CDEvents
+#
+# Input: paginated response from
+#   GET /orgs/{org}/packages/{package_type}/{package_name}/versions
+#   GET /users/{user}/packages/{package_type}/{package_name}/versions
+#   .body = [{...}, ...]  (bare array)
+#
+# | done | GitHub REST field         | CDEvent              |
+# | ---- | ------------------------- | -------------------- |
+# | [x]  | container version (+tag)  | artifact:published   |
+# | [x]  | docker version (+tag)     | artifact:published   |
+# | [x]  | npm / maven / nuget / gem | artifact:published   |
+#
+# Rules:
+# - context.id is computed by the collector (content-based CID)
+# - subject.id = PURL (see github_events/to_v0_5.vrl for the per-type rules)
+# - timestamp from version.created_at
+# - deleted versions are skipped
+# - container/docker versions without a tag are skipped (intermediate layers)
+# - owner & package name are parsed from version.url:
+#   .../{orgs|users}/{owner}/packages/{type}/{name}/versions/{id}
+
+items = array(.body) ?? []
+
+# each version may yield 0..n events (one per tag for container/docker)
+events = map_values(items) -> |version| {
+  if !is_nullish(version.deleted_at) {
+    []
+  } else {
+    ts = parse_timestamp(version.created_at, "%+") ?? now()
+    ts = format_timestamp!(ts, format: "%+")
+
+    package_type = downcase(string(version.metadata.package_type) ?? "")
+    url_parts = split(to_string(version.url) ?? "", "/")
+    owner = string(url_parts[4]) ?? "unknown"
+    name = string(url_parts[7]) ?? "unknown"
+    # for container/docker `name` is the digest, otherwise it's the version string
+    version_name = to_string(version.name) ?? ""
+
+    # [purl-spec/PURL-TYPES.rst](https://github.com/package-url/purl-spec/blob/master/PURL-TYPES.rst)
+    pkgs = []
+    if package_type == "container" {
+      tags = filter(array(version.metadata.container.tags) ?? []) -> |_index, tag| {
+        !is_nullish(tag)
+      }
+      pkgs = map_values(tags) -> |tag| {
+        purl_obj = {
+          "type": "oci",
+          "name": name,
+          "version": version_name,
+          "qualifiers": {"repository_url": "ghcr.io/" + owner, "tag": tag}
+        }
+        purl_to_string!(purl_obj)
+      }
+    } else if package_type == "docker" {
+      tags = filter(array(version.metadata.docker.tag) ?? []) -> |_index, tag| {
+        !is_nullish(tag)
+      }
+      pkgs = map_values(tags) -> |tag| {
+        purl_obj = {
+          "type": "oci",
+          "name": name,
+          "version": version_name,
+          "qualifiers": {"repository_url": "ghcr.io/" + owner, "tag": tag}
+        }
+        purl_to_string!(purl_obj)
+      }
+    } else if package_type == "npm" {
+      purl_obj = {
+        "type": "npm",
+        "namespace": owner,
+        "name": name,
+        "version": version_name,
+        "qualifiers": {"repository_url": "https://npm.pkg.github.com"}
+      }
+      pkgs = [purl_to_string!(purl_obj)]
+    } else if package_type == "maven" {
+      # the versions endpoint has no repository info => repository_url omits the repo path
+      purl_obj = {
+        "type": "maven",
+        "namespace": owner,
+        "name": name,
+        "version": version_name,
+        "qualifiers": {"repository_url": "https://maven.pkg.github.com/" + owner}
+      }
+      pkgs = [purl_to_string!(purl_obj)]
+    } else if package_type == "nuget" {
+      purl_obj = {
+        "type": "nuget",
+        "name": name,
+        "version": version_name,
+        "qualifiers": {"repository_url": "https://nuget.pkg.github.com/" + owner}
+      }
+      pkgs = [purl_to_string!(purl_obj)]
+    } else if package_type == "rubygems" {
+      purl_obj = {
+        "type": "gem",
+        "name": name,
+        "version": version_name,
+        "qualifiers": {"repository_url": "https://rubygems.pkg.github.com/" + owner}
+      }
+      pkgs = [purl_to_string!(purl_obj)]
+    }
+    pkgs = filter(pkgs) -> |_index, pkg| { !is_nullish(pkg) }
+
+    custom_data = {
+      "github": {
+        "package_version": {
+          "name": version.name,
+          "html_url": version.html_url,
+          "metadata": version.metadata,
+        }
+      }
+    }
+
+    map_values(pkgs) -> |pkg| {
+      {
+        "context": {
+          "specversion": "0.5.0",
+          "type": "dev.cdevents.artifact.published.0.3.0",
+          "timestamp": ts,
+        },
+        "subject": {
+          "id": pkg,
+          "content": {},
+        },
+        "customData": custom_data,
+      }
+    }
+  }
+}
+
+bodies = flatten(events)
+
+map_values(bodies) -> |body| {
+  { "metadata": .metadata, "headers": .headers, "body": body }
+}

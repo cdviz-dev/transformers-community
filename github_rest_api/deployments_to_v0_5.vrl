@@ -1,0 +1,75 @@
+# Convert GitHub REST API /repos/{owner}/{repo}/deployments response to CDEvents
+#
+# Input: paginated response from GET /repos/{owner}/{repo}/deployments
+#   .body = [{...}, ...]  (bare array)
+#
+# | done | GitHub REST field | CDEvent           |
+# | ---- | ---------------- | ----------------- |
+# | [x]  | any deployment   | service:deployed  |
+#
+# Rules:
+# - context.id is computed by the collector (content-based CID)
+# - subject.id = deployment.url (API URL)
+# - artifactId = PURL pkg:github/{owner}/{repo}@{sha}
+# - environment.id = deployment.environment (environment name string)
+# - timestamp from deployment.created_at
+
+items = array(.body) ?? []
+bodies = map_values(items) -> |deployment| {
+  ts = parse_timestamp(deployment.created_at, "%+") ?? now()
+  ts = format_timestamp!(ts, format: "%+")
+  deploy_url = to_string!(deployment.url)
+  # repo url: strip /deployments/{id}
+  repo_url = replace(deploy_url, r'/deployments/\d+', "")
+  repo_parts = split(repo_url, "/")
+  owner = string(repo_parts[4]) ?? "unknown"
+  repo_name = string(repo_parts[5]) ?? "unknown"
+  sha = to_string!(deployment.sha)
+
+  purl_obj = {
+    "type": "github",
+    "namespace": owner,
+    "name": repo_name,
+    "version": sha,
+  }
+  artifact_id = purl_to_string(purl_obj) ?? ""
+  env_name = to_string(deployment.environment) ?? ""
+
+  {
+    "context": {
+      "specversion": "0.5.0",
+      "type": "dev.cdevents.service.deployed.0.3.0",
+      "timestamp": ts,
+    },
+    "subject": {
+      "id": deploy_url,
+      "content": {
+        "artifactId": artifact_id,
+        "environment": {
+          "id": "/" + owner + "/" + repo_name + "/environments/" + env_name,
+        },
+      },
+    },
+    "customData": {
+      "links": [{
+        "linkKind": "storedAt",
+        "target": { "subject": { "type": "repository", "id": repo_url } },
+      }],
+      "github": {
+        "deployment": {
+          "id": deployment.id,
+          "sha": deployment.sha,
+          "ref": deployment.ref,
+          "task": deployment.task,
+          "environment": deployment.environment,
+          "url": deployment.url,
+          "creator": { "login": deployment.creator.login },
+        },
+      },
+    },
+  }
+}
+
+map_values(bodies) -> |body| {
+  { "metadata": .metadata, "headers": .headers, "body": body }
+}
