@@ -30,19 +30,5 @@
       // "pinDigests": true,
       "schedule": ["every weekend after 4am"]
     },
-    {
-      matchPackageNames: ["helm"],
-      automerge: true,
-      // Force Renovate to not create a PR (but merge its branches directly), to avoid PR-related email spam
-      automergeType: "branch",
-    },
-    {
-      matchPackageNames: ["/opentelemetry/"],
-      groupName: "opentelemetry",
-    },
-    {
-      matchPackageNames: ["kube", "k8s-openapi"],
-      groupName: "kube-rs",
-    },
   ],
 }
