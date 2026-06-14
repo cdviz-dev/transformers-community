@@ -13,6 +13,7 @@
     "CHANGELOG.md",
     ".github/workflows/release.yml",
     "target/**",
+    "cdevents/inputs/**",
   ],
   "json": {
     "indentWidth": 2,
