@@ -20,9 +20,7 @@ Add to your `cdviz-collector.toml`:
 
 ```toml
 [remote.transformers-community]
-type = "github"
-owner = "cdviz-dev"
-repo = "transformers-community"
+type = "github://cdviz-dev/transformers-community"
 # token = "gh...."  # Optional: github token
 
 [transformers]

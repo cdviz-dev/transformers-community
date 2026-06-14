@@ -217,9 +217,7 @@ Transformers can be used remotely without cloning the repository by configuring 
 
 ```toml
 [remote.transformers-community]
-type = "github"
-owner = "cdviz-dev"
-repo = "transformers-community"
+type = "github://cdviz-dev/transformers-community"
 
 [transformers.github_events]
 type = "vrl"
