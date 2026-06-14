@@ -1,0 +1,164 @@
+[tasks.obfuscate]
+description = "obfuscate some data into the samples"
+run = "json-simple-obfuscator inputs/*/*.json"
+
+[tasks."test"]
+# branches excluded: timestamp is non-deterministic (uses now() when no ts_after metadata)
+# Test branches manually after capture: mise run test:branches -- --mode overwrite
+depends = [ ":test:*" ]
+
+[tasks."test:workflow_runs"]
+description = "test workflow_runs transformer (use `--mode review` to update expected outputs)"
+run = """cdviz-collector \
+  transform \
+  --disable-otel \
+  --mode {{option(name="mode", default="check")}} \
+  --config ./cdviz-collector.toml \
+  -t github_rest_workflow_runs \
+  --input ./inputs/workflow_runs \
+  --output ./outputs/0_5/workflow_runs
+"""
+
+[tasks."test:pull_requests"]
+description = "test pull_requests transformer (use `--mode review` to update expected outputs)"
+run = """cdviz-collector \
+  transform \
+  --disable-otel \
+  --mode {{option(name="mode", default="check")}} \
+  --config ./cdviz-collector.toml \
+  -t github_rest_pull_requests \
+  --input ./inputs/pull_requests \
+  --output ./outputs/0_5/pull_requests
+"""
+
+[tasks."test:releases"]
+description = "test releases transformer (use `--mode review` to update expected outputs)"
+run = """cdviz-collector \
+  transform \
+  --disable-otel \
+  --mode {{option(name="mode", default="check")}} \
+  --config ./cdviz-collector.toml \
+  -t github_rest_releases \
+  --input ./inputs/releases \
+  --output ./outputs/0_5/releases
+"""
+
+[tasks."test:issues"]
+description = "test issues transformer (use `--mode review` to update expected outputs)"
+run = """cdviz-collector \
+  transform \
+  --disable-otel \
+  --mode {{option(name="mode", default="check")}} \
+  --config ./cdviz-collector.toml \
+  -t github_rest_issues \
+  --input ./inputs/issues \
+  --output ./outputs/0_5/issues
+"""
+
+[tasks."test:deployments"]
+description = "test deployments transformer (use `--mode review` to update expected outputs)"
+run = """cdviz-collector \
+  transform \
+  --disable-otel \
+  --mode {{option(name="mode", default="check")}} \
+  --config ./cdviz-collector.toml \
+  -t github_rest_deployments \
+  --input ./inputs/deployments \
+  --output ./outputs/0_5/deployments
+"""
+
+[tasks."test:repositories"]
+description = "test repositories transformer (use `--mode review` to update expected outputs)"
+run = """cdviz-collector \
+  transform \
+  --disable-otel \
+  --mode {{option(name="mode", default="check")}} \
+  --config ./cdviz-collector.toml \
+  -t github_rest_repositories \
+  --input ./inputs/repositories \
+  --output ./outputs/0_5/repositories
+"""
+
+[tasks."test:environments"]
+description = "test environments transformer (use `--mode review` to update expected outputs)"
+run = """cdviz-collector \
+  transform \
+  --disable-otel \
+  --mode {{option(name="mode", default="check")}} \
+  --config ./cdviz-collector.toml \
+  -t github_rest_environments \
+  --input ./inputs/environments \
+  --output ./outputs/0_5/environments
+"""
+
+# [tasks."test:branches"]
+# description = "test branches transformer (use `--mode review` to update expected outputs)"
+# run = """cdviz-collector \
+#   transform \
+#   --disable-otel \
+#   --mode {{option(name="mode", default="check")}} \
+#   --config ./cdviz-collector.toml \
+#   -t github_rest_branches \
+#   --input ./inputs/branches \
+#   --output ./outputs/0_5/branches
+# """
+
+[tasks."capture"]
+description = "Download sample inputs from GitHub REST API for a pinned 7-day window"
+usage = """
+flag "--repo <repo>" default="cdviz-dev/cdviz-collector" help="GitHub repository (owner/repo)"
+flag "--org <org>" default="cdviz-dev" help="GitHub org for listing repos"
+flag "--token <token>" help="GitHub token (defaults to 'gh auth token'); needs actions:read, contents:read, deployments:read, issues:read, pull_requests:read"
+flag "--ts-after <ts-after>" default="2024-12-01T00:00:00Z" help="Start of time window (ISO 8601)"
+flag "--ts-before <ts-before>" default="2024-12-08T00:00:00Z" help="End of time window (ISO 8601)"
+"""
+run = """
+#!/usr/bin/env bash
+set -euo pipefail
+REPO="${usage_repo}"
+ORG="${usage_org}"
+TS_AFTER="${usage_ts_after}"
+TS_BEFORE="${usage_ts_before}"
+
+if [ -n "${usage_token:-}" ]; then
+  export GH_TOKEN="${usage_token}"
+fi
+
+echo "Capturing GitHub REST API responses for $REPO ($TS_AFTER → $TS_BEFORE) ..."
+
+# gh api "repos/$REPO/actions/runs?created=>$TS_AFTER&created=<$TS_BEFORE&per_page=3" \
+#   > inputs/workflow_runs/page_1.json
+echo "  workflow_runs: skip"
+
+gh api "repos/$REPO/pulls?state=all&sort=updated&direction=asc&since=$TS_AFTER&per_page=3" \
+  > inputs/pull_requests/page_1.json
+echo "  pull_requests: done"
+
+gh api "repos/$REPO/releases?per_page=3" \
+  > inputs/releases/page_1.json
+echo "  releases: done"
+
+gh api "repos/$REPO/issues?state=all&since=$TS_AFTER&per_page=3" \
+  > inputs/issues/page_1.json
+echo "  issues: done"
+
+# gh api "repos/$REPO/deployments?per_page=3" \
+#   > inputs/deployments/page_1.json
+echo "  deployments: skip"
+
+gh api "orgs/$ORG/repos?per_page=3" \
+  > inputs/repositories/page_1.json
+echo "  repositories: done"
+
+# gh api "repos/$REPO/environments?per_page=3" \
+#   > inputs/environments/page_1.json
+echo "  environments: skip"
+
+# gh api "repos/$REPO/branches?per_page=3" \
+#   > inputs/branches/page_1.json
+# echo "  branches: done"
+
+echo ""
+echo "Done. Run 'mise run :obfuscate' from the repo root to redact sensitive data."
+echo "Then run 'mise run //github_rest_api:test -- --mode review' to generate expected outputs."
+"""

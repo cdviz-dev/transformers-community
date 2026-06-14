@@ -1,0 +1,42 @@
+{
+  "context": {
+    "specversion": "0.5.0",
+    "timestamp": "2024-12-01T16:00:00+00:00",
+    "type": "dev.cdevents.service.deployed.0.3.0"
+  },
+  "customData": {
+    "github": {
+      "deployment": {
+        "creator": {
+          "login": "aaaaaa-aaaaaaa[aaa]"
+        },
+        "environment": "aaaaaaaaaa",
+        "id": 1111111111,
+        "ref": "a1.11.2",
+        "sha": "aabbccdd11223344aabbccdd11223344aabbccdd",
+        "task": "deploy",
+        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/deployments/1111111111"
+      }
+    },
+    "links": [
+      {
+        "linkKind": "storedAt",
+        "target": {
+          "subject": {
+            "id": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa",
+            "type": "repository"
+          }
+        }
+      }
+    ]
+  },
+  "subject": {
+    "content": {
+      "artifactId": "pkg:github/aaaaa-aaa/aaaaa-aaaaaaaaa@aabbccdd11223344aabbccdd11223344aabbccdd",
+      "environment": {
+        "id": "/aaaaa-aaa/aaaaa-aaaaaaaaa/environments/aaaaaaaaaa"
+      }
+    },
+    "id": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/deployments/1111111111"
+  }
+}

@@ -1,0 +1,104 @@
+# Convert GitHub REST API /repos/{owner}/{repo}/issues response to CDEvents
+#
+# Input: paginated response from GET /repos/{owner}/{repo}/issues?state=all
+#   .body = [{...}, ...]  (bare array)
+#
+# Note: GitHub issues API returns both issues AND pull requests.
+#       Items with a "pull_request" field are skipped here (handled by pull_requests_to_v0_5.vrl).
+#
+# | done | GitHub REST field   | CDEvent          |
+# | ---- | ------------------- | ---------------- |
+# | [x]  | state == open       | ticket:created   |
+# | [x]  | state == closed     | ticket:closed    |
+#
+# Rules:
+# - context.id is computed by the collector (content-based CID)
+# - subject.id = issue.url (API URL)
+# - timestamp from issue.created_at (open) or issue.closed_at (closed)
+
+items = array(.body) ?? []
+bodies = map_values(items) -> |issue| {
+  if exists(issue.pull_request) {
+    null
+  } else if issue.state == "open" {
+    ts = parse_timestamp(issue.created_at, "%+") ?? now()
+    ts = format_timestamp!(ts, format: "%+")
+    repo_url = to_string(issue.repository_url) ?? ""
+
+    {
+      "context": {
+        "specversion": "0.5.0",
+        "type": "dev.cdevents.ticket.created.0.2.0",
+        "timestamp": ts,
+      },
+      "subject": {
+        "id": to_string!(issue.url),
+        "content": {
+          "summary": to_string(issue.title) ?? "",
+          "creator": to_string(issue.user.login) ?? "",
+          "assignees": map_values(array!(issue.assignees ?? [])) -> |a| { a.login },
+          "labels": map_values(array!(issue.labels ?? [])) -> |l| { l.name },
+          "milestone": issue.milestone.title,
+          "uri": to_string!(issue.html_url),
+        },
+      },
+      "customData": {
+        "links": [{
+          "linkKind": "storedAt",
+          "target": { "subject": { "type": "repository", "id": repo_url } },
+        }],
+        "github": {
+          "issue": {
+            "number": issue.number,
+            "state": issue.state,
+            "title": issue.title,
+            "url": issue.url,
+          },
+        },
+      },
+    }
+  } else if issue.state == "closed" {
+    ts = parse_timestamp(issue.closed_at, "%+") ?? now()
+    ts = format_timestamp!(ts, format: "%+")
+    repo_url = to_string(issue.repository_url) ?? ""
+
+    {
+      "context": {
+        "specversion": "0.5.0",
+        "type": "dev.cdevents.ticket.closed.0.2.0",
+        "timestamp": ts,
+      },
+      "subject": {
+        "id": to_string!(issue.url),
+        "content": {
+          "summary": to_string(issue.title) ?? "",
+          "creator": to_string(issue.user.login) ?? "",
+          "resolution": to_string(issue.state_reason) ?? "",
+          "uri": to_string!(issue.html_url),
+        },
+      },
+      "customData": {
+        "links": [{
+          "linkKind": "storedAt",
+          "target": { "subject": { "type": "repository", "id": repo_url } },
+        }],
+        "github": {
+          "issue": {
+            "number": issue.number,
+            "state": issue.state,
+            "state_reason": issue.state_reason,
+            "title": issue.title,
+            "url": issue.url,
+          },
+        },
+      },
+    }
+  } else {
+    null
+  }
+}
+bodies = filter(bodies) -> |_index, body| { !is_null(body) }
+
+map_values(bodies) -> |body| {
+  { "metadata": .metadata, "headers": .headers, "body": body }
+}

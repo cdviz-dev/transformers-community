@@ -1,0 +1,56 @@
+# Convert GitHub REST API /orgs/{org}/repos (or /user/repos) response to CDEvents
+#
+# Input: paginated response from GET /orgs/{org}/repos or /user/repos
+#   .body = [{...}, ...]  (bare array)
+#
+# | done | GitHub REST field | CDEvent               |
+# | ---- | ---------------- | --------------------- |
+# | [x]  | any repository   | repository:created    |
+#
+# Rules:
+# - context.id is computed by the collector (content-based CID)
+# - subject.id = repo.url (API URL)
+# - timestamp from repo.created_at
+# - fork repos are included (filter them out in request_vrl if desired)
+
+items = array(.body) ?? []
+bodies = map_values(items) -> |repo| {
+  ts = parse_timestamp(repo.created_at, "%+") ?? now()
+  ts = format_timestamp!(ts, format: "%+")
+
+  {
+    "context": {
+      "specversion": "0.5.0",
+      "type": "dev.cdevents.repository.created.0.3.0",
+      "timestamp": ts,
+    },
+    "subject": {
+      "id": to_string!(repo.url),
+      "content": {
+        "name": to_string(repo.name) ?? "",
+        "owner": to_string(repo.owner.login) ?? "",
+        "uri": to_string!(repo.url),
+        "viewUrl": to_string!(repo.html_url),
+      },
+    },
+    "customData": {
+      "github": {
+        "repository": {
+          "id": repo.id,
+          "name": repo.name,
+          "full_name": repo.full_name,
+          "private": repo.private,
+          "fork": repo.fork,
+          "url": repo.url,
+          "html_url": repo.html_url,
+          "description": repo.description,
+          "default_branch": repo.default_branch,
+        },
+      },
+    },
+  }
+}
+
+map_values(bodies) -> |body| {
+  { "metadata": .metadata, "headers": .headers, "body": body }
+}

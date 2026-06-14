@@ -1,0 +1,31 @@
+{
+  "context": {
+    "specversion": "0.5.0",
+    "timestamp": "2024-11-27T10:18:13+00:00",
+    "type": "dev.cdevents.repository.created.0.3.0"
+  },
+  "customData": {
+    "github": {
+      "repository": {
+        "default_branch": "aaaa",
+        "description": "Setup of the demo stack/node",
+        "fork": false,
+        "full_name": "aaaaa-aaa/aaaa-aaaaaaa",
+        "html_url": "https://github.com/aaaaa-aaa/aaaa-aaaaaaa",
+        "id": 111111165,
+        "name": "aaaa-aaaaaaa",
+        "private": true,
+        "url": "https://api.github.com/repos/aaaaa-aaa/aaaa-aaaaaaa"
+      }
+    }
+  },
+  "subject": {
+    "content": {
+      "name": "aaaa-aaaaaaa",
+      "owner": "aaaaa-aaa",
+      "uri": "https://api.github.com/repos/aaaaa-aaa/aaaa-aaaaaaa",
+      "viewUrl": "https://github.com/aaaaa-aaa/aaaa-aaaaaaa"
+    },
+    "id": "https://api.github.com/repos/aaaaa-aaa/aaaa-aaaaaaa"
+  }
+}

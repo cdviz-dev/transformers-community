@@ -1,0 +1,35 @@
+{
+  "context": {
+    "specversion": "0.5.0",
+    "timestamp": "2023-06-01T10:00:00+00:00",
+    "type": "dev.cdevents.environment.created.0.3.0"
+  },
+  "customData": {
+    "github": {
+      "environment": {
+        "html_url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/deployments/activity_log?environments_filter=aaaaaaaaaa",
+        "id": 111111111,
+        "name": "aaaaaaaaaa",
+        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/environments/aaaaaaaaaa"
+      }
+    },
+    "links": [
+      {
+        "linkKind": "storedAt",
+        "target": {
+          "subject": {
+            "id": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa",
+            "type": "repository"
+          }
+        }
+      }
+    ]
+  },
+  "subject": {
+    "content": {
+      "name": "aaaaaaaaaa",
+      "uri": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/environments/aaaaaaaaaa"
+    },
+    "id": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/environments/aaaaaaaaaa"
+  }
+}

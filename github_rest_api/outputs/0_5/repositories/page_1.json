@@ -1,0 +1,31 @@
+{
+  "context": {
+    "specversion": "0.5.0",
+    "timestamp": "2023-12-30T10:53:52+00:00",
+    "type": "dev.cdevents.repository.created.0.3.0"
+  },
+  "customData": {
+    "github": {
+      "repository": {
+        "default_branch": "aaaa",
+        "description": "View software deployment's events & states",
+        "fork": false,
+        "full_name": "aaaaa-aaa/aaaaa",
+        "html_url": "https://github.com/aaaaa-aaa/aaaaa",
+        "id": 111111164,
+        "name": "aaaab",
+        "private": false,
+        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa"
+      }
+    }
+  },
+  "subject": {
+    "content": {
+      "name": "aaaab",
+      "owner": "aaaaa-aaa",
+      "uri": "https://api.github.com/repos/aaaaa-aaa/aaaaa",
+      "viewUrl": "https://github.com/aaaaa-aaa/aaaaa"
+    },
+    "id": "https://api.github.com/repos/aaaaa-aaa/aaaaa"
+  }
+}

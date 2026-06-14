@@ -10,6 +10,7 @@ config_roots = [
   "argocd_notifications",
   "cdevents/*",
   "github_events",
+  "github_rest_api",
   "kubewatch_cloudevents",
   "passthrough",
 ]

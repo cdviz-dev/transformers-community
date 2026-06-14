@@ -1,0 +1,88 @@
+# Convert GitHub REST API /repos/{owner}/{repo}/actions/runs response to CDEvents
+#
+# Input: paginated response from GET /repos/{owner}/{repo}/actions/runs
+#   .body = { "total_count": N, "workflow_runs": [...] }
+#
+# | done | GitHub REST field     | CDEvent                     |
+# | ---- | --------------------- | --------------------------- |
+# | [x]  | status == queued      | pipelineRun:queued          |
+# | [x]  | status == in_progress | pipelineRun:started         |
+# | [x]  | status == completed   | pipelineRun:finished        |
+#
+# Rules:
+# - context.id is computed by the collector (content-based CID)
+# - subject.id = run.url + "/attempts/" + run.run_attempt (API URL)
+# - timestamp from run.updated_at
+# - customData.github preserves key workflow_run fields
+
+outcome_mapping = {
+  "cancelled": "cancel", "skipped": "cancel", "stale": "cancel",
+  "timed_out": "error", "startup_failure": "error", "action_required": "error",
+  "success": "success", "neutral": "success",
+  "failure": "failure"
+}
+
+items = array(.body.workflow_runs) ?? []
+bodies = map_values(items) -> |run| {
+  event_type = if run.status == "queued" || run.status == "waiting" || run.status == "requested" || run.status == "pending" {
+    "dev.cdevents.pipelinerun.queued.0.3.0"
+  } else if run.status == "in_progress" {
+    "dev.cdevents.pipelinerun.started.0.3.0"
+  } else if run.status == "completed" {
+    "dev.cdevents.pipelinerun.finished.0.3.0"
+  } else {
+    null
+  }
+
+  if is_null(event_type) {
+    null
+  } else {
+    ts = parse_timestamp(run.updated_at, "%+") ?? now()
+    ts = format_timestamp!(ts, format: "%+")
+    repo_url = to_string(run.repository.url) ?? ""
+    attempt = to_string!(run.run_attempt)
+
+    content = {
+      "pipelineName": to_string!(run.repository.full_name) + "/" + to_string!(run.name),
+      "uri": to_string!(run.html_url) + "/attempts/" + attempt,
+    }
+    if run.status == "completed" {
+      mapped = get(outcome_mapping, [to_string!(run.conclusion)]) ?? null
+      if !is_null(mapped) { content.outcome = string!(mapped) }
+    }
+
+    {
+      "context": {
+        "specversion": "0.5.0",
+        "type": event_type,
+        "timestamp": ts,
+      },
+      "subject": {
+        "id": to_string!(run.url) + "/attempts/" + attempt,
+        "content": content,
+      },
+      "customData": {
+        "links": [{
+          "linkKind": "storedAt",
+          "target": { "subject": { "type": "repository", "id": repo_url } },
+        }],
+        "github": {
+          "workflow_run": {
+            "id": run.id,
+            "name": run.name,
+            "status": run.status,
+            "conclusion": run.conclusion,
+            "url": run.url,
+            "head_branch": run.head_branch,
+            "head_sha": run.head_sha,
+          }
+        },
+      },
+    }
+  }
+}
+bodies = filter(bodies) -> |_index, body| { !is_null(body) }
+
+map_values(bodies) -> |body| {
+  { "metadata": .metadata, "headers": .headers, "body": body }
+}

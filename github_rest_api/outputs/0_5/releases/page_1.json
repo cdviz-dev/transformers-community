@@ -1,0 +1,36 @@
+{
+  "context": {
+    "specversion": "0.5.0",
+    "timestamp": "2026-06-12T14:01:10+00:00",
+    "type": "dev.cdevents.artifact.published.0.3.0"
+  },
+  "customData": {
+    "github": {
+      "release": {
+        "draft": false,
+        "name": "1.11.1 - 1111-11-13",
+        "prerelease": false,
+        "published_at": "2026-06-12T14:01:10Z",
+        "tag_name": "1.11.3",
+        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/111111116"
+      }
+    },
+    "links": [
+      {
+        "linkKind": "storedAt",
+        "target": {
+          "subject": {
+            "id": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa",
+            "type": "repository"
+          }
+        }
+      }
+    ]
+  },
+  "subject": {
+    "content": {
+      "user": "aaaaaa-aaaaaaa[aab]"
+    },
+    "id": "pkg:github/aaaaa-aaa/aaaaa-aaaaaaaaa@1.11.3"
+  }
+}

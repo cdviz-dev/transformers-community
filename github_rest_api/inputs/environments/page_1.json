@@ -1,0 +1,23 @@
+{
+  "total_count": 2,
+  "environments": [
+    {
+      "id": 111111111,
+      "node_id": "AA_aaaaaaaaaaaa1111",
+      "name": "aaaaaaaaaa",
+      "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/environments/aaaaaaaaaa",
+      "html_url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/deployments/activity_log?environments_filter=aaaaaaaaaa",
+      "created_at": "2023-06-01T10:00:00Z",
+      "updated_at": "2024-12-01T10:00:00Z"
+    },
+    {
+      "id": 111111112,
+      "node_id": "AA_aaaaaaaaaaaa1112",
+      "name": "aaaaaaa",
+      "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/environments/aaaaaaa",
+      "html_url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/deployments/activity_log?environments_filter=aaaaaaa",
+      "created_at": "2023-06-01T10:00:00Z",
+      "updated_at": "2024-11-15T10:00:00Z"
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+# Convert GitHub REST API /repos/{owner}/{repo}/releases response to CDEvents
+#
+# Input: paginated response from GET /repos/{owner}/{repo}/releases
+#   .body = [{...}, ...]  (bare array)
+#
+# | done | GitHub REST field   | CDEvent              |
+# | ---- | ------------------- | -------------------- |
+# | [x]  | any release         | artifact:published   |
+#
+# Rules:
+# - context.id is computed by the collector (content-based CID)
+# - subject.id = PURL pkg:github/{owner}/{repo}@{tag_name}
+# - timestamp from release.published_at
+# - draft releases are skipped
+
+items = array(.body) ?? []
+bodies = map_values(items) -> |release| {
+  if bool!(release.draft || false) {
+    null
+  } else {
+    ts = parse_timestamp(release.published_at, "%+") ?? now()
+    ts = format_timestamp!(ts, format: "%+")
+    repo_url = to_string(release.url) ?? ""
+    # strip /releases/{id} to get repo url
+    repo_url = replace(repo_url, r'/releases/\d+', "")
+    tag_name = to_string!(release.tag_name)
+    repo_parts = split(string!(release.url), "/")
+    # url format: https://api.github.com/repos/{owner}/{repo}/releases/{id}
+    owner = string(repo_parts[4]) ?? "unknown"
+    repo_name = string(repo_parts[5]) ?? "unknown"
+    purl_obj = {
+      "type": "github",
+      "namespace": owner,
+      "name": repo_name,
+      "version": tag_name,
+    }
+    pkg = purl_to_string(purl_obj) ?? ""
+
+    {
+      "context": {
+        "specversion": "0.5.0",
+        "type": "dev.cdevents.artifact.published.0.3.0",
+        "timestamp": ts,
+      },
+      "subject": {
+        "id": pkg,
+        "content": {
+          "user": to_string(release.author.login) ?? "",
+        },
+      },
+      "customData": {
+        "links": [{
+          "linkKind": "storedAt",
+          "target": { "subject": { "type": "repository", "id": repo_url } },
+        }],
+        "github": {
+          "release": {
+            "url": release.url,
+            "tag_name": release.tag_name,
+            "name": release.name,
+            "draft": release.draft,
+            "prerelease": release.prerelease,
+            "published_at": release.published_at,
+          },
+        },
+      },
+    }
+  }
+}
+bodies = filter(bodies) -> |_index, body| { !is_null(body) }
+
+map_values(bodies) -> |body| {
+  { "metadata": .metadata, "headers": .headers, "body": body }
+}
