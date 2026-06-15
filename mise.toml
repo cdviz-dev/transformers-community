@@ -26,8 +26,8 @@ description = "Format the code and sort dependencies"
 run = "dprint fmt"
 
 [tasks.obfuscate]
-description = "obfuscate some data into the samples"
-run = "json-simple-obfuscator */inputs/*/*.json"
+description = "run all 'obfuscate'"
+depends = ["//...:obfuscate"]
 
 [tasks."test"]
 description = "run all 'test' tasks of sub module"

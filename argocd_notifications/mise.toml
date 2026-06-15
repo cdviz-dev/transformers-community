@@ -1,3 +1,7 @@
+[tasks.obfuscate]
+description = "obfuscate some data into the samples"
+run = "json-simple-obfuscator inputs/*/*.json"
+
 [tasks."test"]
 depends = [":test:*"]
 
