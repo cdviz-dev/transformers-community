@@ -161,12 +161,12 @@
   "compare": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/compare/7bf02115318c...44d21f9752bb",
   "commits": [
     {
-      "id": "8790880d31513da215ff31c99438510572638ad8",
-      "tree_id": "6c384f9316ce525c8f8291c18823c09395769255",
+      "id": "1111111a11111aa111aa11a11111111111111aa1",
+      "tree_id": "1a111a1111aa111a1a1111a11111a11111111111",
       "distinct": true,
       "message": "ci: update mega-linter workflow\n\nfrom https://megalinter.io/8.5.0/install-github/",
       "timestamp": "2025-05-21T19:35:21+02:00",
-      "url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/commit/8790880d31513da215ff31c99438510572638ad8",
+      "url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/commit/1111111a11111aa111aa11a11111111111111aa1",
       "author": {
         "name": "Aaaaa Aaaaaaa",
         "email": "aaaaa.aaaaaaa.11@aaaaa.aaa",
@@ -182,12 +182,12 @@
       "modified": [".github/workflows/mega-linter.yml"]
     },
     {
-      "id": "e4c9ffc87e36895c16bf81ad7654b7acdce52510",
-      "tree_id": "d943e9a696c008056db4145829f93634be78e4e0",
+      "id": "a1a1aaa11a11111a11aa11aa1111a1aaaaa11111",
+      "tree_id": "a111a1a111a111111aa1111111a11111aa11a1a1",
       "distinct": true,
       "message": "fix: workaround to compile transitive dependency 'oniguruma' with gcc >= 15",
       "timestamp": "2025-05-21T19:35:21+02:00",
-      "url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/commit/e4c9ffc87e36895c16bf81ad7654b7acdce52510",
+      "url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/commit/a1a1aaa11a11111a11aa11aa1111a1aaaaa11111",
       "author": {
         "name": "Aaaaa Aaaaaaa",
         "email": "aaaaa.aaaaaaa.11@aaaaa.aaa",
@@ -203,12 +203,12 @@
       "modified": [".cargo/config.toml"]
     },
     {
-      "id": "8a75281f7696f78df21e3e947c853711ccf4ed49",
-      "tree_id": "b667a13613cf3efe0e4052dd4beaf341a84cc104",
+      "id": "1a11111a1111a11aa11a1a111a111111aaa1aa11",
+      "tree_id": "a111a11111aa1aaa1a1111aa1aaaa111a11aa111",
       "distinct": true,
       "message": "fix(kubewatch): encode_percent of `tag` in `packageId`",
       "timestamp": "2025-05-21T19:35:21+02:00",
-      "url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/commit/8a75281f7696f78df21e3e947c853711ccf4ed49",
+      "url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/commit/1a11111a1111a11aa11a1a111a111111aaa1aa11",
       "author": {
         "name": "Aaaaa Aaaaaaa",
         "email": "aaaaa.aaaaaaa.11@aaaaa.aaa",
@@ -228,12 +228,12 @@
       ]
     },
     {
-      "id": "be92e0b7a8c1bac8e76e63d3c27016ce71a1bc23",
-      "tree_id": "9cc0047a4175cfe9ee61f9a1b42f5f3d5d798120",
+      "id": "aa11a1a1a1a1aaa1a11a11a1a11111aa11a1aa11",
+      "tree_id": "1aa1111a1111aaa1aa11a1a1a11a1a1a1a111111",
       "distinct": true,
       "message": "refactor(github): allow 1 github event to generate 0-n cdevents\n\n- and generate 1 artifact.published event per tag for `package_type == \"docker\"`",
       "timestamp": "2025-05-21T19:35:21+02:00",
-      "url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/commit/be92e0b7a8c1bac8e76e63d3c27016ce71a1bc23",
+      "url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/commit/aa11a1a1a1a1aaa1a11a11a1a11111aa11a1aa11",
       "author": {
         "name": "Aaaaa Aaaaaaa",
         "email": "aaaaa.aaaaaaa.11@aaaaa.aaa",
@@ -249,12 +249,12 @@
       "modified": ["config/transformers/github_events.vrl"]
     },
     {
-      "id": "4effb857135b7a701ef08afbfc593c0759db5b7f",
-      "tree_id": "a1d22f4b2376784d1ae6a50a8ce8b3d30d834b42",
+      "id": "1aaaa111111a1a111aa11aaaaa111a1111aa1a1a",
+      "tree_id": "a1a11a1a1111111a1aa1a11a1aa1a1a11a111a11",
       "distinct": true,
       "message": "style: format json\n\n- to be more human readable\n- ignore generated json (could be used for test/diff,...)",
       "timestamp": "2025-05-21T19:35:21+02:00",
-      "url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/commit/4effb857135b7a701ef08afbfc593c0759db5b7f",
+      "url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/commit/1aaaa111111a1a111aa11aaaaa111a1111aa1a1a",
       "author": {
         "name": "Aaaaa Aaaaaaa",
         "email": "aaaaa.aaaaaaa.11@aaaaa.aaa",
@@ -278,12 +278,12 @@
       ]
     },
     {
-      "id": "bb6e84b60657518163fc29647d2a93d8cb01d07a",
-      "tree_id": "e223751ce535c13997b05e7c9a583353170bad2c",
+      "id": "aa1a11a11111111111aa11111a1a11a1aa11a11a",
+      "tree_id": "a111111aa111a11111a11a1a1a111111111aaa1a",
       "distinct": true,
       "message": "build: replace task `install:rustcomponents` by experimental setting `tools.rust.components`",
       "timestamp": "2025-05-21T19:35:21+02:00",
-      "url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/commit/bb6e84b60657518163fc29647d2a93d8cb01d07a",
+      "url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/commit/aa1a11a11111111111aa11111a1a11a1aa11a11a",
       "author": {
         "name": "Aaaaa Aaaaaaa",
         "email": "aaaaa.aaaaaaa.11@aaaaa.aaa",

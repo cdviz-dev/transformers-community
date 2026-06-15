@@ -13,7 +13,7 @@
         "namespace": "argocd"
       },
       "destination": {
-        "namespace": "cdviz-dev",
+        "namespace": "aaaab-dev",
         "server": "https://kubernetes.default.svc"
       },
       "health": {
@@ -31,7 +31,7 @@
   },
   "subject": {
     "content": {
-      "artifactId": "pkg:oci/aaaaa-aaaaaaaaa@0.4.0-7-g0f9f2ee?repository_url=ghcr.io/cdviz-dev/charts",
+      "artifactId": "pkg:oci/aaaaa-aaaaaaaaa@0.4.0-7-g0f9f2ee?repository_url=ghcr.io/aaaab-dev/charts",
       "environment": {
         "id": "https://kubernetes.default.svc"
       }

@@ -12,7 +12,7 @@
         "metadata": {
           "annotations": {
             "argocd.argoproj.io/sync-wave": "3",
-            "notified.notifications.argoproj.io": "{\"\\u003cnil\\u003e:on-deployed:[0].Yv81TUs0gmPTEyk-v8Lb6ZKEo0g:cdviz:\":1759421002,\"\\u003cnil\\u003e:on-deployed:[0].Yv81TUs0gmPTEyk-v8Lb6ZKEo0g:webhook:cdviz\":1759420702}"
+            "notified.notifications.argoproj.io": "{\"\\u003cnil\\u003e:on-deployed:[0].Yv81TUs0gmPTEyk-v8Lb6ZKEo0g:aaaab:\":1759421002,\"\\u003cnil\\u003e:on-deployed:[0].Yv81TUs0gmPTEyk-v8Lb6ZKEo0g:webhook:aaaab\":1759420702}"
           },
           "creationTimestamp": "2025-08-14T12:19:16Z",
           "finalizers": [
@@ -21,7 +21,7 @@
           "generation": 54,
           "labels": {
             "app.kubernetes.io/name": "aaaaa-aaaaaaa",
-            "app.kubernetes.io/part-of": "cdviz"
+            "app.kubernetes.io/part-of": "aaaab"
           },
           "managedFields": [
             {
@@ -196,7 +196,7 @@
               "blockOwnerDeletion": true,
               "controller": true,
               "kind": "ApplicationSet",
-              "name": "cdviz",
+              "name": "aaaab",
               "uid": "ddb4ddea-2d33-4a7b-aac0-2ddb66614179"
             }
           ],
@@ -205,10 +205,10 @@
         },
         "spec": {
           "destination": {
-            "namespace": "cdviz-dev",
+            "namespace": "aaaab-dev",
             "server": "https://kubernetes.default.svc"
           },
-          "project": "demo-cluster",
+          "project": "aaaa-aaaaaaa",
           "revisionHistoryLimit": 3,
           "sources": [
             {
@@ -216,20 +216,20 @@
               "helm": {
                 "parameters": [
                   {
-                    "name": "nameOverride",
+                    "name": "aaaaAaaaaaaa",
                     "value": "aaaaa-aaaaaaa"
                   }
                 ],
                 "valueFiles": [
-                  "$values/4-k8s-gitops/values/cdviz/aaaaa-aaaaaaa.yaml"
+                  "$values/4-k8s-gitops/values/aaaab/aaaaa-aaaaaaa.yaml"
                 ]
               },
-              "repoURL": "ghcr.io/cdviz-dev/charts",
+              "repoURL": "ghcr.io/aaaab-dev/charts",
               "targetRevision": "0.4.0-11-gd6f6e7b"
             },
             {
               "ref": "values",
-              "repoURL": "https://github.com/cdviz-dev/demo-cluster",
+              "repoURL": "https://github.com/aaaab-dev/aaaa-aaaaaaa",
               "targetRevision": "HEAD"
             }
           ],
@@ -241,7 +241,7 @@
             "retry": {
               "backoff": {
                 "duration": "5s",
-                "factor": 2,
+                "factor": 3,
                 "maxDuration": "3m"
               },
               "limit": 5
@@ -257,7 +257,7 @@
           "conditions": [
             {
               "lastTransitionTime": "2025-10-01T02:01:37Z",
-              "message": "Application has 32 orphaned resources",
+              "message": "Application has 19 orphaned resources",
               "type": "OrphanedResourceWarning"
             }
           ],
@@ -270,7 +270,7 @@
             {
               "deployStartedAt": "2025-08-14T12:19:17Z",
               "deployedAt": "2025-08-14T12:19:19Z",
-              "id": 0,
+              "id": 1,
               "initiatedBy": {
                 "automated": true
               },
@@ -287,21 +287,21 @@
                   "helm": {
                     "parameters": [
                       {
-                        "name": "nameOverride",
+                        "name": "aaaaAaaaaaaa",
                         "value": "aaaaa-aaaaaaa"
                       }
                     ],
                     "valueFiles": [
-                      "$values/4-k8s-gitops/values/cdviz/aaaaa-aaaaaaa.yaml"
+                      "$values/4-k8s-gitops/values/aaaab/aaaaa-aaaaaaa.yaml"
                     ]
                   },
                   "path": "aaaaa-aaaaaaa",
-                  "repoURL": "ghcr.io/cdviz-dev/charts",
+                  "repoURL": "ghcr.io/aaaab-dev/charts",
                   "targetRevision": "0.4.0-11-gd6f6e7b"
                 },
                 {
                   "ref": "values",
-                  "repoURL": "https://github.com/cdviz-dev/demo-cluster",
+                  "repoURL": "https://github.com/aaaab-dev/aaaa-aaaaaaa",
                   "targetRevision": "HEAD"
                 }
               ]
@@ -317,7 +317,7 @@
               "retry": {
                 "backoff": {
                   "duration": "5s",
-                  "factor": 2,
+                  "factor": 3,
                   "maxDuration": "3m"
                 },
                 "limit": 5
@@ -343,9 +343,9 @@
                   "group": "",
                   "hookPhase": "Running",
                   "kind": "ConfigMap",
-                  "message": "configmap/aaaaa-aaaaaaa-dashboards-testcaserun-executions serverside-applied",
-                  "name": "aaaaa-aaaaaaa-dashboards-testcaserun-executions",
-                  "namespace": "cdviz-dev",
+                  "message": "configmap/aaaaa-aaaaaaa-aaaaaaaaaa-aaaaaaaaaaa-aaaaaaaaab serverside-applied",
+                  "name": "aaaaa-aaaaaaa-aaaaaaaaaa-aaaaaaaaaaa-aaaaaaaaab",
+                  "namespace": "aaaab-dev",
                   "status": "Synced",
                   "syncPhase": "Sync",
                   "version": "v1"
@@ -354,9 +354,9 @@
                   "group": "",
                   "hookPhase": "Running",
                   "kind": "ConfigMap",
-                  "message": "configmap/aaaaa-aaaaaaa-dashboards-pipelinerun-executions serverside-applied",
-                  "name": "aaaaa-aaaaaaa-dashboards-pipelinerun-executions",
-                  "namespace": "cdviz-dev",
+                  "message": "configmap/aaaaa-aaaaaaa-aaaaaaaaaa-aaaaaaaaaaa-aaaaaaaaaa serverside-applied",
+                  "name": "aaaaa-aaaaaaa-aaaaaaaaaa-aaaaaaaaaaa-aaaaaaaaaa",
+                  "namespace": "aaaab-dev",
                   "status": "Synced",
                   "syncPhase": "Sync",
                   "version": "v1"
@@ -365,9 +365,9 @@
                   "group": "",
                   "hookPhase": "Running",
                   "kind": "ConfigMap",
-                  "message": "configmap/aaaaa-aaaaaaa-dashboards-testcasesuite-executions serverside-applied",
-                  "name": "aaaaa-aaaaaaa-dashboards-testcasesuite-executions",
-                  "namespace": "cdviz-dev",
+                  "message": "configmap/aaaaa-aaaaaaa-aaaaaaaaaa-aaaaaaaaaaaaa-aaaaaaaaaa serverside-applied",
+                  "name": "aaaaa-aaaaaaa-aaaaaaaaaa-aaaaaaaaaaaaa-aaaaaaaaaa",
+                  "namespace": "aaaab-dev",
                   "status": "Synced",
                   "syncPhase": "Sync",
                   "version": "v1"
@@ -376,9 +376,9 @@
                   "group": "",
                   "hookPhase": "Running",
                   "kind": "ConfigMap",
-                  "message": "configmap/aaaaa-aaaaaaa-dashboards-taskrun-executions serverside-applied",
-                  "name": "aaaaa-aaaaaaa-dashboards-taskrun-executions",
-                  "namespace": "cdviz-dev",
+                  "message": "configmap/aaaaa-aaaaaaa-aaaaaaaaaa-aaaaaaa-aaaaaaaaaa serverside-applied",
+                  "name": "aaaaa-aaaaaaa-aaaaaaaaaa-aaaaaaa-aaaaaaaaaa",
+                  "namespace": "aaaab-dev",
                   "status": "Synced",
                   "syncPhase": "Sync",
                   "version": "v1"
@@ -387,9 +387,9 @@
                   "group": "",
                   "hookPhase": "Running",
                   "kind": "ConfigMap",
-                  "message": "configmap/aaaaa-aaaaaaa-dashboards-artifact-timeline serverside-applied",
-                  "name": "aaaaa-aaaaaaa-dashboards-artifact-timeline",
-                  "namespace": "cdviz-dev",
+                  "message": "configmap/aaaaa-aaaaaaa-aaaaaaaaaa-aaaaaaaa-aaaaaaaa serverside-applied",
+                  "name": "aaaaa-aaaaaaa-aaaaaaaaaa-aaaaaaaa-aaaaaaaa",
+                  "namespace": "aaaab-dev",
                   "status": "Synced",
                   "syncPhase": "Sync",
                   "version": "v1"
@@ -398,9 +398,9 @@
                   "group": "",
                   "hookPhase": "Running",
                   "kind": "ConfigMap",
-                  "message": "configmap/aaaaa-aaaaaaa-dashboards-cdevents-activity serverside-applied",
-                  "name": "aaaaa-aaaaaaa-dashboards-cdevents-activity",
-                  "namespace": "cdviz-dev",
+                  "message": "configmap/aaaaa-aaaaaaa-aaaaaaaaaa-aaaaaaaa-aaaaaaab serverside-applied",
+                  "name": "aaaaa-aaaaaaa-aaaaaaaaaa-aaaaaaaa-aaaaaaab",
+                  "namespace": "aaaab-dev",
                   "status": "Synced",
                   "syncPhase": "Sync",
                   "version": "v1"
@@ -409,9 +409,9 @@
                   "group": "",
                   "hookPhase": "Running",
                   "kind": "ConfigMap",
-                  "message": "configmap/aaaaa-aaaaaaa-dashboards-demo-service-deployed serverside-applied",
-                  "name": "aaaaa-aaaaaaa-dashboards-demo-service-deployed",
-                  "namespace": "cdviz-dev",
+                  "message": "configmap/aaaaa-aaaaaaa-aaaaaaaaaa-aaaa-aaaaaaa-aaaaaaaa serverside-applied",
+                  "name": "aaaaa-aaaaaaa-aaaaaaaaaa-aaaa-aaaaaaa-aaaaaaaa",
+                  "namespace": "aaaab-dev",
                   "status": "Synced",
                   "syncPhase": "Sync",
                   "version": "v1"
@@ -420,9 +420,9 @@
                   "group": "secrets.hashicorp.com",
                   "hookPhase": "Running",
                   "kind": "VaultStaticSecret",
-                  "message": "vaultstaticsecret.secrets.hashicorp.com/aaaaa-aaaaaaa-datasources-vault serverside-applied",
-                  "name": "aaaaa-aaaaaaa-datasources-vault",
-                  "namespace": "cdviz-dev",
+                  "message": "vaultstaticsecret.secrets.hashicorp.com/aaaaa-aaaaaaa-aaaaaaaaaaa-aaaaa serverside-applied",
+                  "name": "aaaaa-aaaaaaa-aaaaaaaaaaa-aaaaa",
+                  "namespace": "aaaab-dev",
                   "status": "Synced",
                   "syncPhase": "Sync",
                   "version": "v1beta1"
@@ -442,21 +442,21 @@
                   "helm": {
                     "parameters": [
                       {
-                        "name": "nameOverride",
+                        "name": "aaaaAaaaaaaa",
                         "value": "aaaaa-aaaaaaa"
                       }
                     ],
                     "valueFiles": [
-                      "$values/4-k8s-gitops/values/cdviz/aaaaa-aaaaaaa.yaml"
+                      "$values/4-k8s-gitops/values/aaaab/aaaaa-aaaaaaa.yaml"
                     ]
                   },
                   "path": "aaaaa-aaaaaaa",
-                  "repoURL": "ghcr.io/cdviz-dev/charts",
+                  "repoURL": "ghcr.io/aaaab-dev/charts",
                   "targetRevision": "0.4.0-11-gd6f6e7b"
                 },
                 {
                   "ref": "values",
-                  "repoURL": "https://github.com/cdviz-dev/demo-cluster",
+                  "repoURL": "https://github.com/aaaab-dev/aaaa-aaaaaaa",
                   "targetRevision": "HEAD"
                 }
               ]
@@ -467,58 +467,58 @@
           "resources": [
             {
               "kind": "ConfigMap",
-              "name": "aaaaa-aaaaaaa-dashboards-artifact-timeline",
-              "namespace": "cdviz-dev",
+              "name": "aaaaa-aaaaaaa-aaaaaaaaaa-aaaaaaaa-aaaaaaaa",
+              "namespace": "aaaab-dev",
               "status": "Synced",
               "version": "v1"
             },
             {
               "kind": "ConfigMap",
-              "name": "aaaaa-aaaaaaa-dashboards-cdevents-activity",
-              "namespace": "cdviz-dev",
+              "name": "aaaaa-aaaaaaa-aaaaaaaaaa-aaaaaaaa-aaaaaaab",
+              "namespace": "aaaab-dev",
               "status": "Synced",
               "version": "v1"
             },
             {
               "kind": "ConfigMap",
-              "name": "aaaaa-aaaaaaa-dashboards-demo-service-deployed",
-              "namespace": "cdviz-dev",
+              "name": "aaaaa-aaaaaaa-aaaaaaaaaa-aaaa-aaaaaaa-aaaaaaaa",
+              "namespace": "aaaab-dev",
               "status": "Synced",
               "version": "v1"
             },
             {
               "kind": "ConfigMap",
-              "name": "aaaaa-aaaaaaa-dashboards-pipelinerun-executions",
-              "namespace": "cdviz-dev",
+              "name": "aaaaa-aaaaaaa-aaaaaaaaaa-aaaaaaaaaaa-aaaaaaaaaa",
+              "namespace": "aaaab-dev",
               "status": "Synced",
               "version": "v1"
             },
             {
               "kind": "ConfigMap",
-              "name": "aaaaa-aaaaaaa-dashboards-taskrun-executions",
-              "namespace": "cdviz-dev",
+              "name": "aaaaa-aaaaaaa-aaaaaaaaaa-aaaaaaa-aaaaaaaaaa",
+              "namespace": "aaaab-dev",
               "status": "Synced",
               "version": "v1"
             },
             {
               "kind": "ConfigMap",
-              "name": "aaaaa-aaaaaaa-dashboards-testcaserun-executions",
-              "namespace": "cdviz-dev",
+              "name": "aaaaa-aaaaaaa-aaaaaaaaaa-aaaaaaaaaaa-aaaaaaaaab",
+              "namespace": "aaaab-dev",
               "status": "Synced",
               "version": "v1"
             },
             {
               "kind": "ConfigMap",
-              "name": "aaaaa-aaaaaaa-dashboards-testcasesuite-executions",
-              "namespace": "cdviz-dev",
+              "name": "aaaaa-aaaaaaa-aaaaaaaaaa-aaaaaaaaaaaaa-aaaaaaaaaa",
+              "namespace": "aaaab-dev",
               "status": "Synced",
               "version": "v1"
             },
             {
               "group": "secrets.hashicorp.com",
               "kind": "VaultStaticSecret",
-              "name": "aaaaa-aaaaaaa-datasources-vault",
-              "namespace": "cdviz-dev",
+              "name": "aaaaa-aaaaaaa-aaaaaaaaaaa-aaaaa",
+              "namespace": "aaaab-dev",
               "status": "Synced",
               "version": "v1beta1"
             }
@@ -532,7 +532,7 @@
           "sync": {
             "comparedTo": {
               "destination": {
-                "namespace": "cdviz-dev",
+                "namespace": "aaaab-dev",
                 "server": "https://kubernetes.default.svc"
               },
               "source": {
@@ -544,20 +544,20 @@
                   "helm": {
                     "parameters": [
                       {
-                        "name": "nameOverride",
+                        "name": "aaaaAaaaaaaa",
                         "value": "aaaaa-aaaaaaa"
                       }
                     ],
                     "valueFiles": [
-                      "$values/4-k8s-gitops/values/cdviz/aaaaa-aaaaaaa.yaml"
+                      "$values/4-k8s-gitops/values/aaaab/aaaaa-aaaaaaa.yaml"
                     ]
                   },
-                  "repoURL": "ghcr.io/cdviz-dev/charts",
+                  "repoURL": "ghcr.io/aaaab-dev/charts",
                   "targetRevision": "0.4.0-11-gd6f6e7b"
                 },
                 {
                   "ref": "values",
-                  "repoURL": "https://github.com/cdviz-dev/demo-cluster",
+                  "repoURL": "https://github.com/aaaab-dev/aaaa-aaaaaaa",
                   "targetRevision": "HEAD"
                 }
               ]
@@ -571,19 +571,19 @@
         }
       },
       "context": {
-        "argocdUrl": "https://demo.cdviz.dev",
-        "notificationType": "cdviz"
+        "argocdUrl": "https://demo.aaaab.dev",
+        "notificationType": "aaaab"
       },
       "timestamp": "2025-10-02T16:06:22.298365Z"
     }
   },
   "subject": {
     "content": {
-      "artifactId": "pkg:oci/aaaaa-aaaaaaa@0.4.0-11-gd6f6e7b?repository_url=ghcr.io/cdviz-dev/charts",
+      "artifactId": "pkg:oci/aaaaa-aaaaaaa@0.4.0-11-gd6f6e7b?repository_url=ghcr.io/aaaab-dev/charts",
       "environment": {
         "id": "https://kubernetes.default.svc"
       }
     },
-    "id": "/cdviz-dev/aaaaa-aaaaaaa"
+    "id": "/aaaab-dev/aaaaa-aaaaaaa"
   }
 }

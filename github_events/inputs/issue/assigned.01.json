@@ -34,10 +34,10 @@
     },
     "labels": [
       {
-        "id": 7872928583,
-        "node_id": "LA_kwDONcdWcs8AAAAB1UNbRw",
-        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/labels/question",
-        "name": "question",
+        "id": 1111111114,
+        "node_id": "AA_aaAAAaaAaa1AAAAA1AAaAb",
+        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/labels/aaaaaaab",
+        "name": "aaaaaaab",
         "color": "d876e3",
         "default": true,
         "description": "Further information is requested"

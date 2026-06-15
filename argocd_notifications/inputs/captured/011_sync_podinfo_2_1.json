@@ -1,8 +1,8 @@
 {
   "timestamp": "2025-10-02T16:45:15.690479Z",
   "context": {
-    "argocdUrl": "https://demo.cdviz.dev",
-    "notificationType": "cdviz"
+    "argocdUrl": "https://demo.aaaab.dev",
+    "notificationType": "aaaab"
   },
   "app": {
     "apiVersion": "argoproj.io/v1alpha1",
@@ -11,8 +11,8 @@
       "annotations": {
         "argocd.argoproj.io/hydrate": "normal",
         "argocd.argoproj.io/refresh": "normal",
-        "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"argoproj.io/v1alpha1\",\"kind\":\"Application\",\"metadata\":{\"annotations\":{},\"finalizers\":[\"resources-finalizer.argocd.argoproj.io\"],\"name\":\"aaaaaaaaa\",\"namespace\":\"argocd\"},\"spec\":{\"destination\":{\"namespace\":\"argocd\",\"server\":\"https://kubernetes.default.svc\"},\"project\":\"default\",\"revisionHistoryLimit\":10,\"source\":{\"path\":\"4-k8s-gitops\",\"repoURL\":\"https://github.com/cdviz-dev/demo-cluster\",\"targetRevision\":\"HEAD\"},\"syncPolicy\":{\"automated\":{\"prune\":true,\"selfHeal\":true},\"retry\":{\"backoff\":{\"duration\":\"5s\",\"factor\":2,\"maxDuration\":\"3m\"},\"limit\":5},\"syncOptions\":[\"CreateNamespace=false\",\"ServerSideApply=true\"]}}}\n",
-        "notified.notifications.argoproj.io": "{\"744ef414bc4880d1ac71b8296dc01ebc35f4f97c:on-deployed:[0].Yv81TUs0gmPTEyk-v8Lb6ZKEo0g:cdviz:\":1759421002,\"744ef414bc4880d1ac71b8296dc01ebc35f4f97c:on-deployed:[0].Yv81TUs0gmPTEyk-v8Lb6ZKEo0g:webhook:cdviz\":1759420702,\"94fcc5e8673e0d2d7fbca6b1c6c455ba308314fc:on-deployed:[0].Yv81TUs0gmPTEyk-v8Lb6ZKEo0g:cdviz:\":1759422059}"
+        "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"argoproj.io/v1alpha1\",\"kind\":\"Application\",\"metadata\":{\"annotations\":{},\"finalizers\":[\"resources-finalizer.argocd.argoproj.io\"],\"name\":\"aaaaaaaaa\",\"namespace\":\"argocd\"},\"spec\":{\"destination\":{\"namespace\":\"argocd\",\"server\":\"https://kubernetes.default.svc\"},\"project\":\"default\",\"revisionHistoryLimit\":10,\"source\":{\"path\":\"4-k8s-gitops\",\"repoURL\":\"https://github.com/aaaab-dev/aaaa-aaaaaaa\",\"targetRevision\":\"HEAD\"},\"syncPolicy\":{\"automated\":{\"prune\":true,\"selfHeal\":true},\"retry\":{\"backoff\":{\"duration\":\"5s\",\"factor\":3,\"maxDuration\":\"3m\"},\"limit\":5},\"syncOptions\":[\"CreateNamespace=false\",\"ServerSideApply=true\"]}}}\n",
+        "notified.notifications.argoproj.io": "{\"744ef414bc4880d1ac71b8296dc01ebc35f4f97c:on-deployed:[0].Yv81TUs0gmPTEyk-v8Lb6ZKEo0g:aaaab:\":1759421002,\"744ef414bc4880d1ac71b8296dc01ebc35f4f97c:on-deployed:[0].Yv81TUs0gmPTEyk-v8Lb6ZKEo0g:webhook:aaaab\":1759420702,\"94fcc5e8673e0d2d7fbca6b1c6c455ba308314fc:on-deployed:[0].Yv81TUs0gmPTEyk-v8Lb6ZKEo0g:aaaab:\":1759422059}"
       },
       "creationTimestamp": "2025-08-06T18:09:49Z",
       "finalizers": ["resources-finalizer.argocd.argoproj.io"],
@@ -178,7 +178,7 @@
     "operation": {
       "initiatedBy": { "automated": true },
       "retry": {
-        "backoff": { "duration": "5s", "factor": 2, "maxDuration": "3m" },
+        "backoff": { "duration": "5s", "factor": 3, "maxDuration": "3m" },
         "limit": 5
       },
       "sync": {
@@ -195,13 +195,13 @@
       "revisionHistoryLimit": 10,
       "source": {
         "path": "4-k8s-gitops",
-        "repoURL": "https://github.com/cdviz-dev/demo-cluster",
+        "repoURL": "https://github.com/aaaab-dev/aaaa-aaaaaaa",
         "targetRevision": "HEAD"
       },
       "syncPolicy": {
         "automated": {},
         "retry": {
-          "backoff": { "duration": "5s", "factor": 2, "maxDuration": "3m" },
+          "backoff": { "duration": "5s", "factor": 3, "maxDuration": "3m" },
           "limit": 5
         },
         "syncOptions": ["CreateNamespace=false", "ServerSideApply=true"]
@@ -217,120 +217,120 @@
         {
           "deployStartedAt": "2025-09-30T12:30:03Z",
           "deployedAt": "2025-09-30T12:30:07Z",
-          "id": 28,
+          "id": 15,
           "initiatedBy": { "automated": true },
           "revision": "8803298a73f5a6cf2638e7a9b4717ef5c4de4fe0",
           "source": {
             "path": "4-k8s-gitops",
-            "repoURL": "https://github.com/cdviz-dev/demo-cluster",
+            "repoURL": "https://github.com/aaaab-dev/aaaa-aaaaaaa",
             "targetRevision": "HEAD"
           }
         },
         {
           "deployStartedAt": "2025-09-30T12:36:53Z",
           "deployedAt": "2025-09-30T12:36:56Z",
-          "id": 29,
+          "id": 16,
           "initiatedBy": { "automated": true },
           "revision": "e59f9cbbe85ac45e5ebcb9c1f72192ffc5120d4c",
           "source": {
             "path": "4-k8s-gitops",
-            "repoURL": "https://github.com/cdviz-dev/demo-cluster",
+            "repoURL": "https://github.com/aaaab-dev/aaaa-aaaaaaa",
             "targetRevision": "HEAD"
           }
         },
         {
           "deployStartedAt": "2025-09-30T12:37:54Z",
           "deployedAt": "2025-09-30T12:37:57Z",
-          "id": 30,
+          "id": 17,
           "initiatedBy": { "automated": true },
           "revision": "2ce1ce1d59842ad7b22206312db3ad513ce3735c",
           "source": {
             "path": "4-k8s-gitops",
-            "repoURL": "https://github.com/cdviz-dev/demo-cluster",
+            "repoURL": "https://github.com/aaaab-dev/aaaa-aaaaaaa",
             "targetRevision": "HEAD"
           }
         },
         {
           "deployStartedAt": "2025-09-30T16:11:53Z",
           "deployedAt": "2025-09-30T16:11:56Z",
-          "id": 31,
+          "id": 18,
           "initiatedBy": { "automated": true },
           "revision": "542158ea37c12472fa14e797e3d686d3446b5344",
           "source": {
             "path": "4-k8s-gitops",
-            "repoURL": "https://github.com/cdviz-dev/demo-cluster",
+            "repoURL": "https://github.com/aaaab-dev/aaaa-aaaaaaa",
             "targetRevision": "HEAD"
           }
         },
         {
           "deployStartedAt": "2025-09-30T17:44:35Z",
           "deployedAt": "2025-09-30T17:44:39Z",
-          "id": 32,
+          "id": 19,
           "initiatedBy": { "automated": true },
           "revision": "0ea5a3e842def379c4ec31684018a374c7e204df",
           "source": {
             "path": "4-k8s-gitops",
-            "repoURL": "https://github.com/cdviz-dev/demo-cluster",
+            "repoURL": "https://github.com/aaaab-dev/aaaa-aaaaaaa",
             "targetRevision": "HEAD"
           }
         },
         {
           "deployStartedAt": "2025-09-30T19:15:07Z",
           "deployedAt": "2025-09-30T19:15:10Z",
-          "id": 33,
+          "id": 21,
           "initiatedBy": { "automated": true },
           "revision": "dffec5f1be9bda180114da4f0883070d4e20f935",
           "source": {
             "path": "4-k8s-gitops",
-            "repoURL": "https://github.com/cdviz-dev/demo-cluster",
+            "repoURL": "https://github.com/aaaab-dev/aaaa-aaaaaaa",
             "targetRevision": "HEAD"
           }
         },
         {
           "deployStartedAt": "2025-10-01T09:41:25Z",
           "deployedAt": "2025-10-01T09:41:28Z",
-          "id": 34,
+          "id": 22,
           "initiatedBy": { "automated": true },
           "revision": "018ea299634d91e529a48f4f72e32f1f332a12f5",
           "source": {
             "path": "4-k8s-gitops",
-            "repoURL": "https://github.com/cdviz-dev/demo-cluster",
+            "repoURL": "https://github.com/aaaab-dev/aaaa-aaaaaaa",
             "targetRevision": "HEAD"
           }
         },
         {
           "deployStartedAt": "2025-10-02T15:32:44Z",
           "deployedAt": "2025-10-02T15:32:47Z",
-          "id": 35,
+          "id": 23,
           "initiatedBy": { "automated": true },
           "revision": "c351df0e1039c7e151f02f4f2a8096fbd88c7a93",
           "source": {
             "path": "4-k8s-gitops",
-            "repoURL": "https://github.com/cdviz-dev/demo-cluster",
+            "repoURL": "https://github.com/aaaab-dev/aaaa-aaaaaaa",
             "targetRevision": "HEAD"
           }
         },
         {
           "deployStartedAt": "2025-10-02T15:34:45Z",
           "deployedAt": "2025-10-02T15:34:49Z",
-          "id": 36,
+          "id": 24,
           "initiatedBy": { "automated": true },
           "revision": "744ef414bc4880d1ac71b8296dc01ebc35f4f97c",
           "source": {
             "path": "4-k8s-gitops",
-            "repoURL": "https://github.com/cdviz-dev/demo-cluster",
+            "repoURL": "https://github.com/aaaab-dev/aaaa-aaaaaaa",
             "targetRevision": "HEAD"
           }
         },
         {
           "deployStartedAt": "2025-10-02T16:20:55Z",
           "deployedAt": "2025-10-02T16:20:59Z",
-          "id": 37,
+          "id": 25,
           "initiatedBy": { "automated": true },
           "revision": "94fcc5e8673e0d2d7fbca6b1c6c455ba308314fc",
           "source": {
             "path": "4-k8s-gitops",
-            "repoURL": "https://github.com/cdviz-dev/demo-cluster",
+            "repoURL": "https://github.com/aaaab-dev/aaaa-aaaaaaa",
             "targetRevision": "HEAD"
           }
         }
@@ -339,7 +339,7 @@
         "operation": {
           "initiatedBy": { "automated": true },
           "retry": {
-            "backoff": { "duration": "5s", "factor": 2, "maxDuration": "3m" },
+            "backoff": { "duration": "5s", "factor": 3, "maxDuration": "3m" },
             "limit": 5
           },
           "sync": {
@@ -356,7 +356,7 @@
         {
           "group": "argoproj.io",
           "kind": "AppProject",
-          "name": "demo-cluster",
+          "name": "aaaa-aaaaaaa",
           "namespace": "argocd",
           "status": "Synced",
           "version": "v1alpha1"
@@ -364,7 +364,7 @@
         {
           "group": "argoproj.io",
           "kind": "Application",
-          "name": "podinfo",
+          "name": "aaaaaab",
           "namespace": "argocd",
           "status": "Synced",
           "version": "v1alpha1"
@@ -372,25 +372,25 @@
         {
           "group": "argoproj.io",
           "kind": "ApplicationSet",
-          "name": "cdviz",
+          "name": "aaaab",
           "namespace": "argocd",
           "status": "Synced",
-          "syncWave": 2,
+          "syncWave": 3,
           "version": "v1alpha1"
         },
         {
           "group": "argoproj.io",
           "kind": "ApplicationSet",
-          "name": "download-history",
+          "name": "aaaaaaaa-aaaaaab",
           "namespace": "argocd",
           "status": "Synced",
-          "syncWave": 2,
+          "syncWave": 3,
           "version": "v1alpha1"
         },
         {
           "group": "secrets.hashicorp.com",
           "kind": "VaultStaticSecret",
-          "name": "cdviz-dev-helm-oci",
+          "name": "aaaaa-aaa-aaaa-aaa",
           "namespace": "argocd",
           "status": "Synced",
           "version": "v1beta1"
@@ -407,7 +407,7 @@
           },
           "source": {
             "path": "4-k8s-gitops",
-            "repoURL": "https://github.com/cdviz-dev/demo-cluster",
+            "repoURL": "https://github.com/aaaab-dev/aaaa-aaaaaaa",
             "targetRevision": "HEAD"
           }
         },

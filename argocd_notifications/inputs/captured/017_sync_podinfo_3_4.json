@@ -1,8 +1,8 @@
 {
   "timestamp": "2025-10-02T16:53:25.449376Z",
   "context": {
-    "argocdUrl": "https://demo.cdviz.dev",
-    "notificationType": "cdviz"
+    "argocdUrl": "https://demo.aaaab.dev",
+    "notificationType": "aaaab"
   },
   "app": {
     "apiVersion": "argoproj.io/v1alpha1",
@@ -15,7 +15,7 @@
       "generation": 26,
       "labels": {
         "app.kubernetes.io/managed-by": "argocd",
-        "cdviz.dev/cluster": "demo-cluster"
+        "aaaab.dev/cluster": "aaaa-aaaaaaa"
       },
       "managedFields": [
         {
@@ -26,7 +26,7 @@
               "f:annotations": { "f:argocd.argoproj.io/tracking-id": {} },
               "f:labels": {
                 "f:app.kubernetes.io/managed-by": {},
-                "f:cdviz.dev/cluster": {}
+                "f:aaaab.dev/cluster": {}
               }
             },
             "f:spec": {
@@ -138,7 +138,7 @@
         "namespace": "aaaaaaa",
         "server": "https://kubernetes.default.svc"
       },
-      "project": "demo-cluster",
+      "project": "aaaa-aaaaaaa",
       "revisionHistoryLimit": 3,
       "sources": [
         {
@@ -166,7 +166,7 @@
       "syncPolicy": {
         "automated": { "prune": true, "selfHeal": true },
         "retry": {
-          "backoff": { "duration": "5s", "factor": 2, "maxDuration": "3m" },
+          "backoff": { "duration": "5s", "factor": 3, "maxDuration": "3m" },
           "limit": 5
         },
         "syncOptions": [
@@ -186,7 +186,7 @@
         {
           "deployStartedAt": "2025-10-02T16:21:00Z",
           "deployedAt": "2025-10-02T16:21:03Z",
-          "id": 0,
+          "id": 1,
           "initiatedBy": { "automated": true },
           "revisions": ["6.9.0"],
           "source": { "repoURL": "" },
@@ -201,7 +201,7 @@
         {
           "deployStartedAt": "2025-10-02T16:53:19Z",
           "deployedAt": "2025-10-02T16:53:20Z",
-          "id": 1,
+          "id": 2,
           "initiatedBy": { "automated": true },
           "revisions": ["6.9.0"],
           "source": { "repoURL": "" },
@@ -236,7 +236,7 @@
         "operation": {
           "initiatedBy": { "automated": true },
           "retry": {
-            "backoff": { "duration": "5s", "factor": 2, "maxDuration": "3m" },
+            "backoff": { "duration": "5s", "factor": 3, "maxDuration": "3m" },
             "limit": 5
           },
           "sync": {

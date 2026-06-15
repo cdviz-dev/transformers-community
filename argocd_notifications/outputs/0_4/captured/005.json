@@ -13,7 +13,7 @@
         "namespace": "argocd"
       },
       "destination": {
-        "namespace": "cdviz-dev",
+        "namespace": "aaaab-dev",
         "server": "https://kubernetes.default.svc"
       },
       "health": {

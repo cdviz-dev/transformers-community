@@ -34,7 +34,7 @@
           {
             "apiVersion": "apps/v1",
             "kind": "ReplicaSet",
-            "name": "aaaaaaaaa-57d9989bd",
+            "name": "aaaaaaaaa-11a1111aa",
             "uid": "f3ad1f8e-b737-4bea-900e-c2cb521b9f3a",
             "controller": true,
             "blockOwnerDeletion": true
@@ -105,7 +105,7 @@
                 "f:terminationGracePeriodSeconds": {},
                 "f:volumes": {
                   ".": {},
-                  "k:{\"name\":\"configuration\"}": {
+                  "k:{\"name\":\"aaaaaaaaaaaaa\"}": {
                     ".": {},
                     "f:configMap": {
                       ".": {},
@@ -177,14 +177,14 @@
       "spec": {
         "volumes": [
           {
-            "name": "configuration",
+            "name": "aaaaaaaaaaaaa",
             "configMap": {
-              "name": "aaaaaaaaa-config",
+              "name": "aaaaaaaaa-aaaaaa",
               "defaultMode": 420
             }
           },
           {
-            "name": "kube-api-access-9dtzp",
+            "name": "aaaa-aaa-aaaaaa-1aaaa",
             "projected": {
               "sources": [
                 {
@@ -195,7 +195,7 @@
                 },
                 {
                   "configMap": {
-                    "name": "kube-root-ca.crt",
+                    "name": "aaaa-aaaa-aa.aaa",
                     "items": [
                       {
                         "key": "ca.crt",
@@ -229,12 +229,12 @@
             "resources": {},
             "volumeMounts": [
               {
-                "name": "configuration",
+                "name": "aaaaaaaaaaaaa",
                 "mountPath": "/opt/bitnami/aaaaaaaaa/.aaaaaaaaa.yaml",
                 "subPath": ".aaaaaaaaa.yaml"
               },
               {
-                "name": "kube-api-access-9dtzp",
+                "name": "aaaa-aaa-aaaaaa-1aaaa",
                 "readOnly": true,
                 "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount"
               }
@@ -373,7 +373,7 @@
           {
             "apiVersion": "apps/v1",
             "kind": "ReplicaSet",
-            "name": "aaaaaaaaa-57d9989bd",
+            "name": "aaaaaaaaa-11a1111aa",
             "uid": "f3ad1f8e-b737-4bea-900e-c2cb521b9f3a",
             "controller": true,
             "blockOwnerDeletion": true
@@ -444,7 +444,7 @@
                 "f:terminationGracePeriodSeconds": {},
                 "f:volumes": {
                   ".": {},
-                  "k:{\"name\":\"configuration\"}": {
+                  "k:{\"name\":\"aaaaaaaaaaaaa\"}": {
                     ".": {},
                     "f:configMap": {
                       ".": {},
@@ -511,14 +511,14 @@
       "spec": {
         "volumes": [
           {
-            "name": "configuration",
+            "name": "aaaaaaaaaaaaa",
             "configMap": {
-              "name": "aaaaaaaaa-config",
+              "name": "aaaaaaaaa-aaaaaa",
               "defaultMode": 420
             }
           },
           {
-            "name": "kube-api-access-9dtzp",
+            "name": "aaaa-aaa-aaaaaa-1aaaa",
             "projected": {
               "sources": [
                 {
@@ -529,7 +529,7 @@
                 },
                 {
                   "configMap": {
-                    "name": "kube-root-ca.crt",
+                    "name": "aaaa-aaaa-aa.aaa",
                     "items": [
                       {
                         "key": "ca.crt",
@@ -563,12 +563,12 @@
             "resources": {},
             "volumeMounts": [
               {
-                "name": "configuration",
+                "name": "aaaaaaaaaaaaa",
                 "mountPath": "/opt/bitnami/aaaaaaaaa/.aaaaaaaaa.yaml",
                 "subPath": ".aaaaaaaaa.yaml"
               },
               {
-                "name": "kube-api-access-9dtzp",
+                "name": "aaaa-aaa-aaaaaa-1aaaa",
                 "readOnly": true,
                 "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount"
               }

@@ -117,7 +117,7 @@
                     "f:terminationGracePeriodSeconds": {},
                     "f:volumes": {
                       ".": {},
-                      "k:{\"name\":\"configuration\"}": {
+                      "k:{\"name\":\"aaaaaaaaaaaaa\"}": {
                         ".": {},
                         "f:configMap": {
                           ".": {},
@@ -201,9 +201,9 @@
           "spec": {
             "volumes": [
               {
-                "name": "configuration",
+                "name": "aaaaaaaaaaaaa",
                 "configMap": {
-                  "name": "aaaaaaaaa-config",
+                  "name": "aaaaaaaaa-aaaaaa",
                   "defaultMode": 420
                 }
               }
@@ -215,7 +215,7 @@
                 "resources": {},
                 "volumeMounts": [
                   {
-                    "name": "configuration",
+                    "name": "aaaaaaaaaaaaa",
                     "mountPath": "/opt/bitnami/aaaaaaaaa/.aaaaaaaaa.yaml",
                     "subPath": ".aaaaaaaaa.yaml"
                   }
@@ -285,7 +285,7 @@
             "lastUpdateTime": "2024-12-18T17:58:38Z",
             "lastTransitionTime": "2024-12-18T16:48:14Z",
             "reason": "ReplicaSetUpdated",
-            "message": "ReplicaSet \"aaaaaaaaa-57d9989bd\" is progressing."
+            "message": "ReplicaSet \"aaaaaaaaa-11a1111aa\" is progressing."
           }
         ]
       }

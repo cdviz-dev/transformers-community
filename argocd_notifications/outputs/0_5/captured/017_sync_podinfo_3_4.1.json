@@ -16,8 +16,8 @@
           "creationTimestamp": "2025-10-02T15:32:45Z",
           "generation": 26,
           "labels": {
-            "app.kubernetes.io/managed-by": "argocd",
-            "cdviz.dev/cluster": "demo-cluster"
+            "aaaab.dev/cluster": "aaaa-aaaaaaa",
+            "app.kubernetes.io/managed-by": "argocd"
           },
           "managedFields": [
             {
@@ -29,8 +29,8 @@
                     "f:argocd.argoproj.io/tracking-id": {}
                   },
                   "f:labels": {
-                    "f:app.kubernetes.io/managed-by": {},
-                    "f:cdviz.dev/cluster": {}
+                    "f:aaaab.dev/cluster": {},
+                    "f:app.kubernetes.io/managed-by": {}
                   }
                 },
                 "f:spec": {
@@ -160,7 +160,7 @@
             "namespace": "aaaaaaa",
             "server": "https://kubernetes.default.svc"
           },
-          "project": "demo-cluster",
+          "project": "aaaa-aaaaaaa",
           "revisionHistoryLimit": 3,
           "sources": [
             {
@@ -199,7 +199,7 @@
             "retry": {
               "backoff": {
                 "duration": "5s",
-                "factor": 2,
+                "factor": 3,
                 "maxDuration": "3m"
               },
               "limit": 5
@@ -221,7 +221,7 @@
             {
               "deployStartedAt": "2025-10-02T16:21:00Z",
               "deployedAt": "2025-10-02T16:21:03Z",
-              "id": 0,
+              "id": 1,
               "initiatedBy": {
                 "automated": true
               },
@@ -242,7 +242,7 @@
             {
               "deployStartedAt": "2025-10-02T16:53:19Z",
               "deployedAt": "2025-10-02T16:53:20Z",
-              "id": 1,
+              "id": 2,
               "initiatedBy": {
                 "automated": true
               },
@@ -293,7 +293,7 @@
               "retry": {
                 "backoff": {
                   "duration": "5s",
-                  "factor": 2,
+                  "factor": 3,
                   "maxDuration": "3m"
                 },
                 "limit": 5
@@ -439,8 +439,8 @@
         }
       },
       "context": {
-        "argocdUrl": "https://demo.cdviz.dev",
-        "notificationType": "cdviz"
+        "argocdUrl": "https://demo.aaaab.dev",
+        "notificationType": "aaaab"
       },
       "timestamp": "2025-10-02T16:53:25.449376Z"
     }

@@ -34,10 +34,10 @@
     },
     "labels": [
       {
-        "id": 7872928565,
-        "node_id": "LA_kwDONcdWcs8AAAAB1UNbNQ",
-        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/labels/bug",
-        "name": "bug",
+        "id": 1111111113,
+        "node_id": "AA_aaAAAaaAaa1AAAAA1AAaAB",
+        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/labels/aab",
+        "name": "aab",
         "color": "d73a4a",
         "default": true,
         "description": "Something isn't working"

@@ -11,7 +11,7 @@
         "kind": "Application",
         "metadata": {
           "annotations": {
-            "argocd.argoproj.io/sync-wave": "1"
+            "argocd.argoproj.io/sync-wave": "2"
           },
           "creationTimestamp": "2025-08-14T12:18:35Z",
           "finalizers": [
@@ -20,7 +20,7 @@
           "generation": 97,
           "labels": {
             "app.kubernetes.io/name": "aaaaa-aa",
-            "app.kubernetes.io/part-of": "cdviz"
+            "app.kubernetes.io/part-of": "aaaab"
           },
           "managedFields": [
             {
@@ -142,7 +142,7 @@
               "blockOwnerDeletion": true,
               "controller": true,
               "kind": "ApplicationSet",
-              "name": "cdviz",
+              "name": "aaaab",
               "uid": "ddb4ddea-2d33-4a7b-aac0-2ddb66614179"
             }
           ],
@@ -151,10 +151,10 @@
         },
         "spec": {
           "destination": {
-            "namespace": "cdviz-dev",
+            "namespace": "aaaab-dev",
             "server": "https://kubernetes.default.svc"
           },
-          "project": "demo-cluster",
+          "project": "aaaa-aaaaaaa",
           "revisionHistoryLimit": 3,
           "sources": [
             {
@@ -162,20 +162,20 @@
               "helm": {
                 "parameters": [
                   {
-                    "name": "nameOverride",
+                    "name": "aaaaAaaaaaaa",
                     "value": "aaaaa-aa"
                   }
                 ],
                 "valueFiles": [
-                  "$values/4-k8s-gitops/values/cdviz/aaaaa-aa.yaml"
+                  "$values/4-k8s-gitops/values/aaaab/aaaaa-aa.yaml"
                 ]
               },
-              "repoURL": "ghcr.io/cdviz-dev/charts",
+              "repoURL": "ghcr.io/aaaab-dev/charts",
               "targetRevision": "0.4.0-1-gd90b34f"
             },
             {
               "ref": "values",
-              "repoURL": "https://github.com/cdviz-dev/demo-cluster",
+              "repoURL": "https://github.com/aaaab-dev/aaaa-aaaaaaa",
               "targetRevision": "HEAD"
             }
           ],
@@ -187,7 +187,7 @@
             "retry": {
               "backoff": {
                 "duration": "5s",
-                "factor": 2,
+                "factor": 3,
                 "maxDuration": "3m"
               },
               "limit": 5
@@ -208,7 +208,7 @@
             },
             {
               "lastTransitionTime": "2025-08-14T13:02:39Z",
-              "message": "Application has 13 orphaned resources",
+              "message": "Application has 12 orphaned resources",
               "type": "OrphanedResourceWarning"
             }
           ],
@@ -223,8 +223,8 @@
             {
               "group": "batch",
               "kind": "CronJob",
-              "name": "aaaaa-aa-migration",
-              "namespace": "cdviz-dev",
+              "name": "aaaaa-aa-aaaaaaaaa",
+              "namespace": "aaaab-dev",
               "status": "Unknown",
               "version": "v1"
             },
@@ -232,23 +232,23 @@
               "group": "postgresql.cnpg.io",
               "kind": "Cluster",
               "name": "aaaaa-aa",
-              "namespace": "cdviz-dev",
+              "namespace": "aaaab-dev",
               "status": "Unknown",
               "version": "v1"
             },
             {
               "group": "secrets.hashicorp.com",
               "kind": "VaultStaticSecret",
-              "name": "aaaaa-aa-owner-secret-vault",
-              "namespace": "cdviz-dev",
+              "name": "aaaaa-aa-aaaaa-aaaaaa-aaaaa",
+              "namespace": "aaaab-dev",
               "status": "Unknown",
               "version": "v1beta1"
             },
             {
               "group": "secrets.hashicorp.com",
               "kind": "VaultStaticSecret",
-              "name": "aaaaa-aa-su-vault",
-              "namespace": "cdviz-dev",
+              "name": "aaaaa-aa-aa-aaaaa",
+              "namespace": "aaaab-dev",
               "status": "Unknown",
               "version": "v1beta1"
             }
@@ -260,14 +260,14 @@
           ],
           "summary": {
             "images": [
-              "ghcr.io/cdviz-dev/aaaaa-aa-pg:17.4",
+              "ghcr.io/aaaab-dev/aaaaa-aa-pg:17.4",
               "ghcr.io/cloudnative-pg/cloudnative-pg:1.25.1"
             ]
           },
           "sync": {
             "comparedTo": {
               "destination": {
-                "namespace": "cdviz-dev",
+                "namespace": "aaaab-dev",
                 "server": "https://kubernetes.default.svc"
               },
               "source": {
@@ -279,20 +279,20 @@
                   "helm": {
                     "parameters": [
                       {
-                        "name": "nameOverride",
+                        "name": "aaaaAaaaaaaa",
                         "value": "aaaaa-aa"
                       }
                     ],
                     "valueFiles": [
-                      "$values/4-k8s-gitops/values/cdviz/aaaaa-aa.yaml"
+                      "$values/4-k8s-gitops/values/aaaab/aaaaa-aa.yaml"
                     ]
                   },
-                  "repoURL": "ghcr.io/cdviz-dev/charts",
+                  "repoURL": "ghcr.io/aaaab-dev/charts",
                   "targetRevision": "0.4.0-1-gd90b34f"
                 },
                 {
                   "ref": "values",
-                  "repoURL": "https://github.com/cdviz-dev/demo-cluster",
+                  "repoURL": "https://github.com/aaaab-dev/aaaa-aaaaaaa",
                   "targetRevision": "HEAD"
                 }
               ]
@@ -306,19 +306,19 @@
         }
       },
       "context": {
-        "argocdUrl": "https://demo.cdviz.dev",
-        "notificationType": "cdviz"
+        "argocdUrl": "https://demo.aaaab.dev",
+        "notificationType": "aaaab"
       },
       "timestamp": "2025-10-02T16:06:23.018508Z"
     }
   },
   "subject": {
     "content": {
-      "artifactId": "pkg:oci/aaaaa-aa-pg?repository_url=ghcr.io/cdviz-dev&tag=17.4",
+      "artifactId": "pkg:oci/aaaaa-aa-pg?repository_url=ghcr.io/aaaab-dev&tag=17.4",
       "environment": {
         "id": "https://kubernetes.default.svc"
       }
     },
-    "id": "/cdviz-dev/aaaaa-aa/aaaaa-aa-pg"
+    "id": "/aaaab-dev/aaaaa-aa/aaaaa-aa-pg"
   }
 }

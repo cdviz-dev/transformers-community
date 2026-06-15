@@ -11,8 +11,8 @@
         "kind": "Application",
         "metadata": {
           "annotations": {
-            "argocd.argoproj.io/sync-wave": "1",
-            "notified.notifications.argoproj.io": "{\"\\u003cnil\\u003e:on-deployed:[0].Yv81TUs0gmPTEyk-v8Lb6ZKEo0g:cdviz:\":1759421002,\"\\u003cnil\\u003e:on-deployed:[0].Yv81TUs0gmPTEyk-v8Lb6ZKEo0g:webhook:cdviz\":1759420702}"
+            "argocd.argoproj.io/sync-wave": "2",
+            "notified.notifications.argoproj.io": "{\"\\u003cnil\\u003e:on-deployed:[0].Yv81TUs0gmPTEyk-v8Lb6ZKEo0g:aaaab:\":1759421002,\"\\u003cnil\\u003e:on-deployed:[0].Yv81TUs0gmPTEyk-v8Lb6ZKEo0g:webhook:aaaab\":1759420702}"
           },
           "creationTimestamp": "2025-09-29T16:13:28Z",
           "finalizers": [
@@ -228,7 +228,7 @@
               "kind": "HTTPRoute"
             }
           ],
-          "project": "demo-cluster",
+          "project": "aaaa-aaaaaaa",
           "revisionHistoryLimit": 3,
           "sources": [
             {
@@ -236,7 +236,7 @@
               "helm": {
                 "parameters": [
                   {
-                    "name": "nameOverride",
+                    "name": "aaaaAaaaaaaa",
                     "value": "aaaaaaaa-aaaaaaa"
                   }
                 ],
@@ -244,12 +244,12 @@
                   "$values/4-k8s-gitops/values/aaaaaaaa-aaaaaaa/aaaaaaaa-aaaaaaa.yaml"
                 ]
               },
-              "repoURL": "ghcr.io/cdviz-dev/charts",
+              "repoURL": "ghcr.io/aaaab-dev/charts",
               "targetRevision": "0.6.3"
             },
             {
               "ref": "values",
-              "repoURL": "https://github.com/cdviz-dev/demo-cluster",
+              "repoURL": "https://github.com/aaaab-dev/aaaa-aaaaaaa",
               "targetRevision": "HEAD"
             }
           ],
@@ -261,7 +261,7 @@
             "retry": {
               "backoff": {
                 "duration": "5s",
-                "factor": 2,
+                "factor": 3,
                 "maxDuration": "3m"
               },
               "limit": 5
@@ -290,7 +290,7 @@
             {
               "deployStartedAt": "2025-10-01T09:41:35Z",
               "deployedAt": "2025-10-01T09:41:36Z",
-              "id": 12,
+              "id": 11,
               "initiatedBy": {
                 "automated": true
               },
@@ -307,7 +307,7 @@
                   "helm": {
                     "parameters": [
                       {
-                        "name": "nameOverride",
+                        "name": "aaaaAaaaaaaa",
                         "value": "aaaaaaaa-aaaaaaa"
                       }
                     ],
@@ -315,12 +315,12 @@
                       "$values/4-k8s-gitops/values/aaaaaaaa-aaaaaaa/aaaaaaaa-aaaaaaa.yaml"
                     ]
                   },
-                  "repoURL": "ghcr.io/cdviz-dev/charts",
+                  "repoURL": "ghcr.io/aaaab-dev/charts",
                   "targetRevision": "0.6.3"
                 },
                 {
                   "ref": "values",
-                  "repoURL": "https://github.com/cdviz-dev/demo-cluster",
+                  "repoURL": "https://github.com/aaaab-dev/aaaa-aaaaaaa",
                   "targetRevision": "HEAD"
                 }
               ]
@@ -328,6 +328,44 @@
             {
               "deployStartedAt": "2025-10-02T15:06:38Z",
               "deployedAt": "2025-10-02T15:06:44Z",
+              "id": 12,
+              "initiatedBy": {
+                "username": "aaaaa"
+              },
+              "revisions": [
+                "0.6.3",
+                "90460e57069cadc1332ca8137268028bf3f12765"
+              ],
+              "source": {
+                "repoURL": ""
+              },
+              "sources": [
+                {
+                  "chart": "aaaaaaaa-aaaaaaa",
+                  "helm": {
+                    "parameters": [
+                      {
+                        "name": "aaaaAaaaaaaa",
+                        "value": "aaaaaaaa-aaaaaaa"
+                      }
+                    ],
+                    "valueFiles": [
+                      "$values/4-k8s-gitops/values/aaaaaaaa-aaaaaaa/aaaaaaaa-aaaaaaa.yaml"
+                    ]
+                  },
+                  "repoURL": "ghcr.io/aaaab-dev/charts",
+                  "targetRevision": "0.6.3"
+                },
+                {
+                  "ref": "values",
+                  "repoURL": "https://github.com/aaaab-dev/aaaa-aaaaaaa",
+                  "targetRevision": "HEAD"
+                }
+              ]
+            },
+            {
+              "deployStartedAt": "2025-10-02T15:21:07Z",
+              "deployedAt": "2025-10-02T15:21:07Z",
               "id": 13,
               "initiatedBy": {
                 "username": "aaaaa"
@@ -345,7 +383,7 @@
                   "helm": {
                     "parameters": [
                       {
-                        "name": "nameOverride",
+                        "name": "aaaaAaaaaaaa",
                         "value": "aaaaaaaa-aaaaaaa"
                       }
                     ],
@@ -353,50 +391,12 @@
                       "$values/4-k8s-gitops/values/aaaaaaaa-aaaaaaa/aaaaaaaa-aaaaaaa.yaml"
                     ]
                   },
-                  "repoURL": "ghcr.io/cdviz-dev/charts",
+                  "repoURL": "ghcr.io/aaaab-dev/charts",
                   "targetRevision": "0.6.3"
                 },
                 {
                   "ref": "values",
-                  "repoURL": "https://github.com/cdviz-dev/demo-cluster",
-                  "targetRevision": "HEAD"
-                }
-              ]
-            },
-            {
-              "deployStartedAt": "2025-10-02T15:21:07Z",
-              "deployedAt": "2025-10-02T15:21:07Z",
-              "id": 14,
-              "initiatedBy": {
-                "username": "aaaaa"
-              },
-              "revisions": [
-                "0.6.3",
-                "90460e57069cadc1332ca8137268028bf3f12765"
-              ],
-              "source": {
-                "repoURL": ""
-              },
-              "sources": [
-                {
-                  "chart": "aaaaaaaa-aaaaaaa",
-                  "helm": {
-                    "parameters": [
-                      {
-                        "name": "nameOverride",
-                        "value": "aaaaaaaa-aaaaaaa"
-                      }
-                    ],
-                    "valueFiles": [
-                      "$values/4-k8s-gitops/values/aaaaaaaa-aaaaaaa/aaaaaaaa-aaaaaaa.yaml"
-                    ]
-                  },
-                  "repoURL": "ghcr.io/cdviz-dev/charts",
-                  "targetRevision": "0.6.3"
-                },
-                {
-                  "ref": "values",
-                  "repoURL": "https://github.com/cdviz-dev/demo-cluster",
+                  "repoURL": "https://github.com/aaaab-dev/aaaa-aaaaaaa",
                   "targetRevision": "HEAD"
                 }
               ]
@@ -412,7 +412,7 @@
               "retry": {
                 "backoff": {
                   "duration": "5s",
-                  "factor": 2,
+                  "factor": 3,
                   "maxDuration": "3m"
                 },
                 "limit": 5
@@ -428,7 +428,7 @@
                     "helm": {
                       "parameters": [
                         {
-                          "name": "nameOverride",
+                          "name": "aaaaAaaaaaaa",
                           "value": "aaaaaaaa-aaaaaaa"
                         }
                       ],
@@ -436,12 +436,12 @@
                         "$values/4-k8s-gitops/values/aaaaaaaa-aaaaaaa/aaaaaaaa-aaaaaaa.yaml"
                       ]
                     },
-                    "repoURL": "ghcr.io/cdviz-dev/charts",
+                    "repoURL": "ghcr.io/aaaab-dev/charts",
                     "targetRevision": "0.6.3"
                   },
                   {
                     "ref": "values",
-                    "repoURL": "https://github.com/cdviz-dev/demo-cluster",
+                    "repoURL": "https://github.com/aaaab-dev/aaaa-aaaaaaa",
                     "targetRevision": "HEAD"
                   }
                 ],
@@ -472,7 +472,7 @@
                   "helm": {
                     "parameters": [
                       {
-                        "name": "nameOverride",
+                        "name": "aaaaAaaaaaaa",
                         "value": "aaaaaaaa-aaaaaaa"
                       }
                     ],
@@ -480,12 +480,12 @@
                       "$values/4-k8s-gitops/values/aaaaaaaa-aaaaaaa/aaaaaaaa-aaaaaaa.yaml"
                     ]
                   },
-                  "repoURL": "ghcr.io/cdviz-dev/charts",
+                  "repoURL": "ghcr.io/aaaab-dev/charts",
                   "targetRevision": "0.6.3"
                 },
                 {
                   "ref": "values",
-                  "repoURL": "https://github.com/cdviz-dev/demo-cluster",
+                  "repoURL": "https://github.com/aaaab-dev/aaaa-aaaaaaa",
                   "targetRevision": "HEAD"
                 }
               ]
@@ -496,7 +496,7 @@
           "resources": [
             {
               "kind": "ConfigMap",
-              "name": "aaaaaaaa-aaaaaaa-config",
+              "name": "aaaaaaaa-aaaaaaa-aaaaaa",
               "namespace": "aaaaaaaa-aaaaaaa",
               "status": "Synced",
               "version": "v1"
@@ -526,7 +526,7 @@
             {
               "group": "batch",
               "kind": "CronJob",
-              "name": "aaaaaaaa-aaaaaaa-harvest",
+              "name": "aaaaaaaa-aaaaaaa-aaaaaaa",
               "namespace": "aaaaaaaa-aaaaaaa",
               "status": "Synced",
               "version": "v1"
@@ -542,7 +542,7 @@
             {
               "group": "networking.k8s.io",
               "kind": "NetworkPolicy",
-              "name": "allow-ingress",
+              "name": "aaaaa-aaaaaab",
               "namespace": "aaaaaaaa-aaaaaaa",
               "status": "Synced",
               "version": "v1"
@@ -550,7 +550,7 @@
             {
               "group": "secrets.hashicorp.com",
               "kind": "VaultStaticSecret",
-              "name": "aaaaaaaa-aaaaaaa-secrets",
+              "name": "aaaaaaaa-aaaaaaa-aaaaaab",
               "namespace": "aaaaaaaa-aaaaaaa",
               "status": "Synced",
               "version": "v1beta1"
@@ -558,7 +558,7 @@
             {
               "group": "secrets.hashicorp.com",
               "kind": "VaultStaticSecret",
-              "name": "regcred",
+              "name": "aaaaaac",
               "namespace": "aaaaaaaa-aaaaaaa",
               "status": "Synced",
               "version": "v1beta1"
@@ -571,8 +571,8 @@
           ],
           "summary": {
             "images": [
-              "ghcr.io/cdviz-dev/aaaaaaaa-aaaaaaa:0.6.2",
-              "ghcr.io/cdviz-dev/aaaaaaaa-aaaaaaa:0.6.3"
+              "ghcr.io/aaaab-dev/aaaaaaaa-aaaaaaa:0.6.2",
+              "ghcr.io/aaaab-dev/aaaaaaaa-aaaaaaa:0.6.3"
             ]
           },
           "sync": {
@@ -602,7 +602,7 @@
                   "helm": {
                     "parameters": [
                       {
-                        "name": "nameOverride",
+                        "name": "aaaaAaaaaaaa",
                         "value": "aaaaaaaa-aaaaaaa"
                       }
                     ],
@@ -610,12 +610,12 @@
                       "$values/4-k8s-gitops/values/aaaaaaaa-aaaaaaa/aaaaaaaa-aaaaaaa.yaml"
                     ]
                   },
-                  "repoURL": "ghcr.io/cdviz-dev/charts",
+                  "repoURL": "ghcr.io/aaaab-dev/charts",
                   "targetRevision": "0.6.3"
                 },
                 {
                   "ref": "values",
-                  "repoURL": "https://github.com/cdviz-dev/demo-cluster",
+                  "repoURL": "https://github.com/aaaab-dev/aaaa-aaaaaaa",
                   "targetRevision": "HEAD"
                 }
               ]
@@ -629,15 +629,15 @@
         }
       },
       "context": {
-        "argocdUrl": "https://demo.cdviz.dev",
-        "notificationType": "cdviz"
+        "argocdUrl": "https://demo.aaaab.dev",
+        "notificationType": "aaaab"
       },
       "timestamp": "2025-10-02T16:06:22.517138Z"
     }
   },
   "subject": {
     "content": {
-      "artifactId": "pkg:oci/aaaaaaaa-aaaaaaa@0.6.3?repository_url=ghcr.io/cdviz-dev/charts",
+      "artifactId": "pkg:oci/aaaaaaaa-aaaaaaa@0.6.3?repository_url=ghcr.io/aaaab-dev/charts",
       "environment": {
         "id": "https://kubernetes.default.svc"
       }

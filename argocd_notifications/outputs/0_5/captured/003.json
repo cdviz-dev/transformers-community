@@ -14,10 +14,10 @@
             "argocd.argoproj.io/tracking-id": "aaaaaaaaa:aaaaaaaa.aa/Aaaaaaaaaaa:aaaaaa/aaaaaaa"
           },
           "creationTimestamp": "2025-10-02T15:32:45Z",
-          "generation": 2,
+          "generation": 3,
           "labels": {
-            "app.kubernetes.io/managed-by": "argocd",
-            "cdviz.dev/cluster": "demo-cluster"
+            "aaaab.dev/cluster": "aaaa-aaaaaaa",
+            "app.kubernetes.io/managed-by": "argocd"
           },
           "managedFields": [
             {
@@ -29,8 +29,8 @@
                     "f:argocd.argoproj.io/tracking-id": {}
                   },
                   "f:labels": {
-                    "f:app.kubernetes.io/managed-by": {},
-                    "f:cdviz.dev/cluster": {}
+                    "f:aaaab.dev/cluster": {},
+                    "f:app.kubernetes.io/managed-by": {}
                   }
                 },
                 "f:spec": {
@@ -95,7 +95,7 @@
             "namespace": "aaaaaaa",
             "server": "https://kubernetes.default.svc"
           },
-          "project": "demo-cluster",
+          "project": "aaaa-aaaaaaa",
           "revisionHistoryLimit": 3,
           "sources": [
             {
@@ -112,7 +112,7 @@
             "retry": {
               "backoff": {
                 "duration": "5s",
-                "factor": 2,
+                "factor": 3,
                 "maxDuration": "3m"
               },
               "limit": 5
@@ -128,7 +128,7 @@
           "conditions": [
             {
               "lastTransitionTime": "2025-10-02T15:32:45Z",
-              "message": "application repo oci://ghcr.io/stefanprodan/charts/ is not permitted in project 'demo-cluster'",
+              "message": "application repo oci://ghcr.io/stefanprodan/charts/ is not permitted in project 'aaaa-aaaaaaa'",
               "type": "InvalidSpecError"
             }
           ],
@@ -142,8 +142,8 @@
         }
       },
       "context": {
-        "argocdUrl": "https://demo.cdviz.dev",
-        "notificationType": "cdviz"
+        "argocdUrl": "https://demo.aaaab.dev",
+        "notificationType": "aaaab"
       },
       "timestamp": "2025-10-02T16:06:22.646120Z"
     }

@@ -25,10 +25,10 @@
             "color": "d876e3",
             "default": true,
             "description": "Further information is requested",
-            "id": 7872928583,
-            "name": "question",
-            "node_id": "LA_kwDONcdWcs8AAAAB1UNbRw",
-            "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/labels/question"
+            "id": 1111111114,
+            "name": "aaaaaaab",
+            "node_id": "AA_aaAAAaaAaa1AAAAA1AAaAb",
+            "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/labels/aaaaaaab"
           }
         ],
         "labels_url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/issues/98/labels{/name}",
@@ -249,7 +249,7 @@
       "assignees": [],
       "creator": "aaaaaA",
       "labels": [
-        "question"
+        "aaaaaaab"
       ],
       "milestone": null,
       "summary": "test title",

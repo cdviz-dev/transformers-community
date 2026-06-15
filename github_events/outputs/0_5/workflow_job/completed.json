@@ -181,7 +181,7 @@
           {
             "completed_at": "1015-01-11T19:01:08Z",
             "conclusion": "success",
-            "name": "Set up job",
+            "name": "Aaa aa aaa",
             "number": 1,
             "started_at": "1015-01-11T19:01:08Z",
             "status": "completed"
@@ -189,7 +189,7 @@
           {
             "completed_at": "1015-01-11T19:01:09Z",
             "conclusion": "success",
-            "name": "Run actions/checkout@v4",
+            "name": "Aaa aaaaaaa/aaaaaaaa@a1",
             "number": 1,
             "started_at": "1015-01-11T19:01:08Z",
             "status": "completed"
@@ -197,7 +197,7 @@
           {
             "completed_at": "1015-01-11T19:01:10Z",
             "conclusion": "success",
-            "name": "Run mozilla-actions/sccache-action@v0.0.6",
+            "name": "Aaa aaaaaaa-aaaaaaa/aaaaaaa-aaaaaa@a1.1.1",
             "number": 3,
             "started_at": "1015-01-11T19:01:09Z",
             "status": "completed"
@@ -205,7 +205,7 @@
           {
             "completed_at": "1015-01-11T19:01:11Z",
             "conclusion": "success",
-            "name": "Run jdx/mise-action@v1",
+            "name": "Aaa aaa/aaaa-aaaaaa@a1",
             "number": 4,
             "started_at": "1015-01-11T19:01:10Z",
             "status": "completed"
@@ -213,7 +213,7 @@
           {
             "completed_at": "1015-01-11T19:01:11Z",
             "conclusion": "success",
-            "name": "Run mise install",
+            "name": "Aaa aaaa aaaaaaa",
             "number": 5,
             "started_at": "1015-01-11T19:01:11Z",
             "status": "completed"
@@ -221,7 +221,7 @@
           {
             "completed_at": "1015-01-11T19:03:44Z",
             "conclusion": "success",
-            "name": "Run mise run --jobs 1 aa",
+            "name": "Aaa aaaa aaa --aaaa 1 aa",
             "number": 6,
             "started_at": "1015-01-11T19:01:11Z",
             "status": "completed"
@@ -229,7 +229,7 @@
           {
             "completed_at": "1015-01-11T19:03:44Z",
             "conclusion": "success",
-            "name": "Run ${SCCACHE_PATH} --show-stats",
+            "name": "Aaa ${AAAAAAA_AAAA} --aaaa-aaaaa",
             "number": 7,
             "started_at": "1015-01-11T19:03:44Z",
             "status": "completed"
@@ -237,7 +237,7 @@
           {
             "completed_at": "1015-01-11T19:03:46Z",
             "conclusion": "success",
-            "name": "Post Run jdx/mise-action@v1",
+            "name": "Aaaa Aaa aaa/aaaa-aaaaaa@a1",
             "number": 11,
             "started_at": "1015-01-11T19:03:44Z",
             "status": "completed"
@@ -245,7 +245,7 @@
           {
             "completed_at": "1015-01-11T19:03:47Z",
             "conclusion": "success",
-            "name": "Post Run mozilla-actions/sccache-action@v0.0.6",
+            "name": "Aaaa Aaa aaaaaaa-aaaaaaa/aaaaaaa-aaaaaa@a1.1.1",
             "number": 13,
             "started_at": "1015-01-11T19:03:47Z",
             "status": "completed"
@@ -253,7 +253,7 @@
           {
             "completed_at": "1015-01-11T19:03:47Z",
             "conclusion": "success",
-            "name": "Post Run actions/checkout@v4",
+            "name": "Aaaa Aaa aaaaaaa/aaaaaaaa@a1",
             "number": 14,
             "started_at": "1015-01-11T19:03:47Z",
             "status": "completed"
@@ -261,7 +261,7 @@
           {
             "completed_at": "1015-01-11T19:03:47Z",
             "conclusion": "success",
-            "name": "Complete job",
+            "name": "Aaaaaaaa aaa",
             "number": 15,
             "started_at": "1015-01-11T19:03:47Z",
             "status": "completed"

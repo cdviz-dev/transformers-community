@@ -37,10 +37,10 @@
     "published_at": "2025-01-24T14:30:24Z",
     "assets": [
       {
-        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/assets/223128607",
-        "id": 223128607,
-        "node_id": "RA_kwDONcdWcs4NTKwf",
-        "name": "aaaaa-aaaaaaaaa-aarch64-unknown-linux-musl.tar.xz",
+        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/assets/111111112",
+        "id": 111111112,
+        "node_id": "AA_aaAAAaaAaa1AAAaa",
+        "name": "aaaaa-aaaaaaaaa-aaaaa11-aaaaaaa-aaaaa-aaaa.aaa.aa",
         "label": "",
         "uploader": {
           "login": "aaaaaa-aaaaaaa[aaa]",
@@ -69,13 +69,13 @@
         "download_count": 0,
         "created_at": "2025-01-24T14:30:23Z",
         "updated_at": "2025-01-24T14:30:23Z",
-        "browser_download_url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.1.1/aaaaa-aaaaaaaaa-aarch64-unknown-linux-musl.tar.xz"
+        "browser_download_url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.1.1/aaaaa-aaaaaaaaa-aaaaa11-aaaaaaa-aaaaa-aaaa.aaa.aa"
       },
       {
-        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/assets/223128608",
-        "id": 223128608,
-        "node_id": "RA_kwDONcdWcs4NTKwg",
-        "name": "aaaaa-aaaaaaaaa-aarch64-unknown-linux-musl.tar.xz.sha256",
+        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/assets/111111113",
+        "id": 111111113,
+        "node_id": "AA_aaAAAaaAaa1AAAab",
+        "name": "aaaaa-aaaaaaaaa-aaaaa11-aaaaaaa-aaaaa-aaaa.aaa.aa.aaa111",
         "label": "",
         "uploader": {
           "login": "aaaaaa-aaaaaaa[aaa]",
@@ -104,13 +104,13 @@
         "download_count": 0,
         "created_at": "2025-01-24T14:30:23Z",
         "updated_at": "2025-01-24T14:30:23Z",
-        "browser_download_url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.1.1/aaaaa-aaaaaaaaa-aarch64-unknown-linux-musl.tar.xz.sha256"
+        "browser_download_url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.1.1/aaaaa-aaaaaaaaa-aaaaa11-aaaaaaa-aaaaa-aaaa.aaa.aa.aaa111"
       },
       {
-        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/assets/223128611",
-        "id": 223128611,
-        "node_id": "RA_kwDONcdWcs4NTKwj",
-        "name": "aaaaa-aaaaaaaaa-installer.sh",
+        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/assets/111111115",
+        "id": 111111115,
+        "node_id": "AA_aaAAAaaAaa1AAAad",
+        "name": "aaaaa-aaaaaaaaa-aaaaaaaaa.aa",
         "label": "",
         "uploader": {
           "login": "aaaaaa-aaaaaaa[aaa]",
@@ -139,13 +139,13 @@
         "download_count": 0,
         "created_at": "2025-01-24T14:30:23Z",
         "updated_at": "2025-01-24T14:30:23Z",
-        "browser_download_url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.1.1/aaaaa-aaaaaaaaa-installer.sh"
+        "browser_download_url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.1.1/aaaaa-aaaaaaaaa-aaaaaaaaa.aa"
       },
       {
-        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/assets/223128609",
-        "id": 223128609,
-        "node_id": "RA_kwDONcdWcs4NTKwh",
-        "name": "aaaaa-aaaaaaaaa-x86_64-unknown-linux-musl.tar.xz",
+        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/assets/111111114",
+        "id": 111111114,
+        "node_id": "AA_aaAAAaaAaa1AAAac",
+        "name": "aaaaa-aaaaaaaaa-a11_11-aaaaaaa-aaaaa-aaaa.aaa.aa",
         "label": "",
         "uploader": {
           "login": "aaaaaa-aaaaaaa[aaa]",
@@ -174,13 +174,13 @@
         "download_count": 0,
         "created_at": "2025-01-24T14:30:23Z",
         "updated_at": "2025-01-24T14:30:23Z",
-        "browser_download_url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.1.1/aaaaa-aaaaaaaaa-x86_64-unknown-linux-musl.tar.xz"
+        "browser_download_url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.1.1/aaaaa-aaaaaaaaa-a11_11-aaaaaaa-aaaaa-aaaa.aaa.aa"
       },
       {
-        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/assets/223128612",
-        "id": 223128612,
-        "node_id": "RA_kwDONcdWcs4NTKwk",
-        "name": "aaaaa-aaaaaaaaa-x86_64-unknown-linux-musl.tar.xz.sha256",
+        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/assets/111111116",
+        "id": 111111116,
+        "node_id": "AA_aaAAAaaAaa1AAAae",
+        "name": "aaaaa-aaaaaaaaa-a11_11-aaaaaaa-aaaaa-aaaa.aaa.aa.aaa111",
         "label": "",
         "uploader": {
           "login": "aaaaaa-aaaaaaa[aaa]",
@@ -209,13 +209,13 @@
         "download_count": 0,
         "created_at": "2025-01-24T14:30:23Z",
         "updated_at": "2025-01-24T14:30:23Z",
-        "browser_download_url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.1.1/aaaaa-aaaaaaaaa-x86_64-unknown-linux-musl.tar.xz.sha256"
+        "browser_download_url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.1.1/aaaaa-aaaaaaaaa-a11_11-aaaaaaa-aaaaa-aaaa.aaa.aa.aaa111"
       },
       {
-        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/assets/223128614",
-        "id": 223128614,
-        "node_id": "RA_kwDONcdWcs4NTKwm",
-        "name": "aaaaa-aaaaaaaaa.rb",
+        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/assets/111111117",
+        "id": 111111117,
+        "node_id": "AA_aaAAAaaAaa1AAAaf",
+        "name": "aaaaa-aaaaaaaaa.aa",
         "label": "",
         "uploader": {
           "login": "aaaaaa-aaaaaaa[aaa]",
@@ -244,13 +244,13 @@
         "download_count": 0,
         "created_at": "2025-01-24T14:30:23Z",
         "updated_at": "2025-01-24T14:30:23Z",
-        "browser_download_url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.1.1/aaaaa-aaaaaaaaa.rb"
+        "browser_download_url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.1.1/aaaaa-aaaaaaaaa.aa"
       },
       {
-        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/assets/223128615",
-        "id": 223128615,
-        "node_id": "RA_kwDONcdWcs4NTKwn",
-        "name": "dist-manifest.json",
+        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/assets/111111118",
+        "id": 111111118,
+        "node_id": "AA_aaAAAaaAaa1AAAag",
+        "name": "aaaa-aaaaaaaa.aaaa",
         "label": "",
         "uploader": {
           "login": "aaaaaa-aaaaaaa[aaa]",
@@ -279,13 +279,13 @@
         "download_count": 0,
         "created_at": "2025-01-24T14:30:23Z",
         "updated_at": "2025-01-24T14:30:23Z",
-        "browser_download_url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.1.1/dist-manifest.json"
+        "browser_download_url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.1.1/aaaa-aaaaaaaa.aaaa"
       },
       {
-        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/assets/223128616",
-        "id": 223128616,
-        "node_id": "RA_kwDONcdWcs4NTKwo",
-        "name": "sha256.sum",
+        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/assets/111111119",
+        "id": 111111119,
+        "node_id": "AA_aaAAAaaAaa1AAAah",
+        "name": "aaa111.aaa",
         "label": "",
         "uploader": {
           "login": "aaaaaa-aaaaaaa[aaa]",
@@ -314,13 +314,13 @@
         "download_count": 0,
         "created_at": "2025-01-24T14:30:23Z",
         "updated_at": "2025-01-24T14:30:23Z",
-        "browser_download_url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.1.1/sha256.sum"
+        "browser_download_url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.1.1/aaa111.aaa"
       },
       {
-        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/assets/223128618",
-        "id": 223128618,
-        "node_id": "RA_kwDONcdWcs4NTKwq",
-        "name": "source.tar.gz",
+        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/assets/111111122",
+        "id": 111111122,
+        "node_id": "AA_aaAAAaaAaa1AAAaj",
+        "name": "aaaaaa.aaa.aa",
         "label": "",
         "uploader": {
           "login": "aaaaaa-aaaaaaa[aaa]",
@@ -349,13 +349,13 @@
         "download_count": 0,
         "created_at": "2025-01-24T14:30:23Z",
         "updated_at": "2025-01-24T14:30:23Z",
-        "browser_download_url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.1.1/source.tar.gz"
+        "browser_download_url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.1.1/aaaaaa.aaa.aa"
       },
       {
-        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/assets/223128617",
-        "id": 223128617,
-        "node_id": "RA_kwDONcdWcs4NTKwp",
-        "name": "source.tar.gz.sha256",
+        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/assets/111111121",
+        "id": 111111121,
+        "node_id": "AA_aaAAAaaAaa1AAAai",
+        "name": "aaaaaa.aaa.aa.aaa111",
         "label": "",
         "uploader": {
           "login": "aaaaaa-aaaaaaa[aaa]",
@@ -384,12 +384,12 @@
         "download_count": 0,
         "created_at": "2025-01-24T14:30:23Z",
         "updated_at": "2025-01-24T14:30:23Z",
-        "browser_download_url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.1.1/source.tar.gz.sha256"
+        "browser_download_url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.1.1/aaaaaa.aaa.aa.aaa111"
       }
     ],
     "tarball_url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/tarball/1.1.1",
     "zipball_url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/zipball/1.1.1",
-    "body": "## Release Notes\n\n### Added\n\n- [**breaking**] transformer template/script should return an array or none/null/nil\n- *(webhook)* trace_id reported in json error\n- *(security, webhook)* allow to verify (or reject) request against a signature\n- *(webhook)* forward http's headers into the pipe\n- *(webhook)* enable compression, timeout (3s) and bodylimit (1MB)\n- [**breaking**] replace the single http extractor by a webhook\n\n### Fixed\n\n- return UNAUTHORIZE (and not FORBIDDEN) on invalid signature\n- gracefull shutdown to close sources & sink on kill/ctrl-c\n- content_length was zero for every resources / entry\n- use Secret<T> for sensitive configuration\n- *(deps)* update rust crate vrl to 0.21\n- *(deps)* update rust crate handlebars to v6.3.0\n- *(deps)* update rust crate serde_with to v3.12.0\n- *(deps)* update rust crate init-tracing-opentelemetry to 0.25\n\n### Other\n\n- [MegaLinter] Apply linters fixes\n- add basic test for hbs transformer\n- add basic test for base pipe\n- add a basic test for sink http\n- add a task to estimate \"test coverage\"\n- *(deps)* upgrade to opendal 0.51\n- configure rust cli to align with rust-analyzer\n- *(webhook)* enable support for multiple compression (gzip, broli, zstd, flat)\n- *(deps)* upgrade cloudevents-sdk to 0.8\n- *(deps)* upgrade to axum 0.8\n- format import/use\n- integrate `miette` for error reporting (to cont.)\n- *(deps)* pin only major for version >=1.0.0\n- fix configuration of release-plz\n- complete the rust upgrade to 1.84\n- upgrade cargo-dist\n- use INTBOT app instead of the pat RELEASE_PLZ_TOKEN\n- *(deps)* update dependency rust to v1.84.0\n- *(deps)* update rust crate rstest to 0.24\n- *(deps)* update rust crate rustainers to 0.13\n- *(deps)* commit the Cargo.lock of executable\n- capture samples of kubewatch events\n- enable renovate as github-action\n\n## Install aaaaa-aaaaaaaaa 1.1.1\n\n### Install prebuilt binaries via shell script\n\n```sh\ncurl --proto '=https' --tlsv1.2 -LsSf https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.1.1/aaaaa-aaaaaaaaa-installer.sh | sh\n```\n\n### Install prebuilt binaries via Homebrew\n\n```sh\nbrew install aaaaa-aaa/tap/aaaaa-aaaaaaaaa\n```\n\n## Download aaaaa-aaaaaaaaa 1.1.1\n\n|  File  | Platform | Checksum |\n|--------|----------|----------|\n| [aaaaa-aaaaaaaaa-aarch64-unknown-linux-musl.tar.xz](https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.1.1/aaaaa-aaaaaaaaa-aarch64-unknown-linux-musl.tar.xz) | ARM64 MUSL Linux | [checksum](https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.1.1/aaaaa-aaaaaaaaa-aarch64-unknown-linux-musl.tar.xz.sha256) |\n| [aaaaa-aaaaaaaaa-x86_64-unknown-linux-musl.tar.xz](https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.1.1/aaaaa-aaaaaaaaa-x86_64-unknown-linux-musl.tar.xz) | x64 MUSL Linux | [checksum](https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.1.1/aaaaa-aaaaaaaaa-x86_64-unknown-linux-musl.tar.xz.sha256) |\n\n\n"
+    "body": "## Release Notes\n\n### Added\n\n- [**breaking**] transformer template/script should return an array or none/null/nil\n- *(webhook)* trace_id reported in json error\n- *(security, webhook)* allow to verify (or reject) request against a signature\n- *(webhook)* forward http's headers into the pipe\n- *(webhook)* enable compression, timeout (3s) and bodylimit (1MB)\n- [**breaking**] replace the single http extractor by a webhook\n\n### Fixed\n\n- return UNAUTHORIZE (and not FORBIDDEN) on invalid signature\n- gracefull shutdown to close sources & sink on kill/ctrl-c\n- content_length was zero for every resources / entry\n- use Secret<T> for sensitive configuration\n- *(deps)* update rust crate vrl to 0.21\n- *(deps)* update rust crate handlebars to v6.3.0\n- *(deps)* update rust crate serde_with to v3.12.0\n- *(deps)* update rust crate init-tracing-opentelemetry to 0.25\n\n### Other\n\n- [MegaLinter] Apply linters fixes\n- add basic test for hbs transformer\n- add basic test for base pipe\n- add a basic test for sink http\n- add a task to estimate \"test coverage\"\n- *(deps)* upgrade to opendal 0.51\n- configure rust cli to align with rust-analyzer\n- *(webhook)* enable support for multiple compression (gzip, broli, zstd, flat)\n- *(deps)* upgrade cloudevents-sdk to 0.8\n- *(deps)* upgrade to axum 0.8\n- format import/use\n- integrate `miette` for error reporting (to cont.)\n- *(deps)* pin only major for version >=1.0.0\n- fix configuration of release-plz\n- complete the rust upgrade to 1.84\n- upgrade cargo-dist\n- use INTBOT app instead of the pat RELEASE_PLZ_TOKEN\n- *(deps)* update dependency rust to v1.84.0\n- *(deps)* update rust crate rstest to 0.24\n- *(deps)* update rust crate rustainers to 0.13\n- *(deps)* commit the Cargo.lock of executable\n- capture samples of kubewatch events\n- enable renovate as github-action\n\n## Install aaaaa-aaaaaaaaa 1.1.1\n\n### Install prebuilt binaries via shell script\n\n```sh\ncurl --proto '=https' --tlsv1.2 -LsSf https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.1.1/aaaaa-aaaaaaaaa-aaaaaaaaa.aa | sh\n```\n\n### Install prebuilt binaries via Homebrew\n\n```sh\nbrew install aaaaa-aaa/tap/aaaaa-aaaaaaaaa\n```\n\n## Download aaaaa-aaaaaaaaa 1.1.1\n\n|  File  | Platform | Checksum |\n|--------|----------|----------|\n| [aaaaa-aaaaaaaaa-aaaaa11-aaaaaaa-aaaaa-aaaa.aaa.aa](https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.1.1/aaaaa-aaaaaaaaa-aaaaa11-aaaaaaa-aaaaa-aaaa.aaa.aa) | ARM64 MUSL Linux | [checksum](https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.1.1/aaaaa-aaaaaaaaa-aaaaa11-aaaaaaa-aaaaa-aaaa.aaa.aa.aaa111) |\n| [aaaaa-aaaaaaaaa-a11_11-aaaaaaa-aaaaa-aaaa.aaa.aa](https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.1.1/aaaaa-aaaaaaaaa-a11_11-aaaaaaa-aaaaa-aaaa.aaa.aa) | x64 MUSL Linux | [checksum](https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.1.1/aaaaa-aaaaaaaaa-a11_11-aaaaaaa-aaaaa-aaaa.aaa.aa.aaa111) |\n\n\n"
   },
   "repository": {
     "id": 111111111,

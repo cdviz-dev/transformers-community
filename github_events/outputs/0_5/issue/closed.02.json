@@ -67,10 +67,10 @@
             "color": "d73a4a",
             "default": true,
             "description": "Something isn't working",
-            "id": 7872928565,
-            "name": "bug",
-            "node_id": "LA_kwDONcdWcs8AAAAB1UNbNQ",
-            "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/labels/bug"
+            "id": 1111111113,
+            "name": "aab",
+            "node_id": "AA_aaAAAaaAaa1AAAAA1AAaAB",
+            "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/labels/aab"
           }
         ],
         "labels_url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/issues/98/labels{/name}",
@@ -293,7 +293,7 @@
       ],
       "creator": "aaaaaA",
       "labels": [
-        "bug"
+        "aab"
       ],
       "milestone": null,
       "resolution": "not_planned",
