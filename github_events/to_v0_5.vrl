@@ -6,7 +6,7 @@
 # | [x] | package:published | artifact:published |
 # | [ ] | package:updated | artifact:published |
 # | [x] | release:published | artifact:published |
-# | [ ] | release:published/assets | artifact:published |
+# | [x] | release:published/assets | artifact:published |
 # | [ ] | release:unpublished | artifact:deleted |
 # | [ ] | release:unpublished/assets | artifact:deleted |
 # | [x] | workflow_run:requested | pipelineRun:queued |
@@ -170,11 +170,14 @@ if exists(.body.package) {
     ts = format_timestamp!(ts, format: "%+")
     repo_full_name = string!(.body.repository.full_name)
     version = .body.release.tag_name
+    version_s = to_string(.body.release.tag_name) ?? ""
     repo_parts = split(repo_full_name, "/")
+    owner = string(repo_parts[0]) ?? "unknown"
+    repo_name = string(repo_parts[1]) ?? "unknown"
     purl_obj = {
       "type": "github",
-      "namespace": repo_parts[0],
-      "name": repo_parts[1],
+      "namespace": owner,
+      "name": repo_name,
       "version": version
     }
     pkg = purl_to_string(purl_obj) ?? ""
@@ -186,7 +189,7 @@ if exists(.body.package) {
       # "draft": bool!(.body.release.draft || false),
       # "prerelease": bool!(.body.release.prerelease || false),
     }
-    bodies = [{
+    release_body = {
       "context": {
         "specversion": "0.5.0",
         "type": "dev.cdevents.artifact.published.0.3.0",
@@ -201,7 +204,49 @@ if exists(.body.package) {
         }
       },
       "customData": custom_data,
-    }]
+    }
+    # one artifact.published per release asset; the asset file name keeps each asset a
+    # distinct PURL coordinate (download_url/checksum are qualifiers, NOT part of identity,
+    # so without the file name all assets would collapse to pkg:generic/{repo}@{tag})
+    asset_bodies = map_values(array(.body.release.assets) ?? []) -> |asset| {
+      asset_ts = parse_timestamp(asset.created_at, "%+") ?? parse_timestamp(.body.release.published_at, "%+") ?? now()
+      asset_ts = format_timestamp!(asset_ts, format: "%+")
+      qualifiers = { "download_url": to_string!(asset.browser_download_url) }
+      if !is_nullish(asset.digest) {
+        # asset.digest is already "sha256:...", the PURL checksum format
+        qualifiers.checksum = to_string!(asset.digest)
+      }
+      asset_purl_obj = {
+        "type": "generic",
+        "namespace": owner + "/" + repo_name,
+        "name": to_string!(asset.name),
+        "version": version_s,
+        "qualifiers": qualifiers,
+      }
+      asset_cd = custom_data
+      asset_cd.github.asset = {
+        "name": asset.name,
+        "content_type": asset.content_type,
+        "size": asset.size,
+        "browser_download_url": asset.browser_download_url,
+        "digest": asset.digest,
+      }
+      {
+        "context": {
+          "specversion": "0.5.0",
+          "type": "dev.cdevents.artifact.published.0.3.0",
+          "timestamp": asset_ts,
+        },
+        "subject": {
+          "id": purl_to_string!(asset_purl_obj),
+          "content": {
+            "user": sender,
+          }
+        },
+        "customData": asset_cd,
+      }
+    }
+    bodies = flatten([[release_body], asset_bodies])
   }
 } else if exists(.body.workflow_run) {
   # https://docs.github.com/en/webhooks/webhook-events-and-payloads#workflow_run
