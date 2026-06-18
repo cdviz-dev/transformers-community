@@ -9,10 +9,13 @@ depends = [ ":test:*" ]
 
 [tasks."test:workflow_runs"]
 description = "test workflow_runs transformer (use `--mode review` to update expected outputs)"
+usage = """
+flag "--mode <mode>" default="check" help="transform mode: check or review"
+"""
 run = """cdviz-collector \
   transform \
   --disable-otel \
-  --mode {{option(name="mode", default="check")}} \
+  --mode ${usage_mode} \
   --config ./cdviz-collector.toml \
   -t github_rest_workflow_runs \
   --input ./inputs/workflow_runs \
@@ -21,10 +24,13 @@ run = """cdviz-collector \
 
 [tasks."test:pull_requests"]
 description = "test pull_requests transformer (use `--mode review` to update expected outputs)"
+usage = """
+flag "--mode <mode>" default="check" help="transform mode: check or review"
+"""
 run = """cdviz-collector \
   transform \
   --disable-otel \
-  --mode {{option(name="mode", default="check")}} \
+  --mode ${usage_mode} \
   --config ./cdviz-collector.toml \
   -t github_rest_pull_requests \
   --input ./inputs/pull_requests \
@@ -33,10 +39,13 @@ run = """cdviz-collector \
 
 [tasks."test:releases"]
 description = "test releases transformer (use `--mode review` to update expected outputs)"
+usage = """
+flag "--mode <mode>" default="check" help="transform mode: check or review"
+"""
 run = """cdviz-collector \
   transform \
   --disable-otel \
-  --mode {{option(name="mode", default="check")}} \
+  --mode ${usage_mode} \
   --config ./cdviz-collector.toml \
   -t github_rest_releases \
   --input ./inputs/releases \
@@ -45,10 +54,13 @@ run = """cdviz-collector \
 
 [tasks."test:package_versions"]
 description = "test package_versions transformer (use `--mode review` to update expected outputs)"
+usage = """
+flag "--mode <mode>" default="check" help="transform mode: check or review"
+"""
 run = """cdviz-collector \
   transform \
   --disable-otel \
-  --mode {{option(name="mode", default="check")}} \
+  --mode ${usage_mode} \
   --config ./cdviz-collector.toml \
   -t github_rest_package_versions \
   --input ./inputs/package_versions \
@@ -57,10 +69,13 @@ run = """cdviz-collector \
 
 [tasks."test:issues"]
 description = "test issues transformer (use `--mode review` to update expected outputs)"
+usage = """
+flag "--mode <mode>" default="check" help="transform mode: check or review"
+"""
 run = """cdviz-collector \
   transform \
   --disable-otel \
-  --mode {{option(name="mode", default="check")}} \
+  --mode ${usage_mode} \
   --config ./cdviz-collector.toml \
   -t github_rest_issues \
   --input ./inputs/issues \
@@ -69,10 +84,13 @@ run = """cdviz-collector \
 
 [tasks."test:deployments"]
 description = "test deployments transformer (use `--mode review` to update expected outputs)"
+usage = """
+flag "--mode <mode>" default="check" help="transform mode: check or review"
+"""
 run = """cdviz-collector \
   transform \
   --disable-otel \
-  --mode {{option(name="mode", default="check")}} \
+  --mode ${usage_mode} \
   --config ./cdviz-collector.toml \
   -t github_rest_deployments \
   --input ./inputs/deployments \
@@ -81,10 +99,13 @@ run = """cdviz-collector \
 
 [tasks."test:repositories"]
 description = "test repositories transformer (use `--mode review` to update expected outputs)"
+usage = """
+flag "--mode <mode>" default="check" help="transform mode: check or review"
+"""
 run = """cdviz-collector \
   transform \
   --disable-otel \
-  --mode {{option(name="mode", default="check")}} \
+  --mode ${usage_mode} \
   --config ./cdviz-collector.toml \
   -t github_rest_repositories \
   --input ./inputs/repositories \
@@ -93,10 +114,13 @@ run = """cdviz-collector \
 
 [tasks."test:environments"]
 description = "test environments transformer (use `--mode review` to update expected outputs)"
+usage = """
+flag "--mode <mode>" default="check" help="transform mode: check or review"
+"""
 run = """cdviz-collector \
   transform \
   --disable-otel \
-  --mode {{option(name="mode", default="check")}} \
+  --mode ${usage_mode} \
   --config ./cdviz-collector.toml \
   -t github_rest_environments \
   --input ./inputs/environments \
@@ -105,10 +129,13 @@ run = """cdviz-collector \
 
 # [tasks."test:branches"]
 # description = "test branches transformer (use `--mode review` to update expected outputs)"
+# usage = """
+# flag "--mode <mode>" default="check" help="transform mode: check or review"
+# """
 # run = """cdviz-collector \
 #   transform \
 #   --disable-otel \
-#   --mode {{option(name="mode", default="check")}} \
+#   --mode ${usage_mode} \
 #   --config ./cdviz-collector.toml \
 #   -t github_rest_branches \
 #   --input ./inputs/branches \
