@@ -263,6 +263,22 @@ template = """
 - Creates reproducible output for the same input
 - Ensures the same automatic ID generation, enabling reliable testing with transform CLI
 
+### Polling Transformers — Idempotent Backfill
+
+When a polling snapshot returns a terminal state (e.g., `completed`), synthesize events for **all prior lifecycle phases** so the CDEvents timeline is complete. Each synthesized event must be **idempotent**: re-generating it from a later poll of the same resource must produce identical content (and thus the same content-based `context.id`).
+
+Rules:
+
+- Use the **phase-specific timestamp field**, not the latest update time for all events:
+  - queued → `created_at`
+  - started → `run_started_at`
+  - finished → `updated_at`
+- `customData` must only contain fields that are **stable for that phase** — i.e., they would have the same value if the event were regenerated from any future poll:
+  - ✅ Include: immutable identifiers (`id`, `url`, `head_sha`, `head_branch`, `name`), phase-specific timestamps
+  - ❌ Exclude: fields that change as the subject progresses (`status`, `conclusion`) — their values differ from what was true at queue/start time and would produce different content on re-poll
+
+**Why**: The content-based `context.id` computed by cdviz-collector must be identical across polls of the same run, enabling deduplication. Including a field like `conclusion` in a synthetic `queued` event would make it differ from a real `queued` event captured at webhook time, breaking idempotency.
+
 ### Define `context.source`
 
 As defined in the CDEvents rules above, `context.source` should be the URI of the cdviz-collector service that creates or modifies the event.
