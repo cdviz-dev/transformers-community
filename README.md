@@ -13,6 +13,19 @@ Community driven transformers for [cdviz-collector](https://github.com/cdviz-dev
 | [cdevents](./cdevents/)                           | CDEvents          | Convert CDEvents from a version to the next version (can be chained)                                                                                                           |
 | [passthrough](./passthrough/)                     | CDEvents          | Passthrough transformer for existing CDEvents                                                                                                                                  |
 
+### CDEvents Coverage
+
+Rows are source applications, columns are [CDEvents subjects](https://cdevents.dev/docs/), cells list the supported predicates.
+
+| Source                                                                    | artifact  | branch           | change                                        | environment | incident | pipelineRun               | repository | service                     | taskRun           | ticket                   |
+| ------------------------------------------------------------------------- | --------- | ---------------- | --------------------------------------------- | ----------- | -------- | ------------------------- | ---------- | --------------------------- | ----------------- | ------------------------ |
+| GitHub Webhooks ([github_events](./github_events/))                       | published | created, deleted | created, updated, merged, abandoned, reviewed |             |          | queued, started, finished |            |                             | started, finished | created, updated, closed |
+| GitHub REST API ([github_rest_api](./github_rest_api/))                   | published |                  | created, merged, abandoned                    | created     |          | queued, started, finished | created    | deployed                    |                   | created, closed          |
+| ArgoCD Notifications ([argocd_notifications](./argocd_notifications/))    |           |                  |                                               |             | detected |                           |            | deployed, removed           |                   |                          |
+| Kubewatch CloudEvents ([kubewatch_cloudevents](./kubewatch_cloudevents/)) |           |                  |                                               |             |          |                           |            | deployed, removed, upgraded |                   |                          |
+
+This table is maintained from the `to_v0_x.vrl` sources, and is merged with the equivalent tables of the other transformer repositories into the documentation site "integrations" page.
+
 ## Usage
 
 ### Import Transformers Remotely
