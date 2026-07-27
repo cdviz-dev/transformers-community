@@ -9,6 +9,8 @@ experimental = true
 config_roots = [
   "argocd_notifications",
   "cdevents/*",
+  "forgejo_webhook",
+  "gitea_webhook",
   "github_events",
   "github_rest_api",
   "kubewatch_cloudevents",

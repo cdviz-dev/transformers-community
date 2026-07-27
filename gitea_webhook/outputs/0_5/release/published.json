@@ -1,0 +1,156 @@
+{
+  "context": {
+    "specversion": "0.5.0",
+    "timestamp": "2025-05-21T19:05:00+00:00",
+    "type": "dev.cdevents.artifact.published.0.3.0"
+  },
+  "customData": {
+    "gitea": {
+      "action": "published",
+      "release": {
+        "assets": [],
+        "author": {
+          "active": true,
+          "avatar_url": "https://gitea.example.com/avatars/111111111",
+          "created": "2024-01-05T09:00:00Z",
+          "description": "",
+          "email": "aaaaa-aaa@aaaaaaa.aaa",
+          "followers_count": 1,
+          "following_count": 1,
+          "full_name": "aaaaa-aaa",
+          "html_url": "https://gitea.example.com/aaaaa-aaa",
+          "id": 111111111,
+          "is_admin": false,
+          "language": "en-US",
+          "last_login": "2025-05-21T17:30:00Z",
+          "location": "",
+          "login": "aaaaa-aaa",
+          "login_name": "",
+          "prohibit_login": false,
+          "restricted": false,
+          "starred_repos_count": 1,
+          "username": "aaaaa-aaa",
+          "visibility": "public",
+          "website": ""
+        },
+        "body": "iiiii iiiiiiii",
+        "created_at": "2025-05-21T19:00:00Z",
+        "draft": false,
+        "hide_archive_links": false,
+        "html_url": "https://gitea.example.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/tag/a1.1.1",
+        "id": 111111122,
+        "name": "a1.1.1",
+        "prerelease": false,
+        "published_at": "2025-05-21T19:05:00Z",
+        "tag_name": "a1.1.1",
+        "tarball_url": "https://gitea.example.com/aaaaa-aaa/aaaaa-aaaaaaaaa/archive/a1.1.1.tar.gz",
+        "target_commitish": "main",
+        "upload_url": "https://gitea.example.com/api/v1/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/111111122/assets",
+        "url": "https://gitea.example.com/api/v1/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/111111122",
+        "zipball_url": "https://gitea.example.com/aaaaa-aaa/aaaaa-aaaaaaaaa/archive/a1.1.1.zip"
+      },
+      "repository": {
+        "archived": false,
+        "archived_at": "1970-01-01T00:00:00Z",
+        "clone_url": "https://gitea.example.com/aaaaa-aaa/aaaaa-aaaaaaaaa.git",
+        "created_at": "2024-01-05T09:10:00Z",
+        "default_branch": "main",
+        "description": "",
+        "empty": false,
+        "fork": false,
+        "forks_count": 1,
+        "full_name": "aaaaa-aaa/aaaaa-aaaaaaaaa",
+        "has_actions": true,
+        "has_issues": true,
+        "has_pull_requests": true,
+        "has_wiki": true,
+        "html_url": "https://gitea.example.com/aaaaa-aaa/aaaaa-aaaaaaaaa",
+        "id": 111111115,
+        "language": "",
+        "languages_url": "https://gitea.example.com/api/v1/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/languages",
+        "link": "",
+        "mirror": false,
+        "name": "aaaaa-aaaaaaaaa",
+        "open_issues_count": 2,
+        "open_pr_counter": 2,
+        "original_url": "",
+        "owner": {
+          "active": true,
+          "avatar_url": "https://gitea.example.com/avatars/111111111",
+          "created": "2024-01-05T09:00:00Z",
+          "description": "",
+          "email": "aaaaa-aaa@aaaaaaa.aaa",
+          "followers_count": 1,
+          "following_count": 1,
+          "full_name": "aaaaa-aaa",
+          "html_url": "https://gitea.example.com/aaaaa-aaa",
+          "id": 111111111,
+          "is_admin": false,
+          "language": "en-US",
+          "last_login": "2025-05-21T17:30:00Z",
+          "location": "",
+          "login": "aaaaa-aaa",
+          "login_name": "",
+          "prohibit_login": false,
+          "restricted": false,
+          "starred_repos_count": 1,
+          "username": "aaaaa-aaa",
+          "visibility": "public",
+          "website": ""
+        },
+        "parent": null,
+        "private": false,
+        "release_counter": 2,
+        "size": 1024,
+        "ssh_url": "git@gitea.example.com:aaaaa-aaa/aaaaa-aaaaaaaaa.git",
+        "stars_count": 1,
+        "template": false,
+        "updated_at": "2025-05-21T17:35:21Z",
+        "url": "https://gitea.example.com/api/v1/repos/aaaaa-aaa/aaaaa-aaaaaaaaa",
+        "watchers_count": 2,
+        "website": ""
+      },
+      "sender": {
+        "active": true,
+        "avatar_url": "https://gitea.example.com/avatars/111111114",
+        "created": "2024-01-05T09:00:00Z",
+        "description": "",
+        "email": "aaaaa-aaa@aaaaaaa.aab",
+        "followers_count": 1,
+        "following_count": 1,
+        "full_name": "aaaaa-aab",
+        "html_url": "https://gitea.example.com/aaaaa-aab",
+        "id": 111111114,
+        "is_admin": false,
+        "language": "en-US",
+        "last_login": "2025-05-21T17:30:00Z",
+        "location": "",
+        "login": "aaaaa-aab",
+        "login_name": "",
+        "prohibit_login": false,
+        "restricted": false,
+        "starred_repos_count": 1,
+        "username": "aaaaa-aab",
+        "visibility": "public",
+        "website": ""
+      }
+    },
+    "links": [
+      {
+        "linkKind": "storedAt",
+        "target": {
+          "subject": {
+            "id": "https://gitea.example.com/api/v1/repos/aaaaa-aaa/aaaaa-aaaaaaaaa",
+            "type": "repository"
+          }
+        }
+      }
+    ]
+  },
+  "subject": {
+    "content": {
+      "user": "aaaaa-aab"
+    },
+    "id": "pkg:generic/aaaaa-aaa/aaaaa-aaaaaaaaa@a1.1.1?download_url=https://gitea.example.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/tag/a1.1.1"
+  }
+}

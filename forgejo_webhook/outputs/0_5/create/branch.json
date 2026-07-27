@@ -1,0 +1,118 @@
+{
+  "context": {
+    "specversion": "0.5.0",
+    "timestamp": "2025-05-21T17:35:21+00:00",
+    "type": "dev.cdevents.branch.created.0.3.0"
+  },
+  "customData": {
+    "forgejo": {
+      "ref": "sssss-sss",
+      "ref_type": "branch",
+      "repository": {
+        "archived": false,
+        "archived_at": "1970-01-01T00:00:00Z",
+        "clone_url": "https://forgejo.example.com/aaaaa-aaa/aaaaa-aaaaaaaaa.git",
+        "created_at": "2024-01-05T09:10:00Z",
+        "default_branch": "main",
+        "description": "",
+        "empty": false,
+        "fork": false,
+        "forks_count": 1,
+        "full_name": "aaaaa-aaa/aaaaa-aaaaaaaaa",
+        "has_actions": true,
+        "has_issues": true,
+        "has_pull_requests": true,
+        "has_wiki": true,
+        "html_url": "https://forgejo.example.com/aaaaa-aaa/aaaaa-aaaaaaaaa",
+        "id": 111111113,
+        "language": "",
+        "languages_url": "https://forgejo.example.com/api/v1/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/languages",
+        "link": "",
+        "mirror": false,
+        "name": "aaaaa-aaaaaaaaa",
+        "open_issues_count": 2,
+        "open_pr_counter": 2,
+        "original_url": "",
+        "owner": {
+          "active": true,
+          "avatar_url": "https://forgejo.example.com/avatars/111111111",
+          "created": "2024-01-05T09:00:00Z",
+          "description": "",
+          "email": "aaaaa-aaa@aaaaaaa.aaa",
+          "followers_count": 1,
+          "following_count": 1,
+          "full_name": "aaaaa-aaa",
+          "html_url": "https://forgejo.example.com/aaaaa-aaa",
+          "id": 111111111,
+          "is_admin": false,
+          "language": "en-US",
+          "last_login": "2025-05-21T17:30:00Z",
+          "location": "",
+          "login": "aaaaa-aaa",
+          "login_name": "",
+          "prohibit_login": false,
+          "restricted": false,
+          "starred_repos_count": 1,
+          "username": "aaaaa-aaa",
+          "visibility": "public",
+          "website": ""
+        },
+        "parent": null,
+        "private": false,
+        "release_counter": 2,
+        "size": 1024,
+        "ssh_url": "git@forgejo.example.com:aaaaa-aaa/aaaaa-aaaaaaaaa.git",
+        "stars_count": 1,
+        "template": false,
+        "updated_at": "2025-05-21T17:35:21Z",
+        "url": "https://forgejo.example.com/api/v1/repos/aaaaa-aaa/aaaaa-aaaaaaaaa",
+        "watchers_count": 2,
+        "website": ""
+      },
+      "sender": {
+        "active": true,
+        "avatar_url": "https://forgejo.example.com/avatars/111111112",
+        "created": "2024-01-05T09:00:00Z",
+        "description": "",
+        "email": "aaaaa-aaa@aaaaaaa.aab",
+        "followers_count": 1,
+        "following_count": 1,
+        "full_name": "aaaaa-aab",
+        "html_url": "https://forgejo.example.com/aaaaa-aab",
+        "id": 111111112,
+        "is_admin": false,
+        "language": "en-US",
+        "last_login": "2025-05-21T17:30:00Z",
+        "location": "",
+        "login": "aaaaa-aab",
+        "login_name": "",
+        "prohibit_login": false,
+        "restricted": false,
+        "starred_repos_count": 1,
+        "username": "aaaaa-aab",
+        "visibility": "public",
+        "website": ""
+      },
+      "sha": "1111111111111111111111111111111111111111"
+    },
+    "links": [
+      {
+        "linkKind": "storedAt",
+        "target": {
+          "subject": {
+            "id": "https://forgejo.example.com/api/v1/repos/aaaaa-aaa/aaaaa-aaaaaaaaa",
+            "type": "repository"
+          }
+        }
+      }
+    ]
+  },
+  "subject": {
+    "content": {
+      "repository": {
+        "id": "https://forgejo.example.com/api/v1/repos/aaaaa-aaa/aaaaa-aaaaaaaaa"
+      }
+    },
+    "id": "https://forgejo.example.com/api/v1/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/branches/sssss-sss"
+  }
+}

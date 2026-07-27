@@ -1,0 +1,20 @@
+# ------------------------------------------------------------------------------
+# Example of source configuration
+#
+# [sources.forgejo_webhook]
+# enabled = true
+# transformer_refs = ["forgejo_webhook_0_5"]
+
+# [sources.forgejo_webhook.extractor]
+# type = "webhook"
+# id = "000-forgejo"
+# headers_to_keep = []
+
+# [sources.forgejo_webhook.extractor.headers]
+# # forgejo signs with HMAC-SHA256, hex encoded, over the raw body, without prefix
+# # gitea sends the same value as "x-gitea-signature"
+# # token override by environment variable reads from the secret
+# "x-forgejo-signature" = { type = "signature", signature_encoding = "hex", signature_on = "body", token = "changeme" }
+
+[transformers]
+forgejo_webhook_0_5 = { type = "vrl", template_file = "./to_v0_5.vrl" }

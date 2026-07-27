@@ -1,0 +1,483 @@
+# Convert [forgejo webhook events](https://forgejo.org/docs/latest/user/repository/webhooks/)
+# to [cdevents](https://cdevents.dev) v0.5
+#
+# For Gitea use `gitea_webhook` instead: Forgejo is a Gitea fork and most payloads are still
+# identical, but the CI events are NOT. Forgejo sends `action_run_success` / `action_run_failure` /
+# `action_run_recover` (an `ActionPayload`); Gitea sends `workflow_run` / `workflow_job`.
+#
+# | done | Forgejo event | cdevent |
+# | --- | --- | --- |
+# | [x] | action_run_success | pipelineRun:finished (outcome success) |
+# | [x] | action_run_recover | pipelineRun:finished (outcome success) |
+# | [x] | action_run_failure | pipelineRun:finished (outcome failure) |
+# | [ ] | (no queued/started event) | - forgejo only notifies on terminal states |
+# | [ ] | (no job level event) | - forgejo has no `workflow_job` equivalent, so no taskRun |
+# | [x] | package:created | artifact:published |
+# | [x] | package:deleted | artifact:deleted |
+# | [x] | release:published | artifact:published |
+# | [x] | release:published/assets | artifact:published |
+# | [x] | release:deleted | artifact:deleted |
+# | [ ] | release:updated | - (would re-publish the same artifact) |
+# | [x] | pull_request:opened | change:created |
+# | [x] | pull_request:closed | change:merged, change:abandoned |
+# | [x] | pull_request:* (assign, label, milestone, sync, ...) | change:updated |
+# | [x] | pull_request_review_*:reviewed | change:reviewed |
+# | [x] | pull_request_comment:* | change:updated |
+# | [x] | issues:opened | ticket:created |
+# | [x] | issues:closed | ticket:closed |
+# | [x] | issues:* (assign, label, milestone, ...) | ticket:updated |
+# | [x] | issue_comment:* | ticket:updated |
+# | [x] | create (ref_type: branch) | branch:created |
+# | [x] | delete (ref_type: branch) | branch:deleted |
+# | [ ] | create/delete (ref_type: tag) | - (no tag subject in cdevents) |
+# | [x] | repository:created | repository:created |
+# | [x] | repository:deleted | repository:deleted |
+# | [x] | fork | repository:created (the fork) |
+# | [ ] | push, wiki, workflow_dispatch, schedule | - (no cdevents equivalent) |
+#
+# ## Rules:
+#
+# - `context.id` is computed by the collector (using content id, CID computed)
+# - `subject.id` is the api url of the entity, except for artifacts using the package url (PURL)
+# - `subject.source` is empty, all information are in the `subject.id` (global id)
+# - `customData.forgejo` is the original event body
+# - `customData.links` provides links to related subjects
+#
+# ## Event detection
+#
+# Forgejo has ~28 hook event types but only a handful of payload structs: the fine grained types
+# (`issue_assign`, `pull_request_label`, `pull_request_sync`, `pull_request_review_approved`, ...)
+# send the *same* body as their base type and differ only by the `X-Forgejo-Event` header and the
+# `action` field. So the type is detected on body fields, but the ORDER below matters:
+# the `issue_comment` payload carries an OPTIONAL `pull_request` field, so it has to be tested
+# before `.body.pull_request`.
+
+bodies = []
+sender = .body.sender.login
+repo_url = to_string(.body.repository.url) ?? ""
+if repo_url == "" {
+  # the `action_run_*` payload has no top-level `repository`/`sender`: both live under `.run`
+  repo_url = to_string(.body.run.repository.url) ?? ""
+  sender = .body.run.trigger_user.login
+}
+links = []
+if repo_url != "" {
+  # packages can be owned by a user/org without a repository, then there is nothing to link to
+  links = [
+    {
+      "linkKind": "storedAt",
+      "target": {
+        "subject": {
+          "type": "repository",
+          "id": repo_url,
+        }
+      }
+    }
+  ]
+}
+custom_data = {
+  "links": links,
+  "forgejo": .body
+}
+
+if exists(.body.run) {
+  # forgejo actions: action_run_success / action_run_failure / action_run_recover
+  # only terminal states are notified, so pipelineRun:queued and :started are unreachable, and
+  # there is no job level event, so no taskRun is emitted either
+  run = .body.run
+  repo_full_name = to_string(run.repository.full_name) ?? ""
+  # ActionRun has no api `url`, only `html_url`; rebuild the api uri from the repository + index
+  run_id = repo_url + "/actions/runs/" + (to_string(run.index_in_repo) ?? "")
+  ts = parse_timestamp(run.stopped, "%+") ?? parse_timestamp(run.updated, "%+") ?? now()
+  body = {
+    "context": {
+      "specversion": "0.5.0",
+      "type": "dev.cdevents.pipelinerun.finished.0.3.0",
+      "timestamp": format_timestamp!(ts, format: "%+"),
+    },
+    "subject": {
+      "id": run_id,
+      "content": {
+        # `workflow_id` is the workflow file name, more stable than the run `title`
+        "pipelineName": (repo_full_name + "/" + run.workflow_id) ?? run.title,
+        "uri": run.html_url,
+      }
+    },
+    "customData": custom_data,
+  }
+  # "recover" means this run succeeded while the previous one for the same workflow had failed
+  if .body.action == "success" || .body.action == "recover" {
+    body.subject.content.outcome = "success"
+    bodies = [body]
+  } else if .body.action == "failure" {
+    body.subject.content.outcome = "failure"
+    bodies = [body]
+  }
+} else if exists(.body.package) {
+  # the forgejo package payload is flat: id, owner, repository, creator, type, name, version,
+  # html_url, created_at. There is no per-registry metadata block like on github.
+  ts = parse_timestamp(.body.package.created_at, "%+") ?? now()
+  ts = format_timestamp!(ts, format: "%+")
+  name = to_string!(.body.package.name)
+  version = to_string!(.body.package.version)
+  owner = to_string(.body.package.owner.login) ?? ""
+  package_type = downcase(to_string(.body.package.type) ?? "generic")
+  # [purl-spec/PURL-TYPES.rst](https://github.com/package-url/purl-spec/blob/master/PURL-TYPES.rst)
+  purl_type_map = {
+    "alpine": "apk", "arch": "generic", "cargo": "cargo", "chef": "generic",
+    "composer": "composer", "conan": "conan", "conda": "conda", "container": "oci",
+    "cran": "cran", "debian": "deb", "generic": "generic", "go": "golang",
+    "helm": "generic", "maven": "maven", "npm": "npm", "nuget": "nuget",
+    "pub": "pub", "pypi": "pypi", "rpm": "rpm", "rubygems": "gem",
+    "swift": "swift", "vagrant": "generic"
+  }
+  purl_type = to_string(get(purl_type_map, [package_type]) ?? "generic") ?? "generic"
+  pkg_url = parse_url(to_string(.body.package.html_url) ?? "") ?? {}
+  host = to_string(pkg_url.host)
+  scheme = to_string(pkg_url.scheme)
+  if !is_nullish(pkg_url.port) {
+    host = host + ":" + to_string(pkg_url.port)
+  }
+
+  purl_obj = { "type": purl_type, "name": name, "version": version }
+  if purl_type == "oci" {
+    # the forgejo package payload carries no image digest, only the tag, so the PURL version is the
+    # tag instead of the `sha256:...` digest recommended by RULES.md. Nothing better is available.
+    purl_obj.qualifiers = { "repository_url": host + "/" + owner, "tag": version }
+  } else if purl_type == "maven" {
+    # forgejo names maven packages "groupId:artifactId"
+    parts = split(name, ":", limit: 2)
+    if length(parts) == 2 {
+      purl_obj.namespace = parts[0]
+      purl_obj.name = parts[1]
+    }
+    purl_obj.qualifiers = { "repository_url": scheme + "://" + host + "/api/packages/" + owner + "/maven" }
+  } else {
+    purl_obj.qualifiers = { "repository_url": scheme + "://" + host + "/api/packages/" + owner + "/" + package_type }
+  }
+  pkg = purl_to_string(purl_obj) ?? ""
+
+  if pkg != "" {
+    body = {
+      "context": {
+        "specversion": "0.5.0",
+        "timestamp": ts,
+      },
+      "subject": {
+        "id": pkg,
+        "content": {
+          "user": sender,
+        }
+      },
+      "customData": custom_data,
+    }
+    if .body.action == "created" {
+      body.context.type = "dev.cdevents.artifact.published.0.3.0"
+      bodies = [body]
+    } else if .body.action == "deleted" {
+      body.context.type = "dev.cdevents.artifact.deleted.0.2.0"
+      bodies = [body]
+    }
+  }
+} else if exists(.body.release) {
+  repo_full_name = to_string!(.body.repository.full_name)
+  repo_parts = split(repo_full_name, "/")
+  owner = to_string(repo_parts[0])
+  repo_name = to_string(repo_parts[1])
+  version = to_string!(.body.release.tag_name)
+  ts = parse_timestamp(.body.release.published_at, "%+") ?? parse_timestamp(.body.release.created_at, "%+") ?? now()
+  ts = format_timestamp!(ts, format: "%+")
+  purl_obj = {
+    "type": "generic",
+    "namespace": owner,
+    "name": repo_name,
+    "version": version,
+    "qualifiers": { "download_url": to_string!(.body.release.html_url) },
+  }
+  event_type = null
+  if .body.action == "published" {
+    event_type = "dev.cdevents.artifact.published.0.3.0"
+  } else if .body.action == "deleted" {
+    event_type = "dev.cdevents.artifact.deleted.0.2.0"
+  }
+  # "updated" would re-publish the same artifact coordinates => skipped
+
+  if !is_null(event_type) {
+    release_body = {
+      "context": {
+        "specversion": "0.5.0",
+        "type": event_type,
+        "timestamp": ts,
+      },
+      "subject": {
+        "id": purl_to_string!(purl_obj),
+        "content": {
+          "user": sender,
+        }
+      },
+      "customData": custom_data,
+    }
+    # one artifact event per release asset; the asset file name keeps each asset a distinct PURL
+    # coordinate (download_url is a qualifier, NOT part of identity, so without the file name all
+    # assets would collapse to pkg:generic/{owner}/{repo}@{tag})
+    asset_bodies = map_values(array(.body.release.assets) ?? []) -> |asset| {
+      asset_ts = parse_timestamp(asset.created_at, "%+") ?? parse_timestamp(.body.release.published_at, "%+") ?? now()
+      asset_ts = format_timestamp!(asset_ts, format: "%+")
+      asset_purl_obj = {
+        "type": "generic",
+        "namespace": owner + "/" + repo_name,
+        "name": to_string!(asset.name),
+        "version": version,
+        # forgejo release assets carry no checksum in the payload
+        "qualifiers": { "download_url": to_string!(asset.browser_download_url) },
+      }
+      asset_cd = custom_data
+      asset_cd.forgejo.asset = {
+        "name": asset.name,
+        "size": asset.size,
+        "browser_download_url": asset.browser_download_url,
+      }
+      {
+        "context": {
+          "specversion": "0.5.0",
+          "type": event_type,
+          "timestamp": asset_ts,
+        },
+        "subject": {
+          "id": purl_to_string!(asset_purl_obj),
+          "content": {
+            "user": sender,
+          }
+        },
+        "customData": asset_cd,
+      }
+    }
+    bodies = flatten([[release_body], asset_bodies])
+  }
+} else if exists(.body.comment) && exists(.body.issue) {
+  # issue_comment (is_pull: false) and pull_request_comment (is_pull: true) share this payload
+  # (`.body.issue` is also required here: the wiki payload has a plain string `comment` field)
+  ts = parse_timestamp(.body.comment.updated_at, "%+") ?? parse_timestamp(.body.comment.created_at, "%+") ?? now()
+  ts = format_timestamp!(ts, format: "%+")
+  if bool(.body.is_pull) ?? false {
+    bodies = [{
+      "context": {
+        "specversion": "0.5.0",
+        "type": "dev.cdevents.change.updated.0.3.0",
+        "timestamp": ts,
+      },
+      "subject": {
+        "id": .body.pull_request.url,
+        "content": {
+          "repository": {
+            "id": repo_url,
+          }
+        }
+      },
+      "customData": custom_data,
+    }]
+  } else {
+    bodies = [{
+      "context": {
+        "specversion": "0.5.0",
+        "type": "dev.cdevents.ticket.updated.0.2.0",
+        "timestamp": ts,
+      },
+      "subject": {
+        "id": .body.issue.url,
+        "content": {
+          "summary": .body.issue.title,
+          "creator": .body.issue.user.login,
+          "updatedBy": sender,
+          "uri": .body.issue.html_url,
+        }
+      },
+      "customData": custom_data,
+    }]
+  }
+} else if exists(.body.review) {
+  # pull_request_review_approved / _rejected / _comment, all with action "reviewed"
+  ts = parse_timestamp(.body.pull_request.updated_at, "%+") ?? now()
+  ts = format_timestamp!(ts, format: "%+")
+  bodies = [{
+    "context": {
+      "specversion": "0.5.0",
+      "type": "dev.cdevents.change.reviewed.0.3.0",
+      "timestamp": ts,
+    },
+    "subject": {
+      "id": .body.pull_request.url,
+      "content": {
+        "repository": {
+          "id": repo_url,
+        }
+      }
+    },
+    "customData": custom_data,
+  }]
+} else if exists(.body.pull_request) {
+  body = {
+    "context": {
+      "specversion": "0.5.0",
+    },
+    "subject": {
+      "id": .body.pull_request.url,
+      "content": {
+        "repository": {
+          "id": repo_url,
+        }
+      }
+    },
+    "customData": custom_data,
+  }
+  if .body.action == "opened" {
+    ts = parse_timestamp(.body.pull_request.created_at, "%+") ?? now()
+    body.context.timestamp = format_timestamp!(ts, format: "%+")
+    body.context.type = "dev.cdevents.change.created.0.4.0"
+    body.subject.content.description = .body.pull_request.title
+    bodies = [body]
+  } else if .body.action == "closed" {
+    ts = parse_timestamp(.body.pull_request.merged_at, "%+") ?? parse_timestamp(.body.pull_request.closed_at, "%+") ?? now()
+    body.context.timestamp = format_timestamp!(ts, format: "%+")
+    if bool(.body.pull_request.merged) ?? false {
+      body.context.type = "dev.cdevents.change.merged.0.3.0"
+    } else {
+      body.context.type = "dev.cdevents.change.abandoned.0.3.0"
+    }
+    bodies = [body]
+  } else {
+    ts = parse_timestamp(.body.pull_request.updated_at, "%+") ?? now()
+    body.context.timestamp = format_timestamp!(ts, format: "%+")
+    body.context.type = "dev.cdevents.change.updated.0.3.0"
+    bodies = [body]
+  }
+} else if exists(.body.issue) {
+  body = {
+    "context": {
+      "specversion": "0.5.0",
+    },
+    "subject": {
+      "id": .body.issue.url,
+      "content": {
+        "summary": .body.issue.title,
+        "creator": .body.issue.user.login,
+        "assignees": map_values(array(.body.issue.assignees) ?? []) -> |assignee| {
+          assignee.login
+        },
+        "labels": map_values(array(.body.issue.labels) ?? []) -> |label| {
+          label.name
+        },
+        "milestone": .body.issue.milestone.title,
+        "uri": .body.issue.html_url,
+      }
+    },
+    "customData": custom_data,
+  }
+  if .body.action == "opened" {
+    ts = parse_timestamp(.body.issue.created_at, "%+") ?? now()
+    body.context.timestamp = format_timestamp!(ts, format: "%+")
+    body.context.type = "dev.cdevents.ticket.created.0.2.0"
+    bodies = [body]
+  } else if .body.action == "closed" {
+    ts = parse_timestamp(.body.issue.closed_at, "%+") ?? now()
+    body.context.timestamp = format_timestamp!(ts, format: "%+")
+    body.context.type = "dev.cdevents.ticket.closed.0.2.0"
+    body.subject.content.updatedBy = sender
+    # `resolution` is required by the cdevents ticket:closed schema, but forgejo issues have no
+    # `state_reason` equivalent, so "completed" is the only thing that can be said
+    body.subject.content.resolution = "completed"
+    bodies = [body]
+  } else {
+    ts = parse_timestamp(.body.issue.updated_at, "%+") ?? now()
+    body.context.timestamp = format_timestamp!(ts, format: "%+")
+    body.context.type = "dev.cdevents.ticket.updated.0.2.0"
+    body.subject.content.updatedBy = sender
+    bodies = [body]
+  }
+} else if exists(.body.ref_type) {
+  # create (has `sha`) and delete (has `pusher_type`) payloads
+  # neither carries a timestamp, so fall back on the repository `updated_at` which the push bumped
+  # (`now()` would break the content-based id / reproducible outputs)
+  if .body.ref_type == "branch" {
+    ts = parse_timestamp(.body.repository.updated_at, "%+") ?? now()
+    body = {
+      "context": {
+        "specversion": "0.5.0",
+        "timestamp": format_timestamp!(ts, format: "%+"),
+      },
+      "subject": {
+        "id": repo_url + "/branches/" + to_string!(.body.ref),
+        "content": {
+          "repository": {
+            "id": repo_url,
+          }
+        }
+      },
+      "customData": custom_data,
+    }
+    if exists(.body.sha) {
+      body.context.type = "dev.cdevents.branch.created.0.3.0"
+    } else {
+      body.context.type = "dev.cdevents.branch.deleted.0.3.0"
+    }
+    bodies = [body]
+  }
+  # ref_type "tag" has no cdevents counterpart
+} else if exists(.body.forkee) {
+  # the fork itself is a new repository
+  ts = parse_timestamp(.body.forkee.created_at, "%+") ?? now()
+  bodies = [{
+    "context": {
+      "specversion": "0.5.0",
+      "type": "dev.cdevents.repository.created.0.3.0",
+      "timestamp": format_timestamp!(ts, format: "%+"),
+    },
+    "subject": {
+      "id": to_string!(.body.forkee.url),
+      "content": {
+        "name": .body.forkee.name,
+        "owner": .body.forkee.owner.login,
+        "uri": .body.forkee.url,
+        "viewUrl": .body.forkee.html_url,
+      }
+    },
+    "customData": custom_data,
+  }]
+} else if exists(.body.action) && repo_url != "" && !exists(.body.page) {
+  # `repository` event; `page` guards against the wiki event which shares this shape
+  body = {
+    "context": {
+      "specversion": "0.5.0",
+    },
+    "subject": {
+      "id": repo_url,
+      "content": {
+        "name": .body.repository.name,
+        "owner": .body.repository.owner.login,
+        "uri": .body.repository.url,
+        "viewUrl": .body.repository.html_url,
+      }
+    },
+    "customData": custom_data,
+  }
+  if .body.action == "created" {
+    ts = parse_timestamp(.body.repository.created_at, "%+") ?? now()
+    body.context.timestamp = format_timestamp!(ts, format: "%+")
+    body.context.type = "dev.cdevents.repository.created.0.3.0"
+    bodies = [body]
+  } else if .body.action == "deleted" {
+    ts = parse_timestamp(.body.repository.updated_at, "%+") ?? now()
+    body.context.timestamp = format_timestamp!(ts, format: "%+")
+    body.context.type = "dev.cdevents.repository.deleted.0.3.0"
+    bodies = [body]
+  }
+}
+# push / wiki / status / schedule produce no cdevent
+
+map_values(bodies) -> |body| {
+  {
+    "metadata": .metadata,
+    "headers": .headers,
+    "body": body
+  }
+}
