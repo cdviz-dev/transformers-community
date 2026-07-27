@@ -1,7 +1,7 @@
 {
   "context": {
     "specversion": "0.5.0",
-    "timestamp": "2024-12-12T15:01:16+00:00",
+    "timestamp": "2024-12-12T15:23:44+00:00",
     "type": "dev.cdevents.change.merged.0.3.0"
   },
   "customData": {
@@ -11,18 +11,18 @@
           "ref": "aaaa"
         },
         "head": {
-          "ref": "release-plz-2024-12-12T14-56-19Z",
-          "sha": "e4b5a95b750f90b5a6e9dabbcebb14b345645181"
+          "ref": "first-publish",
+          "sha": "a55f593243c6072c95cf832395e2ca803d45424f"
         },
-        "html_url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/pull/2",
-        "merge_commit_sha": "51f1fbb940781c5ade8a244ef06390fe3dba0a23",
-        "merged_at": "2024-12-12T15:01:16Z",
-        "number": 2,
+        "html_url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/pull/4",
+        "merge_commit_sha": "e6257d5ec03ecfe588ddb97aa22d7c85e8a7d999",
+        "merged_at": "2024-12-12T15:23:44Z",
+        "number": 4,
         "state": "closed",
-        "title": "chore: release v0.2.0",
-        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/pulls/2",
+        "title": "ci: use a non default GITHUB_TOKEN to trigger workflow",
+        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/pulls/4",
         "user": {
-          "login": "aaaaaa-aaaaaaa[aab]"
+          "login": "aaaaaA"
         }
       }
     },
@@ -44,6 +44,6 @@
         "id": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa"
       }
     },
-    "id": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/pulls/2"
+    "id": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/pulls/4"
   }
 }

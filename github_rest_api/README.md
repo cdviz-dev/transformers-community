@@ -6,27 +6,38 @@ Use for historical **backfill** before switching to webhook-based ingestion ([gi
 
 ## Event Mappings
 
-| GitHub REST API endpoint                                        | CDEvent type           |
-| --------------------------------------------------------------- | ---------------------- |
-| `GET /repos/{owner}/{repo}/actions/runs` — status `queued`      | `pipelinerun.queued`   |
-| `GET /repos/{owner}/{repo}/actions/runs` — status `in_progress` | `pipelinerun.started`  |
-| `GET /repos/{owner}/{repo}/actions/runs` — status `completed`   | `pipelinerun.finished` |
-| `GET /repos/{owner}/{repo}/pulls` — state `open`                | `change.created`       |
-| `GET /repos/{owner}/{repo}/pulls` — state `closed`, merged      | `change.merged`        |
-| `GET /repos/{owner}/{repo}/pulls` — state `closed`, not merged  | `change.abandoned`     |
-| `GET /repos/{owner}/{repo}/releases`                            | `artifact.published`   |
-| `GET /repos/{owner}/{repo}/releases` — each asset               | `artifact.published`   |
-| `GET /{orgs\|users}/{owner}/packages/{type}/{name}/versions`    | `artifact.published`   |
-| `GET /repos/{owner}/{repo}/issues` — state `open` (non-PR)      | `ticket.created`       |
-| `GET /repos/{owner}/{repo}/issues` — state `closed` (non-PR)    | `ticket.closed`        |
-| `GET /repos/{owner}/{repo}/deployments`                         | `service.deployed`     |
-| `GET /orgs/{org}/repos` or `/user/repos`                        | `repository.created`   |
-| `GET /repos/{owner}/{repo}/environments`                        | `environment.created`  |
-| `GET /repos/{owner}/{repo}/branches`                            | `branch.created`       |
+| GitHub REST API endpoint                                        | CDEvent type                          |
+| --------------------------------------------------------------- | ------------------------------------- |
+| `GET /repos/{owner}/{repo}/actions/runs` — status `queued`      | `pipelinerun.queued`                  |
+| `GET /repos/{owner}/{repo}/actions/runs` — status `in_progress` | `pipelinerun.started`                 |
+| `GET /repos/{owner}/{repo}/actions/runs` — status `completed`   | `pipelinerun.finished`                |
+| `GET /repos/{owner}/{repo}/pulls` — any                         | `change.created`                      |
+| `GET /repos/{owner}/{repo}/pulls` — state `closed`, merged      | `change.created` + `change.merged`    |
+| `GET /repos/{owner}/{repo}/pulls` — state `closed`, not merged  | `change.created` + `change.abandoned` |
+| `GET /repos/{owner}/{repo}/releases`                            | `artifact.published`                  |
+| `GET /repos/{owner}/{repo}/releases` — each asset               | `artifact.published`                  |
+| `GET /{orgs\|users}/{owner}/packages/{type}/{name}/versions`    | `artifact.published`                  |
+| `GET /repos/{owner}/{repo}/issues` — any (non-PR)               | `ticket.created`                      |
+| `GET /repos/{owner}/{repo}/issues` — state `closed` (non-PR)    | `ticket.created` + `ticket.closed`    |
+| `GET /repos/{owner}/{repo}/deployments`                         | `service.deployed`                    |
+| `GET /orgs/{org}/repos` or `/user/repos`                        | `repository.created`                  |
+| `GET /repos/{owner}/{repo}/environments`                        | `environment.created`                 |
+| `GET /repos/{owner}/{repo}/branches`                            | `branch.created`                      |
 
 > **Note on branches**: GitHub's branches API does not expose branch creation timestamps.
 > The transformer uses `.metadata.ts_after` (polling window start) as a proxy, falling back
 > to `now()`. Timestamps for branch events are approximate.
+
+> [!NOTE]
+> A REST snapshot only reports the _current_ state, so backfilling already-closed items would
+> otherwise never produce the lifecycle start. Each item therefore fans out into every phase whose
+> timestamp the payload carries: a merged PR yields `change.created` (at `created_at`) **and**
+> `change.merged` (at `merged_at`); a closed issue yields `ticket.created` **and** `ticket.closed`;
+> a completed workflow run yields queued + started + finished. This keeps lead time, cycle time and
+> run duration computable from CDEvents alone.
+> `customData` for the earlier phases deliberately omits volatile fields (`state`, `conclusion`,
+> `merged_at`, …) so that re-polling the same item later yields the same content-based id instead of
+> a duplicate event.
 
 ## Usage
 

@@ -1,0 +1,41 @@
+{
+  "context": {
+    "specversion": "0.5.0",
+    "timestamp": "2025-03-04T09:12:00+00:00",
+    "type": "dev.cdevents.ticket.created.0.2.0"
+  },
+  "customData": {
+    "github": {
+      "issue": {
+        "created_at": "2025-03-04T09:12:00Z",
+        "number": 12,
+        "title": "aaaaa aaaaaaaa aaa",
+        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/issues/12"
+      }
+    },
+    "links": [
+      {
+        "linkKind": "storedAt",
+        "target": {
+          "subject": {
+            "id": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa",
+            "type": "repository"
+          }
+        }
+      }
+    ]
+  },
+  "subject": {
+    "content": {
+      "assignees": [],
+      "creator": "aaaaaa-aaaaaaa[aab]",
+      "labels": [
+        "bug"
+      ],
+      "milestone": null,
+      "summary": "aaaaa aaaaaaaa aaa",
+      "uri": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/issues/12"
+    },
+    "id": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/issues/12"
+  }
+}

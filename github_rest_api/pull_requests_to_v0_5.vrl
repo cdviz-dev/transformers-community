@@ -3,78 +3,76 @@
 # Input: paginated response from GET /repos/{owner}/{repo}/pulls?state=all
 #   .body = [{...}, ...]  (bare array)
 #
-# | done | GitHub REST field                        | CDEvent           |
-# | ---- | ---------------------------------------- | ----------------- |
-# | [x]  | state == open                            | change:created    |
-# | [x]  | state == closed && merged_at != null     | change:merged     |
-# | [x]  | state == closed && merged_at == null     | change:abandoned  |
+# | done | GitHub REST field                        | CDEvent(s) emitted            |
+# | ---- | ---------------------------------------- | ----------------------------- |
+# | [x]  | any pull request                         | change:created                |
+# | [x]  | state == closed && merged_at != null     | change:created + merged       |
+# | [x]  | state == closed && merged_at == null     | change:created + abandoned    |
 #
 # Rules:
 # - context.id is computed by the collector (content-based CID)
 # - subject.id = pr.url (API URL)
-# - timestamp from pr.created_at / pr.merged_at / pr.closed_at
+# - Each phase uses its own timestamp for idempotent backfill (see RULES.md)
+# - change:created is emitted for EVERY pull request, including already closed ones: a REST backfill
+#   would otherwise only ever produce the terminal event, and the lifecycle start needed to compute
+#   lead time / review duration in cdevents space would be missing forever.
+# - customData for the created phase only includes fields stable at that point (no state, merged_at,
+#   closed_at), so re-polling the same PR later does not change its CID and duplicate the event
 
 items = array(.body) ?? []
-bodies = map_values(items) -> |pr| {
-  if pr.state == "open" {
-    ts = parse_timestamp(pr.created_at, "%+") ?? now()
-    ts = format_timestamp!(ts, format: "%+")
-    repo_url = to_string(pr.base.repo.url) ?? ""
+events = map_values(items) -> |pr| {
+  repo_url = to_string(pr.base.repo.url) ?? ""
+  links = [{
+    "linkKind": "storedAt",
+    "target": { "subject": { "type": "repository", "id": repo_url } },
+  }]
+  subject = {
+    "id": to_string!(pr.url),
+    "content": {
+      "repository": { "id": repo_url },
+    },
+  }
 
-    {
-      "context": {
-        "specversion": "0.5.0",
-        "type": "dev.cdevents.change.created.0.3.0",
-        "timestamp": ts,
-      },
-      "subject": {
-        "id": to_string!(pr.url),
-        "content": {
-          "repository": { "id": repo_url },
-          "description": to_string(pr.title) ?? "",
+  # created — emitted whatever the current state
+  created_ts = format_timestamp!(parse_timestamp(pr.created_at, "%+") ?? now(), format: "%+")
+  created_subject = subject
+  created_subject.content.description = to_string(pr.title) ?? ""
+  created_event = {
+    "context": {
+      "specversion": "0.5.0",
+      "type": "dev.cdevents.change.created.0.3.0",
+      "timestamp": created_ts,
+    },
+    "subject": created_subject,
+    "customData": {
+      "links": links,
+      "github": {
+        "pull_request": {
+          "number": pr.number,
+          "title": pr.title,
+          "url": pr.url,
+          "html_url": pr.html_url,
+          "created_at": pr.created_at,
+          "user": { "login": pr.user.login },
+          "head": { "ref": pr.head.ref, "sha": pr.head.sha },
+          "base": { "ref": pr.base.ref },
         },
       },
-      "customData": {
-        "links": [{
-          "linkKind": "storedAt",
-          "target": { "subject": { "type": "repository", "id": repo_url } },
-        }],
-        "github": {
-          "pull_request": {
-            "number": pr.number,
-            "state": pr.state,
-            "title": pr.title,
-            "url": pr.url,
-            "html_url": pr.html_url,
-            "user": { "login": pr.user.login },
-            "head": { "ref": pr.head.ref, "sha": pr.head.sha },
-            "base": { "ref": pr.base.ref },
-          },
-        },
-      },
-    }
-  } else if pr.state == "closed" && !is_nullish(pr.merged_at) {
-    ts = parse_timestamp(pr.merged_at, "%+") ?? now()
-    ts = format_timestamp!(ts, format: "%+")
-    repo_url = to_string(pr.base.repo.url) ?? ""
+    },
+  }
 
-    {
+  # merged / abandoned — only once the pull request is closed
+  terminal_events = if pr.state == "closed" && !is_nullish(pr.merged_at) {
+    merged_ts = format_timestamp!(parse_timestamp(pr.merged_at, "%+") ?? now(), format: "%+")
+    [{
       "context": {
         "specversion": "0.5.0",
         "type": "dev.cdevents.change.merged.0.3.0",
-        "timestamp": ts,
+        "timestamp": merged_ts,
       },
-      "subject": {
-        "id": to_string!(pr.url),
-        "content": {
-          "repository": { "id": repo_url },
-        },
-      },
+      "subject": subject,
       "customData": {
-        "links": [{
-          "linkKind": "storedAt",
-          "target": { "subject": { "type": "repository", "id": repo_url } },
-        }],
+        "links": links,
         "github": {
           "pull_request": {
             "number": pr.number,
@@ -90,29 +88,18 @@ bodies = map_values(items) -> |pr| {
           },
         },
       },
-    }
+    }]
   } else if pr.state == "closed" {
-    ts = parse_timestamp(pr.closed_at, "%+") ?? now()
-    ts = format_timestamp!(ts, format: "%+")
-    repo_url = to_string(pr.base.repo.url) ?? ""
-
-    {
+    closed_ts = format_timestamp!(parse_timestamp(pr.closed_at, "%+") ?? now(), format: "%+")
+    [{
       "context": {
         "specversion": "0.5.0",
         "type": "dev.cdevents.change.abandoned.0.3.0",
-        "timestamp": ts,
+        "timestamp": closed_ts,
       },
-      "subject": {
-        "id": to_string!(pr.url),
-        "content": {
-          "repository": { "id": repo_url },
-        },
-      },
+      "subject": subject,
       "customData": {
-        "links": [{
-          "linkKind": "storedAt",
-          "target": { "subject": { "type": "repository", "id": repo_url } },
-        }],
+        "links": links,
         "github": {
           "pull_request": {
             "number": pr.number,
@@ -127,11 +114,14 @@ bodies = map_values(items) -> |pr| {
           },
         },
       },
-    }
+    }]
   } else {
-    null
+    []
   }
+
+  flatten([[created_event], terminal_events])
 }
+bodies = flatten(events)
 bodies = filter(bodies) -> |_index, body| { !is_null(body) }
 
 map_values(bodies) -> |body| {

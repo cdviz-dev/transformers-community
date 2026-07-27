@@ -1,7 +1,7 @@
 {
   "context": {
     "specversion": "0.5.0",
-    "timestamp": "2024-12-12T14:56:20+00:00",
+    "timestamp": "2024-12-12T15:01:40+00:00",
     "type": "dev.cdevents.change.created.0.3.0"
   },
   "customData": {
@@ -10,15 +10,15 @@
         "base": {
           "ref": "aaaa"
         },
-        "created_at": "2024-12-12T14:56:20Z",
+        "created_at": "2024-12-12T15:01:40Z",
         "head": {
-          "ref": "release-plz-2024-12-12T14-56-19Z",
-          "sha": "e4b5a95b750f90b5a6e9dabbcebb14b345645181"
+          "ref": "release-plz-2024-12-12T15-01-38Z",
+          "sha": "600c30ad8ab6651f75ebfad4eb3cc01332d4b9da"
         },
-        "html_url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/pull/2",
-        "number": 2,
-        "title": "chore: release v0.2.0",
-        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/pulls/2",
+        "html_url": "https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/pull/3",
+        "number": 3,
+        "title": "chore: release v0.2.1",
+        "url": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/pulls/3",
         "user": {
           "login": "aaaaaa-aaaaaaa[aab]"
         }
@@ -38,11 +38,11 @@
   },
   "subject": {
     "content": {
-      "description": "chore: release v0.2.0",
+      "description": "chore: release v0.2.1",
       "repository": {
         "id": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa"
       }
     },
-    "id": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/pulls/2"
+    "id": "https://api.github.com/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/pulls/3"
   }
 }

@@ -12,31 +12,31 @@ Converts [Forgejo webhook events](https://forgejo.org/docs/latest/user/repositor
 
 ## Event mapping
 
-| Forgejo event                                                 | action                         | CDEvent                                             |
-| ------------------------------------------------------------- | ------------------------------ | --------------------------------------------------- |
-| `action_run_success`                                          | `success`                      | `pipelineRun:finished` (outcome `success`)          |
-| `action_run_recover`                                          | `recover`                      | `pipelineRun:finished` (outcome `success`)          |
-| `action_run_failure`                                          | `failure`                      | `pipelineRun:finished` (outcome `failure`)          |
-| `package`                                                     | `created`                      | `artifact:published`                                |
-| `package`                                                     | `deleted`                      | `artifact:deleted`                                  |
-| `release`                                                     | `published`                    | `artifact:published` (+ one per release asset)      |
-| `release`                                                     | `deleted`                      | `artifact:deleted`                                  |
-| `release`                                                     | `updated`                      | — (would re-publish identical artifact coordinates) |
-| `pull_request` (+ `_assign`, `_label`, `_milestone`, `_sync`) | `opened`                       | `change:created`                                    |
-| `pull_request`                                                | `closed` (merged / not merged) | `change:merged` / `change:abandoned`                |
-| `pull_request`                                                | any other                      | `change:updated`                                    |
-| `pull_request_review_approved` / `_rejected` / `_comment`     | `reviewed`                     | `change:reviewed`                                   |
-| `pull_request_comment`                                        | any                            | `change:updated`                                    |
-| `issues` (+ `issue_assign`, `_label`, `_milestone`)           | `opened`                       | `ticket:created`                                    |
-| `issues`                                                      | `closed`                       | `ticket:closed`                                     |
-| `issues`                                                      | any other                      | `ticket:updated`                                    |
-| `issue_comment`                                               | any                            | `ticket:updated`                                    |
-| `create` (`ref_type: branch`)                                 |                                | `branch:created`                                    |
-| `delete` (`ref_type: branch`)                                 |                                | `branch:deleted`                                    |
-| `create` / `delete` (`ref_type: tag`)                         |                                | — (no tag subject in CDEvents)                      |
-| `repository`                                                  | `created` / `deleted`          | `repository:created` / `repository:deleted`         |
-| `fork`                                                        |                                | `repository:created` (for the fork)                 |
-| `push`, `wiki`, `workflow_dispatch`, `schedule`               |                                | — (no CDEvents equivalent)                          |
+| Forgejo event                                                 | action                         | CDEvent                                                             |
+| ------------------------------------------------------------- | ------------------------------ | ------------------------------------------------------------------- |
+| `action_run_success`                                          | `success`                      | `pipelineRun:` queued + started (inferred) + `finished` (`success`) |
+| `action_run_recover`                                          | `recover`                      | `pipelineRun:` queued + started (inferred) + `finished` (`success`) |
+| `action_run_failure`                                          | `failure`                      | `pipelineRun:` queued + started (inferred) + `finished` (`failure`) |
+| `package`                                                     | `created`                      | `artifact:published`                                                |
+| `package`                                                     | `deleted`                      | `artifact:deleted`                                                  |
+| `release`                                                     | `published`                    | `artifact:published` (+ one per release asset)                      |
+| `release`                                                     | `deleted`                      | `artifact:deleted`                                                  |
+| `release`                                                     | `updated`                      | — (would re-publish identical artifact coordinates)                 |
+| `pull_request` (+ `_assign`, `_label`, `_milestone`, `_sync`) | `opened`                       | `change:created`                                                    |
+| `pull_request`                                                | `closed` (merged / not merged) | `change:merged` / `change:abandoned`                                |
+| `pull_request`                                                | any other                      | `change:updated`                                                    |
+| `pull_request_review_approved` / `_rejected` / `_comment`     | `reviewed`                     | `change:reviewed`                                                   |
+| `pull_request_comment`                                        | any                            | `change:updated`                                                    |
+| `issues` (+ `issue_assign`, `_label`, `_milestone`)           | `opened`                       | `ticket:created`                                                    |
+| `issues`                                                      | `closed`                       | `ticket:closed`                                                     |
+| `issues`                                                      | any other                      | `ticket:updated`                                                    |
+| `issue_comment`                                               | any                            | `ticket:updated`                                                    |
+| `create` (`ref_type: branch`)                                 |                                | `branch:created`                                                    |
+| `delete` (`ref_type: branch`)                                 |                                | `branch:deleted`                                                    |
+| `create` / `delete` (`ref_type: tag`)                         |                                | — (no tag subject in CDEvents)                                      |
+| `repository`                                                  | `created` / `deleted`          | `repository:created` / `repository:deleted`                         |
+| `fork`                                                        |                                | `repository:created` (for the fork)                                 |
+| `push`, `wiki`, `workflow_dispatch`, `schedule`               |                                | — (no CDEvents equivalent)                                          |
 
 ### Event detection
 
@@ -50,10 +50,17 @@ payload carries an **optional** `pull_request` field, so it is tested before `.b
 
 Some information CDEvents (or `RULES.md`) would like is simply absent from the Forgejo payloads:
 
-- **No `pipelineRun:queued` or `:started`.** Forgejo only notifies on terminal states
-  (`success` / `failure` / `recover`), so only `pipelineRun:finished` is reachable. Gitea, which has
-  `workflow_run:requested` / `:in_progress`, does emit the full lifecycle.
-- **No `taskRun` at all.** Forgejo has no job-level webhook (no `workflow_job` equivalent).
+- **`pipelineRun:queued` and `:started` are inferred, not observed.** Forgejo only notifies on
+  terminal states (`success` / `failure` / `recover`), so the two earlier phases are reconstructed
+  from the timestamps the terminal payload already carries (`run.created`, `run.started`). All three
+  events are therefore emitted at once, _after_ the run ended: useless for real-time alerting, but
+  they restore the full lifecycle in CDEvents space so duration, queue time and DORA-style metrics
+  stay computable. Inferred events carry `customData.inferred = true` so consumers can tell them
+  apart from observed ones.
+  A run that never left the queue has a Go zero timestamp (`0001-01-01T00:00:00Z`) for
+  `run.started`; that phase is skipped rather than emitted with a bogus time.
+- **No `taskRun` at all.** Forgejo has no job-level webhook (no `workflow_job` equivalent), and the
+  payload carries no per-job data to infer one from.
 - **`ActionRun` has no API URL.** Only `html_url` is provided, so `subject.id` is rebuilt as
   `{repository.url}/actions/runs/{index_in_repo}` and `subject.content.uri` keeps the `html_url`.
 - **`action_run_*` payloads carry no top-level `repository`/`sender`** — both are read from `.run`

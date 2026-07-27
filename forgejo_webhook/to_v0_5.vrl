@@ -7,10 +7,9 @@
 #
 # | done | Forgejo event | cdevent |
 # | --- | --- | --- |
-# | [x] | action_run_success | pipelineRun:finished (outcome success) |
-# | [x] | action_run_recover | pipelineRun:finished (outcome success) |
-# | [x] | action_run_failure | pipelineRun:finished (outcome failure) |
-# | [ ] | (no queued/started event) | - forgejo only notifies on terminal states |
+# | [x] | action_run_success | pipelineRun:queued + started (inferred) + finished (success) |
+# | [x] | action_run_recover | pipelineRun:queued + started (inferred) + finished (success) |
+# | [x] | action_run_failure | pipelineRun:queued + started (inferred) + finished (failure) |
 # | [ ] | (no job level event) | - forgejo has no `workflow_job` equivalent, so no taskRun |
 # | [x] | package:created | artifact:published |
 # | [x] | package:deleted | artifact:deleted |
@@ -82,36 +81,82 @@ custom_data = {
 
 if exists(.body.run) {
   # forgejo actions: action_run_success / action_run_failure / action_run_recover
-  # only terminal states are notified, so pipelineRun:queued and :started are unreachable, and
-  # there is no job level event, so no taskRun is emitted either
+  # forgejo only notifies on TERMINAL states, there is no queued/started webhook. The queued and
+  # started events are therefore INFERRED from the timestamps the terminal payload already carries
+  # (`run.created` / `run.started`). All three land at once, late, so they are useless for real time
+  # alerting, but they let consumers rebuild the pipeline lifecycle and compute queue/run durations
+  # in cdevents space. Inferred events are flagged with `customData.inferred`.
+  # Note: forgejo has no job level webhook, so no taskRun can be emitted at all.
   run = .body.run
   repo_full_name = to_string(run.repository.full_name) ?? ""
   # ActionRun has no api `url`, only `html_url`; rebuild the api uri from the repository + index
   run_id = repo_url + "/actions/runs/" + (to_string(run.index_in_repo) ?? "")
-  ts = parse_timestamp(run.stopped, "%+") ?? parse_timestamp(run.updated, "%+") ?? now()
-  body = {
-    "context": {
-      "specversion": "0.5.0",
-      "type": "dev.cdevents.pipelinerun.finished.0.3.0",
-      "timestamp": format_timestamp!(ts, format: "%+"),
-    },
-    "subject": {
-      "id": run_id,
-      "content": {
-        # `workflow_id` is the workflow file name, more stable than the run `title`
-        "pipelineName": (repo_full_name + "/" + run.workflow_id) ?? run.title,
-        "uri": run.html_url,
-      }
-    },
-    "customData": custom_data,
+  subject = {
+    "id": run_id,
+    "content": {
+      # `workflow_id` is the workflow file name, more stable than the run `title`
+      "pipelineName": (repo_full_name + "/" + run.workflow_id) ?? run.title,
+      "uri": run.html_url,
+    }
   }
   # "recover" means this run succeeded while the previous one for the same workflow had failed
+  outcome = null
   if .body.action == "success" || .body.action == "recover" {
-    body.subject.content.outcome = "success"
-    bodies = [body]
+    outcome = "success"
   } else if .body.action == "failure" {
-    body.subject.content.outcome = "failure"
-    bodies = [body]
+    outcome = "failure"
+  }
+
+  if !is_null(outcome) {
+    inferred_data = custom_data
+    inferred_data.inferred = true
+
+    # a go zero time marshals to "0001-01-01T00:00:00Z": it parses fine but means "never happened"
+    # (e.g. a run cancelled while still waiting never started), so those phases are skipped
+    queued_events = []
+    created_s = to_string(run.created) ?? ""
+    if created_s != "" && !starts_with(created_s, "0001-") {
+      queued_ts = format_timestamp!(parse_timestamp(created_s, "%+") ?? now(), format: "%+")
+      queued_events = [{
+        "context": {
+          "specversion": "0.5.0",
+          "type": "dev.cdevents.pipelinerun.queued.0.3.0",
+          "timestamp": queued_ts,
+        },
+        "subject": subject,
+        "customData": inferred_data,
+      }]
+    }
+
+    started_events = []
+    started_s = to_string(run.started) ?? ""
+    if started_s != "" && !starts_with(started_s, "0001-") {
+      started_ts = format_timestamp!(parse_timestamp(started_s, "%+") ?? now(), format: "%+")
+      started_events = [{
+        "context": {
+          "specversion": "0.5.0",
+          "type": "dev.cdevents.pipelinerun.started.0.3.0",
+          "timestamp": started_ts,
+        },
+        "subject": subject,
+        "customData": inferred_data,
+      }]
+    }
+
+    finished_subject = subject
+    finished_subject.content.outcome = string!(outcome)
+    finished_ts = format_timestamp!(parse_timestamp(run.stopped, "%+") ?? parse_timestamp(run.updated, "%+") ?? now(), format: "%+")
+    finished_events = [{
+      "context": {
+        "specversion": "0.5.0",
+        "type": "dev.cdevents.pipelinerun.finished.0.3.0",
+        "timestamp": finished_ts,
+      },
+      "subject": finished_subject,
+      "customData": custom_data,
+    }]
+
+    bodies = flatten([queued_events, started_events, finished_events])
   }
 } else if exists(.body.package) {
   # the forgejo package payload is flat: id, owner, repository, creator, type, name, version,

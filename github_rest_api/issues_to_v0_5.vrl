@@ -6,30 +6,39 @@
 # Note: GitHub issues API returns both issues AND pull requests.
 #       Items with a "pull_request" field are skipped here (handled by pull_requests_to_v0_5.vrl).
 #
-# | done | GitHub REST field   | CDEvent          |
-# | ---- | ------------------- | ---------------- |
-# | [x]  | state == open       | ticket:created   |
-# | [x]  | state == closed     | ticket:closed    |
+# | done | GitHub REST field   | CDEvent(s) emitted        |
+# | ---- | ------------------- | ------------------------- |
+# | [x]  | any issue           | ticket:created            |
+# | [x]  | state == closed     | ticket:created + closed   |
 #
 # Rules:
 # - context.id is computed by the collector (content-based CID)
 # - subject.id = issue.url (API URL)
-# - timestamp from issue.created_at (open) or issue.closed_at (closed)
+# - Each phase uses its own timestamp for idempotent backfill (see RULES.md)
+# - ticket:created is emitted for EVERY issue, including already closed ones: a REST backfill would
+#   otherwise only ever produce the terminal event, and the lifecycle start needed to compute issue
+#   age / time to resolution in cdevents space would be missing forever.
+# - customData for the created phase only includes fields stable at that point (no state,
+#   state_reason, closed_at), so re-polling the same issue later does not change its CID
 
 items = array(.body) ?? []
-bodies = map_values(items) -> |issue| {
+events = map_values(items) -> |issue| {
   if exists(issue.pull_request) {
-    null
-  } else if issue.state == "open" {
-    ts = parse_timestamp(issue.created_at, "%+") ?? now()
-    ts = format_timestamp!(ts, format: "%+")
+    []
+  } else {
     repo_url = to_string(issue.repository_url) ?? ""
+    links = [{
+      "linkKind": "storedAt",
+      "target": { "subject": { "type": "repository", "id": repo_url } },
+    }]
 
-    {
+    # created — emitted whatever the current state
+    created_ts = format_timestamp!(parse_timestamp(issue.created_at, "%+") ?? now(), format: "%+")
+    created_event = {
       "context": {
         "specversion": "0.5.0",
         "type": "dev.cdevents.ticket.created.0.2.0",
-        "timestamp": ts,
+        "timestamp": created_ts,
       },
       "subject": {
         "id": to_string!(issue.url),
@@ -43,60 +52,58 @@ bodies = map_values(items) -> |issue| {
         },
       },
       "customData": {
-        "links": [{
-          "linkKind": "storedAt",
-          "target": { "subject": { "type": "repository", "id": repo_url } },
-        }],
+        "links": links,
         "github": {
           "issue": {
             "number": issue.number,
-            "state": issue.state,
             "title": issue.title,
             "url": issue.url,
+            "created_at": issue.created_at,
           },
         },
       },
     }
-  } else if issue.state == "closed" {
-    ts = parse_timestamp(issue.closed_at, "%+") ?? now()
-    ts = format_timestamp!(ts, format: "%+")
-    repo_url = to_string(issue.repository_url) ?? ""
 
-    {
-      "context": {
-        "specversion": "0.5.0",
-        "type": "dev.cdevents.ticket.closed.0.2.0",
-        "timestamp": ts,
-      },
-      "subject": {
-        "id": to_string!(issue.url),
-        "content": {
-          "summary": to_string(issue.title) ?? "",
-          "creator": to_string(issue.user.login) ?? "",
-          "resolution": to_string(issue.state_reason) ?? "",
-          "uri": to_string!(issue.html_url),
+    # closed — only once the issue is closed
+    closed_events = if issue.state == "closed" {
+      closed_ts = format_timestamp!(parse_timestamp(issue.closed_at, "%+") ?? now(), format: "%+")
+      [{
+        "context": {
+          "specversion": "0.5.0",
+          "type": "dev.cdevents.ticket.closed.0.2.0",
+          "timestamp": closed_ts,
         },
-      },
-      "customData": {
-        "links": [{
-          "linkKind": "storedAt",
-          "target": { "subject": { "type": "repository", "id": repo_url } },
-        }],
-        "github": {
-          "issue": {
-            "number": issue.number,
-            "state": issue.state,
-            "state_reason": issue.state_reason,
-            "title": issue.title,
-            "url": issue.url,
+        "subject": {
+          "id": to_string!(issue.url),
+          "content": {
+            "summary": to_string(issue.title) ?? "",
+            "creator": to_string(issue.user.login) ?? "",
+            "resolution": to_string(issue.state_reason) ?? "",
+            "uri": to_string!(issue.html_url),
           },
         },
-      },
+        "customData": {
+          "links": links,
+          "github": {
+            "issue": {
+              "number": issue.number,
+              "state": issue.state,
+              "state_reason": issue.state_reason,
+              "title": issue.title,
+              "url": issue.url,
+              "closed_at": issue.closed_at,
+            },
+          },
+        },
+      }]
+    } else {
+      []
     }
-  } else {
-    null
+
+    flatten([[created_event], closed_events])
   }
 }
+bodies = flatten(events)
 bodies = filter(bodies) -> |_index, body| { !is_null(body) }
 
 map_values(bodies) -> |body| {

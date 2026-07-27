@@ -22,11 +22,17 @@ Rows are source applications, columns are [CDEvents subjects](https://cdevents.d
 | Source                                                                    | artifact           | branch           | change                                        | environment | incident | pipelineRun               | repository       | service                     | taskRun           | ticket                   |
 | ------------------------------------------------------------------------- | ------------------ | ---------------- | --------------------------------------------- | ----------- | -------- | ------------------------- | ---------------- | --------------------------- | ----------------- | ------------------------ |
 | GitHub Webhooks ([github_events](./github_events/))                       | published          | created, deleted | created, updated, merged, abandoned, reviewed |             |          | queued, started, finished |                  |                             | started, finished | created, updated, closed |
-| Forgejo Webhooks ([forgejo_webhook](./forgejo_webhook/))                  | published, deleted | created, deleted | created, updated, merged, abandoned, reviewed |             |          | finished                  | created, deleted |                             |                   | created, updated, closed |
+| Forgejo Webhooks ([forgejo_webhook](./forgejo_webhook/))                  | published, deleted | created, deleted | created, updated, merged, abandoned, reviewed |             |          | queued, started, finished | created, deleted |                             |                   | created, updated, closed |
 | Gitea Webhooks ([gitea_webhook](./gitea_webhook/))                        | published, deleted | created, deleted | created, updated, merged, abandoned, reviewed |             |          | queued, started, finished | created, deleted |                             | started, finished | created, updated, closed |
 | GitHub REST API ([github_rest_api](./github_rest_api/))                   | published          |                  | created, merged, abandoned                    | created     |          | queued, started, finished | created          | deployed                    |                   | created, closed          |
 | ArgoCD Notifications ([argocd_notifications](./argocd_notifications/))    |                    |                  |                                               |             | detected |                           |                  | deployed, removed           |                   |                          |
 | Kubewatch CloudEvents ([kubewatch_cloudevents](./kubewatch_cloudevents/)) |                    |                  |                                               |             |          |                           |                  | deployed, removed, upgraded |                   |                          |
+
+Some predicates are _inferred_ rather than observed: when a source only reports a terminal state but
+its payload carries the earlier timestamps, the transformer reconstructs the missing lifecycle events.
+This applies to `pipelineRun:queued`/`started` for Forgejo (flagged with `customData.inferred`), and to
+`change:created` / `ticket:created` when backfilling already-closed items from the GitHub REST API
+(not flagged — a REST snapshot is a state, not an event, so every predicate it yields is reconstructed).
 
 This table is maintained from the `to_v0_x.vrl` sources, and is merged with the equivalent tables of the other transformer repositories into the documentation site "integrations" page.
 

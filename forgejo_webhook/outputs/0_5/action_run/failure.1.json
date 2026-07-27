@@ -1,12 +1,12 @@
 {
   "context": {
     "specversion": "0.5.0",
-    "timestamp": "2025-05-21T17:29:55+00:00",
-    "type": "dev.cdevents.pipelinerun.queued.0.3.0"
+    "timestamp": "2025-05-21T17:30:00+00:00",
+    "type": "dev.cdevents.pipelinerun.started.0.3.0"
   },
   "customData": {
     "forgejo": {
-      "action": "success",
+      "action": "failure",
       "prior_status": "running",
       "run": {
         "approved_by": 0,
@@ -14,9 +14,9 @@
         "created": "2025-05-21T17:29:55Z",
         "event": "push",
         "event_payload": "",
-        "html_url": "https://forgejo.example.com/aaaaa-aaa/aaaaa-aaaaaaaaa/actions/runs/42",
+        "html_url": "https://forgejo.example.com/aaaaa-aaa/aaaaa-aaaaaaaaa/actions/runs/43",
         "id": 666666666,
-        "index_in_repo": 42,
+        "index_in_repo": 43,
         "is_fork_pull_request": false,
         "is_ref_deleted": false,
         "need_approval": false,
@@ -83,8 +83,8 @@
           "website": ""
         },
         "started": "2025-05-21T17:30:00Z",
-        "status": "success",
-        "stopped": "2025-05-21T17:35:21Z",
+        "status": "failure",
+        "stopped": "2025-05-21T17:36:10Z",
         "title": "ggggg gggggggg",
         "trigger_event": "push",
         "trigger_user": {
@@ -111,7 +111,7 @@
           "visibility": "public",
           "website": ""
         },
-        "updated": "2025-05-21T17:35:21Z",
+        "updated": "2025-05-21T17:36:10Z",
         "workflow_id": "ci.yaml"
       }
     },
@@ -131,8 +131,8 @@
   "subject": {
     "content": {
       "pipelineName": "aaaaa-aaa/aaaaa-aaaaaaaaa/ci.yaml",
-      "uri": "https://forgejo.example.com/aaaaa-aaa/aaaaa-aaaaaaaaa/actions/runs/42"
+      "uri": "https://forgejo.example.com/aaaaa-aaa/aaaaa-aaaaaaaaa/actions/runs/43"
     },
-    "id": "https://forgejo.example.com/api/v1/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/actions/runs/42"
+    "id": "https://forgejo.example.com/api/v1/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/actions/runs/43"
   }
 }
