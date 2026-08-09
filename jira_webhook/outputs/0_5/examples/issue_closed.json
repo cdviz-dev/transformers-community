@@ -1,0 +1,57 @@
+{
+  "context": {
+    "id": "0",
+    "source": "http://cdviz-collector.example.com?source=cli-transform",
+    "specversion": "0.5.0",
+    "timestamp": "2025-01-15T12:00:00+00:00",
+    "type": "dev.cdevents.ticket.closed.0.2.0"
+  },
+  "customData": {
+    "jira": {
+      "changelog": {
+        "id": "10101",
+        "items": [
+          {
+            "field": "status",
+            "fieldtype": "jira",
+            "from": "10002",
+            "fromString": "In Progress",
+            "to": "10003",
+            "toString": "Done"
+          }
+        ]
+      },
+      "issue": {
+        "id": "10001",
+        "key": "PROJ-1",
+        "self": "https://example.atlassian.net/rest/api/3/issue/10001"
+      },
+      "issue_event_type_name": "issue_generic",
+      "timestamp": 1736946000000,
+      "user": {
+        "accountId": "user-account-id-002",
+        "displayName": "Bob Engineer"
+      },
+      "webhookEvent": "jira:issue_updated"
+    }
+  },
+  "subject": {
+    "content": {
+      "assignees": [
+        "user-account-id-002"
+      ],
+      "creator": "user-account-id-001",
+      "labels": [
+        "backend",
+        "auth"
+      ],
+      "milestone": "1.0.0",
+      "priority": "high",
+      "resolution": "completed",
+      "summary": "Fix critical login bug",
+      "ticketType": "bug",
+      "uri": "https://example.atlassian.net/browse/PROJ-1"
+    },
+    "id": "https://example.atlassian.net/browse/PROJ-1"
+  }
+}

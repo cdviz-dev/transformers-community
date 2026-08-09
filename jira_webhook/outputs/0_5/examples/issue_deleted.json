@@ -1,0 +1,41 @@
+{
+  "context": {
+    "id": "0",
+    "source": "http://cdviz-collector.example.com?source=cli-transform",
+    "specversion": "0.5.0",
+    "timestamp": "2025-01-15T13:00:00+00:00",
+    "type": "dev.cdevents.ticket.closed.0.2.0"
+  },
+  "customData": {
+    "jira": {
+      "issue": {
+        "id": "10002",
+        "key": "PROJ-2",
+        "self": "https://example.atlassian.net/rest/api/3/issue/10002"
+      },
+      "issue_event_type_name": "issue_deleted",
+      "timestamp": 1736949600000,
+      "user": {
+        "accountId": "user-account-id-001",
+        "displayName": "Alice Developer"
+      },
+      "webhookEvent": "jira:issue_deleted"
+    }
+  },
+  "subject": {
+    "content": {
+      "assignees": [],
+      "creator": "user-account-id-001",
+      "labels": [
+        "backend"
+      ],
+      "milestone": null,
+      "priority": "medium",
+      "resolution": "withdrawn",
+      "summary": "Investigate memory leak in worker service",
+      "ticketType": "bug",
+      "uri": "https://example.atlassian.net/browse/PROJ-2"
+    },
+    "id": "https://example.atlassian.net/browse/PROJ-2"
+  }
+}

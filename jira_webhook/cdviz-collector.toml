@@ -1,0 +1,14 @@
+# ------------------------------------------------------------------------------
+# Example of source configuration
+#
+# [sources.jira_webhook]
+# enabled = true
+# transformer_refs = ["jira_events"]
+
+# [sources.jira_webhook.extractor]
+# type = "webhook"
+# id = "000-jira"
+# headers_to_keep = []
+
+[transformers]
+jira_events_0_5 = { type = "vrl", template_file = "./to_v0_5.vrl" }

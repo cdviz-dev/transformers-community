@@ -1,0 +1,43 @@
+{
+  "context": {
+    "id": "0",
+    "source": "http://cdviz-collector.example.com?source=cli-transform",
+    "specversion": "0.5.0",
+    "timestamp": "2025-01-15T10:00:00+00:00",
+    "type": "dev.cdevents.ticket.created.0.2.0"
+  },
+  "customData": {
+    "jira": {
+      "issue": {
+        "id": "10001",
+        "key": "PROJ-1",
+        "self": "https://example.atlassian.net/rest/api/3/issue/10001"
+      },
+      "issue_event_type_name": "issue_created",
+      "timestamp": 1736938800000,
+      "user": {
+        "accountId": "user-account-id-001",
+        "displayName": "Alice Developer"
+      },
+      "webhookEvent": "jira:issue_created"
+    }
+  },
+  "subject": {
+    "content": {
+      "assignees": [
+        "user-account-id-002"
+      ],
+      "creator": "user-account-id-001",
+      "labels": [
+        "backend",
+        "auth"
+      ],
+      "milestone": "1.0.0",
+      "priority": "high",
+      "summary": "Fix critical login bug",
+      "ticketType": "bug",
+      "uri": "https://example.atlassian.net/browse/PROJ-1"
+    },
+    "id": "https://example.atlassian.net/browse/PROJ-1"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "webhookEvent": "jira:issue_deleted",
+  "issue_event_type_name": "issue_deleted",
+  "timestamp": 1736949600000,
+  "user": {
+    "accountId": "user-account-id-001",
+    "displayName": "Alice Developer"
+  },
+  "issue": {
+    "id": "10002",
+    "key": "PROJ-2",
+    "self": "https://example.atlassian.net/rest/api/3/issue/10002",
+    "fields": {
+      "summary": "Investigate memory leak in worker service",
+      "issuetype": {
+        "id": "10004",
+        "name": "Bug"
+      },
+      "status": {
+        "id": "10001",
+        "name": "Open",
+        "statusCategory": {
+          "id": 2,
+          "key": "new",
+          "name": "To Do"
+        }
+      },
+      "priority": {
+        "id": "3",
+        "name": "Medium"
+      },
+      "reporter": {
+        "accountId": "user-account-id-001",
+        "displayName": "Alice Developer"
+      },
+      "assignee": null,
+      "labels": ["backend"],
+      "fixVersions": [],
+      "project": {
+        "id": "10000",
+        "key": "PROJ",
+        "name": "My Project"
+      },
+      "created": "2025-01-15T09:00:00.000+00:00",
+      "updated": "2025-01-15T13:00:00.000+00:00"
+    }
+  }
+}

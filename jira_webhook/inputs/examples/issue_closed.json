@@ -1,0 +1,73 @@
+{
+  "webhookEvent": "jira:issue_updated",
+  "issue_event_type_name": "issue_generic",
+  "timestamp": 1736946000000,
+  "user": {
+    "accountId": "user-account-id-002",
+    "displayName": "Bob Engineer"
+  },
+  "issue": {
+    "id": "10001",
+    "key": "PROJ-1",
+    "self": "https://example.atlassian.net/rest/api/3/issue/10001",
+    "fields": {
+      "summary": "Fix critical login bug",
+      "issuetype": {
+        "id": "10004",
+        "name": "Bug"
+      },
+      "status": {
+        "id": "10003",
+        "name": "Done",
+        "statusCategory": {
+          "id": 3,
+          "key": "done",
+          "name": "Done"
+        }
+      },
+      "priority": {
+        "id": "2",
+        "name": "High"
+      },
+      "reporter": {
+        "accountId": "user-account-id-001",
+        "displayName": "Alice Developer"
+      },
+      "assignee": {
+        "accountId": "user-account-id-002",
+        "displayName": "Bob Engineer"
+      },
+      "labels": ["backend", "auth"],
+      "fixVersions": [
+        {
+          "id": "10010",
+          "name": "1.0.0"
+        }
+      ],
+      "project": {
+        "id": "10000",
+        "key": "PROJ",
+        "name": "My Project"
+      },
+      "resolution": {
+        "id": "10000",
+        "name": "Fixed"
+      },
+      "created": "2025-01-15T10:00:00.000+00:00",
+      "updated": "2025-01-15T12:00:00.000+00:00"
+    }
+  },
+  "changelog": {
+    "id": "10101",
+    "items": [
+      {
+        "field": "status",
+        "fieldtype": "jira",
+        "from": "10002",
+        "fromString": "In Progress",
+        "to": "10003",
+        "toString": "Done"
+      }
+    ]
+  }
+}

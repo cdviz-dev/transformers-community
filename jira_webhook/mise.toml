@@ -1,0 +1,17 @@
+[tasks."test"]
+depends = [":test:*"]
+
+[tasks."test:0_5"]
+description = "run the transformation example jira (use `--mode review` to review and update)"
+usage = """
+flag "--mode <mode>" default="check" help="transform mode: check or review"
+"""
+run = """cdviz-collector \
+  transform \
+  --disable-otel \
+  --mode ${usage_mode} \
+  --config ./cdviz-collector.toml \
+  -t jira_events_0_5 \
+  --input ./inputs \
+  --output ./outputs/0_5
+"""

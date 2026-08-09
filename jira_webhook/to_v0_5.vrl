@@ -1,0 +1,173 @@
+bodies = []
+context = {
+    "specversion": "0.5.0",
+    "id": "0", # "0" to let collector generate an id
+    "source": .metadata.context.source,
+}
+event_type = to_string!(.body.webhookEvent)
+
+custom_data = {
+  "jira": .body
+}
+
+# Issue Events (jira:issue_created, jira:issue_updated, jira:issue_deleted)
+if starts_with(event_type, "jira:issue_") {
+  issue = .body.issue
+
+  # Derive browse URL from issue.self REST URL
+  base_url = replace(to_string!(issue.self), r'/rest/api/\d+/issue/\d+$', "")
+  browse_url = base_url + "/browse/" + to_string!(issue.key)
+
+  # User identity: Cloud uses accountId, Server uses name
+  assignees = if !is_nullish(issue.fields.assignee) {
+    [to_string!(issue.fields.assignee.accountId || issue.fields.assignee.name || "")]
+  } else {
+    []
+  }
+
+  milestone = if !is_nullish(issue.fields.fixVersions) && length(array!(issue.fields.fixVersions)) > 0 {
+    to_string!(issue.fields.fixVersions[0].name)
+  } else {
+    null
+  }
+
+  subject = {
+    "id": browse_url,
+    "content": {
+      "summary": issue.fields.summary,
+      "ticketType": downcase(to_string!(issue.fields.issuetype.name || "issue")),
+      "uri": browse_url,
+      "priority": downcase(to_string!(issue.fields.priority.name || "medium")),
+      "creator": to_string!(issue.fields.reporter.accountId || issue.fields.reporter.name || ""),
+      "assignees": assignees,
+      "labels": map_values(array!(issue.fields.labels || [])) -> |label| { to_string!(label) },
+      "milestone": milestone,
+    }
+  }
+
+  # Map Jira resolution names to CDEvents resolution enum (completed, withdrawn, duplicate)
+  # https://github.com/cdevents/spec/blob/main/schemas/ticketclosed.json
+  resolution_map = {
+    "fixed": "completed",
+    "done": "completed",
+    "resolved": "completed",
+    "won't fix": "withdrawn",
+    "wontfix": "withdrawn",
+    "invalid": "withdrawn",
+    "rejected": "withdrawn",
+    "declined": "withdrawn",
+    "cannot reproduce": "withdrawn",
+    "incomplete": "withdrawn",
+    "not a bug": "withdrawn",
+    "obsolete": "withdrawn",
+    "duplicate": "duplicate",
+  }
+
+  custom_data.jira.issue = {
+    "id": issue.id,
+    "key": issue.key,
+    "self": issue.self,
+  }
+
+  if event_type == "jira:issue_created" {
+    # ticket:created
+    context.type = "dev.cdevents.ticket.created.0.2.0"
+    context.timestamp = issue.fields.created
+    bodies = push(bodies, {
+      "context": context,
+      "subject": subject,
+      "customData": custom_data,
+    })
+  } else if event_type == "jira:issue_updated" {
+    status_category = to_string!(issue.fields.status.statusCategory.key || "")
+    context.timestamp = issue.fields.updated
+    if status_category == "done" {
+      # ticket:closed
+      context.type = "dev.cdevents.ticket.closed.0.2.0"
+      resolution_raw = downcase(to_string!(issue.fields.resolution.name || ""))
+      subject.content.resolution = get(resolution_map, [resolution_raw]) ?? resolution_raw
+    } else {
+      # ticket:updated
+      context.type = "dev.cdevents.ticket.updated.0.2.0"
+    }
+    bodies = push(bodies, {
+      "context": context,
+      "subject": subject,
+      "customData": custom_data,
+    })
+  } else if event_type == "jira:issue_deleted" {
+    resolution_raw = downcase(to_string!(issue.fields.resolution.name || ""))
+    if resolution_raw == "" {
+      # ticket:closed only if not already resolved (withdrawn = deleted without prior resolution)
+      context.type = "dev.cdevents.ticket.closed.0.2.0"
+      context.timestamp = issue.fields.updated
+      subject.content.resolution = "withdrawn"
+      bodies = push(bodies, {
+        "context": context,
+        "subject": subject,
+        "customData": custom_data,
+      })
+    }
+    # else: already resolved, skip (issue_updated would have emitted ticket.closed earlier)
+  }
+}
+
+# Version Released Events
+if event_type == "jira:version_released" {
+  version = .body.version
+
+  # Derive base URL from version.self REST URL
+  base_url = replace(to_string!(version.self), r'/rest/api/\d+/version/\d+$', "")
+
+  # Project key: Cloud may include projectKey, Server uses projectId as fallback
+  project_key = to_string!(version.projectKey || version.projectId || "unknown")
+  version_name = to_string!(version.name)
+
+  pkg = purl_to_string!({
+    "type": "generic",
+    "name": project_key,
+    "version": version_name,
+    "qualifiers": {"repository_url": base_url}
+  })
+
+  custom_data.jira.version = {
+    "id": version.id,
+    "name": version.name,
+    "description": version.description,
+    "projectId": version.projectId,
+  }
+
+  # Parse releaseDate (date-only "%Y-%m-%d") by constructing a full datetime string
+  ts = if !is_nullish(version.releaseDate) {
+    parse_timestamp(to_string!(version.releaseDate) + "T00:00:00+00:00", "%+") ?? now()
+  } else {
+    now()
+  }
+
+  # artifact:published
+  context.type = "dev.cdevents.artifact.published.0.3.0"
+  context.timestamp = format_timestamp!(ts, format: "%+")
+  bodies = push(bodies, {
+    "context": context,
+    "subject": {
+      "id": pkg,
+      "content": {
+        "user": null,
+      }
+    },
+    "customData": custom_data,
+  })
+}
+
+# Return the transformed bodies
+map_values(bodies) -> |body| {
+    if !is_nullish(body.context.timestamp) {
+        ts = parse_timestamp!(body.context.timestamp, "%+")
+        body.context.timestamp = format_timestamp!(ts, format: "%+")
+    }
+  {
+    "metadata": .metadata,
+    "headers": .headers,
+    "body": body
+  }
+}
