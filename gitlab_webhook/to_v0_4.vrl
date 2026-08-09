@@ -1,0 +1,361 @@
+bodies = []
+context = {
+    "version": "0.4.1",
+}
+project_path = to_string!(.body.project.path_with_namespace)
+project_path_fragments = split_path(project_path)
+project_path_name = get(project_path_fragments, [-1]) ?? downcase!(to_string!(.body.project.name))
+project_path_namespace = join!(slice(project_path_fragments, 0, -1) ?? [], "/")
+project_web_url = to_string!(.body.project.web_url)
+
+custom_data = {
+  "links": [
+    {
+      "linkKind": "storedAt",
+      "target": {
+        "subject": {
+          "type": "repository",
+          "id": project_web_url,
+        }
+      }
+    }
+  ],
+  "gitlab": .body
+}
+
+# Determine event type from object_kind or event_name header "X-Gitlab-Event"
+event_type =  .body.object_kind || .headers."x-gitlab-events"
+
+# Pipeline Events
+if event_type == "pipeline" {
+  pipeline = .body.object_attributes
+  project = .body.project
+
+  subject = {
+    "id": project_web_url + "/-/pipelines/" + to_string!(pipeline.id),
+    "type": "pipelineRun",
+    "content": {
+      "pipelineName": project_path + "/" + to_string!(pipeline.ref),
+      "url": project_web_url + "/-/pipelines/" + to_string!(pipeline.id),
+    }
+  }
+  # Map pipeline status to CDEvent
+  if pipeline.status == "created" || pipeline.status == "waiting_for_resource" || pipeline.status == "preparing" || pipeline.status == "pending" {
+    # pipelineRun:queued
+    context.type = "dev.cdevents.pipelinerun.queued.0.2.0"
+    context.timestamp = pipeline.created_at
+    bodies = push(bodies, {
+      "context": context,
+      "subject": subject,
+      "customData": custom_data,
+    })
+  } else if pipeline.status == "running" {
+    # pipelineRun:started
+    context.type = "dev.cdevents.pipelinerun.started.0.2.0"
+    context.timestamp = pipeline.started_at
+    bodies = push(bodies, {
+      "context": context,
+      "subject": subject,
+      "customData": custom_data,
+    })
+  } else if pipeline.status == "success" || pipeline.status == "failed" || pipeline.status == "canceled" || pipeline.status == "skipped" {
+    # pipelineRun:finished
+    subject.content.outcome = if pipeline.status == "success" { "success" } else if pipeline.status == "failed" { "failure" } else if pipeline.status == "canceled" { "error" } else { "error" }
+    subject.content.errors = if subject.content.outcome == "failure" { pipeline.failure_reason || "unknown" } else { null }
+    context.type = "dev.cdevents.pipelinerun.finished.0.2.0"
+    context.timestamp = pipeline.finished_at
+    bodies = push(bodies, {
+      "context": context,
+      "subject": subject,
+      "customData": custom_data,
+    })
+  }
+}
+
+# Job/Build Events
+if event_type == "build" {
+  project_name = .body.project_name
+  repo_url = to_string!(.body.repository.homepage)
+  subject_id = repo_url + "/-/jobs/" + to_string!(.body.build_id)
+  subject_content_url = repo_url + "/-/jobs/" + to_string!(.body.build_id)
+  pipeline_id = repo_url + "/-/pipelines/" + to_string!(.body.pipeline_id)
+  subject = {
+    "id": subject_id,
+    "type": "taskRun",
+    "content": {
+      "taskName": project_path + "/" + to_string!(.body.build_stage) + "/" + to_string!(.body.build_name),
+      "pipelineRun": {
+        "id": pipeline_id,
+      },
+      "url": subject_content_url,
+    }
+  }
+
+  # Map job status to CDEvent
+  # no "queued" for taskrun
+  # if .body.build_status == "created" || .body.build_status == "pending" {
+  #   # taskRun:queued
+  #   context.type = "dev.cdevents.taskrun.queued.0.2.0"
+  #   context.timestamp = .body.build_created_at
+  #   bodies = push(bodies, {
+  #     "context": context,
+  #     "subject": subject,
+  #     "customData": custom_data,
+  #   })
+  # } else
+  if .body.build_status == "running" {
+    # taskRun:started
+    context.type = "dev.cdevents.taskrun.started.0.2.0"
+    context.timestamp = .body.build_started_at
+    bodies = push(bodies, {
+      "context": context,
+      "subject": subject,
+      "customData": custom_data,
+    })
+  } else if .body.build_status == "success" || .body.build_status == "failed" || .body.build_status == "canceled" {
+    # taskRun:finished
+    subject.content.outcome = if .body.build_status == "success" { "success" } else if .body.build_status == "failed" { "failure" } else { "error" }
+    context.type = "dev.cdevents.taskrun.finished.0.2.0"
+    context.timestamp = .body.build_finished_at
+    bodies = push(bodies, {
+      "context": context,
+      "subject": subject,
+      "customData": custom_data,
+    })
+  }
+}
+
+# Release Events
+if event_type == "release" {
+  project = .body.project
+
+  # Generate PURL for the release artifact
+  tag_name = .body.tag || "unknown"
+  pkg = purl_to_string!({
+    "type": "generic",
+    "name": project_path_name,
+    "namespace": project_path_namespace,
+    "version": tag_name,
+    "qualifiers": {"repository_url": project_web_url }
+  })
+
+  # artifact:published
+  context.type = "dev.cdevents.artifact.published.0.2.0"
+  context.timestamp = .body.created_at
+  bodies = push(bodies, {
+    "context": context,
+    "subject": {
+      "id": pkg,
+      "type": "artifact",
+      "content": {
+        "user": .body.user_name,
+      }
+    },
+    "customData": custom_data,
+  })
+}
+
+# Tag Push Events
+if event_type == "tag_push" {
+  ref = .body.ref
+  project = .body.project
+
+  # Only process tag creation, not deletion
+  if .body.after != "0000000000000000000000000000000000000000" {
+    tag_name = replace(ref, "refs/tags/", "") ?? ref
+    pkg = purl_to_string!({
+      "type": "generic",
+      "name": project_path_name,
+      "namespace": project_path_namespace,
+      "version": tag_name,
+      "qualifiers": {"repository_url": project_web_url }
+    })
+
+    # artifact:published
+    context.type = "dev.cdevents.artifact.published.0.2.0"
+    context.timestamp = .body.commits[0].timestamp || null
+    bodies = push(bodies, {
+      "context": context,
+      "subject": {
+        "id": pkg,
+        "type": "artifact",
+        "content": {
+          "user": .body.user_name,
+        }
+      },
+      "customData": custom_data,
+    })
+  }
+}
+
+# Issue Events
+if event_type == "issue" {
+  issue = .body.object_attributes
+  project = .body.project
+
+  subject = {
+    "id": .body.object_attributes.url,
+    "type": "ticket",
+    "content": {
+      "summary": .body.object_attributes.title,
+      "ticketType": downcase(to_string!(.body.object_attributes.type)),
+      "uri": .body.object_attributes.url,
+      "priority": .body.object_attributes.severity,
+      "creator": to_string!(.body.object_attributes.author_id), # or .body.user.username ?
+      "assignees": map_values(array!(.body.object_attributes.assignee_ids || [])) -> |id| { to_string!(id)},
+      "labels": map_values(array!(.body.object_attributes.labels || [])) -> |label| {label.title},
+      "milestone": to_string!(.body.object_attributes.milestone_id),
+    }
+  }
+
+  # Map issue action to CDEvent
+  if issue.action == "open" {
+    # ticket:created
+    context.type = "dev.cdevents.ticket.created.0.1.0"
+    context.timestamp = issue.created_at
+    bodies = push(bodies, {
+      "context": context,
+      "subject": subject,
+      "customData": custom_data,
+    })
+  } else if issue.action == "close" {
+    # ticket:closed
+    subject.content.resolution = null
+    context.type = "dev.cdevents.ticket.closed.0.1.0"
+    context.timestamp = issue.updated_at
+    bodies = push(bodies, {
+      "context": context,
+      "subject": subject,
+      "customData": custom_data,
+    })
+  } else {
+    # ticket:updated (for update, etc.)
+    context.type = "dev.cdevents.ticket.updated.0.1.0"
+    context.timestamp = issue.updated_at
+    bodies = push(bodies, {
+      "context": context,
+      "subject": subject,
+      "customData": custom_data,
+    })
+  }
+}
+
+# Merge Request Events
+if event_type == "merge_request" {
+  mr = .body.object_attributes
+  project = .body.project
+
+  subject = {
+    "id": mr.url,
+    "type": "change",
+    "content": {
+      "repository": {
+        "id": project_web_url,
+        # "name": project.name,
+      }
+    }
+  }
+
+  # Map merge request action to CDEvent
+  if mr.action == "open" { #  || mr.action == "reopen"
+    # change:created
+    context.type = "dev.cdevents.change.created.0.3.0"
+    context.timestamp = mr.created_at
+    bodies = push(bodies, {
+      "context": context,
+      "subject": subject,
+      "customData": custom_data,
+    })
+  } else if mr.action == "merge" {
+    # change:merged
+    context.type = "dev.cdevents.change.merged.0.2.0"
+    context.timestamp = mr.updated_at
+    bodies = push(bodies, {
+      "context": context,
+      "subject": subject,
+      "customData": custom_data,
+    })
+  } else if mr.action == "close" && mr.state == "closed" && mr.merge_status != "merged" {
+    # change:abandoned
+    context.type = "dev.cdevents.change.abandoned.0.2.0"
+    context.timestamp = mr.updated_at
+    bodies = push(bodies, {
+      "context": context,
+      "subject": subject,
+      "customData": custom_data,
+    })
+  } else if mr.action == "approved" {
+    # change:reviewed
+    context.type = "dev.cdevents.change.reviewed.0.2.0"
+    context.timestamp = mr.updated_at
+    bodies = push(bodies, {
+      "context": context,
+      "subject": subject,
+      "customData": custom_data,
+    })
+  } else {
+    # change:updated (for update, unapproved, etc.)
+    context.type = "dev.cdevents.change.updated.0.2.0"
+    context.timestamp = mr.updated_at
+    bodies = push(bodies, {
+      "context": context,
+      "subject": subject,
+      "customData": custom_data,
+    })
+  }
+}
+
+# Push Events (for branch operations)
+if event_type == "push" {
+  ref = to_string!(.body.ref)
+  project = .body.project
+
+  # Check if it's a branch (not a tag)
+  if starts_with(ref, "refs/heads/") {
+    branch_name = replace(ref, "refs/heads/", "")
+
+    subject = {
+      "id": project_web_url + "/-/tree/" + branch_name,
+      "type": "branch",
+      "content": {
+        "repository": {
+          "id": project_web_url,
+        }
+      }
+    }
+
+    # Branch deleted
+    if .body.after == "0000000000000000000000000000000000000000" {
+      # branch:deleted
+      context.type = "dev.cdevents.branch.deleted.0.2.0"
+      context.timestamp = get(.body, ["commits", 0, "timestamp"]) ?? null
+      bodies = push(bodies, {
+        "context": context,
+        "subject": subject,
+        "customData": custom_data,
+      })
+    } else if .body.before == "0000000000000000000000000000000000000000" {
+      # branch:created
+      context.type = "dev.cdevents.branch.created.0.2.0"
+      context.timestamp = get(.body, ["commits", 0, "timestamp"]) ?? null
+      bodies = push(bodies, {
+        "context": context,
+        "subject": subject,
+        "customData": custom_data,
+      })
+    }
+  }
+}
+
+# Return the transformed bodies
+map_values(bodies) -> |body| {
+    if !is_nullish(body.context.timestamp) {
+        ts = parse_timestamp!(body.context.timestamp, "%+")
+        body.context.timestamp = format_timestamp!(ts, format: "%+")
+    }
+  {
+    "metadata": .metadata,
+    "headers": .headers,
+    "body": body
+  }
+}

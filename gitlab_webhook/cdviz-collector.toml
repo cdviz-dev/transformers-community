@@ -1,0 +1,19 @@
+# ------------------------------------------------------------------------------
+# Example of source configuration
+#
+# [sources.gitlab_webhook]
+# enabled = true
+# transformer_refs = ["gitlab_events"]
+
+# [sources.gitlab_webhook.extractor]
+# type = "webhook"
+# id = "000-gitlab"
+# headers_to_keep = []
+
+# [sources.gitlab_webhook.extractor.headers]
+# # token override by environment variable reads from the secret
+# "x-gitlab-token" = { type = "signature", signature_encoding = "plain", signature_on = "header", token = "changeme" }
+
+[transformers]
+gitlab_events_0_4 = { type = "vrl", template_file = "./to_v0_4.vrl" }
+gitlab_events_0_5 = { type = "vrl", template_file = "./to_v0_5.vrl" }

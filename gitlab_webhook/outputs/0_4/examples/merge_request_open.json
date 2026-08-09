@@ -1,0 +1,242 @@
+{
+  "context": {
+    "timestamp": "2013-12-03T17:23:34+00:00",
+    "type": "dev.cdevents.change.created.0.3.0",
+    "version": "0.4.1"
+  },
+  "customData": {
+    "gitlab": {
+      "assignees": [
+        {
+          "avatar_url": "http://www.gravatar.com/avatar/e64c7d89f26bd1972efa854d13d7dd61?s=40&d=identicon",
+          "id": 6,
+          "name": "User1",
+          "username": "user1"
+        }
+      ],
+      "changes": {
+        "draft": {
+          "current": false,
+          "previous": true
+        },
+        "labels": {
+          "current": [
+            {
+              "color": "#123123",
+              "created_at": "2013-12-03T17:15:43Z",
+              "description": "Platform related issues",
+              "group_id": 41,
+              "id": 205,
+              "project_id": 14,
+              "template": false,
+              "title": "Platform",
+              "type": "ProjectLabel",
+              "updated_at": "2013-12-03T17:15:43Z"
+            }
+          ],
+          "previous": [
+            {
+              "color": "#ffffff",
+              "created_at": "2013-12-03T17:15:43Z",
+              "description": "API related issues",
+              "group_id": 41,
+              "id": 206,
+              "project_id": 14,
+              "template": false,
+              "title": "API",
+              "type": "ProjectLabel",
+              "updated_at": "2013-12-03T17:15:43Z"
+            }
+          ]
+        },
+        "last_edited_at": {
+          "current": "2023-03-15 00:00:10 UTC",
+          "previous": null
+        },
+        "last_edited_by_id": {
+          "current": 3278533,
+          "previous": null
+        },
+        "updated_at": {
+          "current": "2017-09-15 16:52:00 UTC",
+          "previous": "2017-09-15 16:50:55 UTC"
+        },
+        "updated_by_id": {
+          "current": 1,
+          "previous": null
+        }
+      },
+      "event_type": "merge_request",
+      "labels": [
+        {
+          "color": "#ffffff",
+          "created_at": "2013-12-03T17:15:43Z",
+          "description": "API related issues",
+          "group_id": 41,
+          "id": 206,
+          "project_id": 14,
+          "template": false,
+          "title": "API",
+          "type": "ProjectLabel",
+          "updated_at": "2013-12-03T17:15:43Z"
+        }
+      ],
+      "object_attributes": {
+        "action": "open",
+        "assignee_id": 6,
+        "assignee_ids": [
+          6
+        ],
+        "author_id": 51,
+        "blocking_discussions_resolved": true,
+        "created_at": "2013-12-03T17:23:34Z",
+        "description": "",
+        "detailed_merge_status": "mergeable",
+        "draft": false,
+        "first_contribution": true,
+        "human_time_change": "30s",
+        "human_time_estimate": "30m",
+        "human_total_time_spent": "30m",
+        "id": 99,
+        "iid": 1,
+        "labels": [
+          {
+            "color": "#ffffff",
+            "created_at": "2013-12-03T17:15:43Z",
+            "description": "API related issues",
+            "group_id": 41,
+            "id": 206,
+            "project_id": 14,
+            "template": false,
+            "title": "API",
+            "type": "ProjectLabel",
+            "updated_at": "2013-12-03T17:15:43Z"
+          }
+        ],
+        "last_commit": {
+          "author": {
+            "email": "gitlabdev@dv6700.(none)",
+            "name": "GitLab dev user"
+          },
+          "id": "da1560886d4f094c3e6c9ef40349f7d38b5d27d7",
+          "message": "fixed readme",
+          "timestamp": "2012-01-03T23:36:29+02:00",
+          "title": "Update file README.md",
+          "url": "http://example.com/awesome_space/awesome_project/commits/da1560886d4f094c3e6c9ef40349f7d38b5d27d7"
+        },
+        "last_edited_at": "2013-12-03T17:23:34Z",
+        "last_edited_by_id": 1,
+        "merge_status": "unchecked",
+        "milestone_id": null,
+        "prepared_at": "2013-12-03T19:23:34Z",
+        "reviewer_ids": [
+          6
+        ],
+        "source": {
+          "avatar_url": null,
+          "default_branch": "master",
+          "description": "Aut reprehenderit ut est.",
+          "git_http_url": "http://example.com/awesome_space/awesome_project.git",
+          "git_ssh_url": "git@example.com:awesome_space/awesome_project.git",
+          "homepage": "http://example.com/awesome_space/awesome_project",
+          "http_url": "http://example.com/awesome_space/awesome_project.git",
+          "name": "Awesome Project",
+          "namespace": "Awesome Space",
+          "path_with_namespace": "awesome_space/awesome_project",
+          "ssh_url": "git@example.com:awesome_space/awesome_project.git",
+          "url": "http://example.com/awesome_space/awesome_project.git",
+          "visibility_level": 20,
+          "web_url": "http://example.com/awesome_space/awesome_project"
+        },
+        "source_branch": "ms-viewport",
+        "source_project_id": 14,
+        "state": "opened",
+        "state_id": 1,
+        "target": {
+          "avatar_url": null,
+          "default_branch": "master",
+          "description": "Aut reprehenderit ut est.",
+          "git_http_url": "http://example.com/awesome_space/awesome_project.git",
+          "git_ssh_url": "git@example.com:awesome_space/awesome_project.git",
+          "homepage": "http://example.com/awesome_space/awesome_project",
+          "http_url": "http://example.com/awesome_space/awesome_project.git",
+          "name": "Awesome Project",
+          "namespace": "Awesome Space",
+          "path_with_namespace": "awesome_space/awesome_project",
+          "ssh_url": "git@example.com:awesome_space/awesome_project.git",
+          "url": "http://example.com/awesome_space/awesome_project.git",
+          "visibility_level": 20,
+          "web_url": "http://example.com/awesome_space/awesome_project"
+        },
+        "target_branch": "master",
+        "target_project_id": 14,
+        "time_change": 30,
+        "title": "MS-Viewport",
+        "total_time_spent": 1800,
+        "updated_at": "2013-12-03T17:23:34Z",
+        "url": "http://example.com/diaspora/merge_requests/1",
+        "work_in_progress": false
+      },
+      "object_kind": "merge_request",
+      "project": {
+        "avatar_url": null,
+        "ci_config_path": "",
+        "default_branch": "master",
+        "description": "Aut reprehenderit ut est.",
+        "git_http_url": "http://example.com/gitlabhq/gitlab-test.git",
+        "git_ssh_url": "git@example.com:gitlabhq/gitlab-test.git",
+        "homepage": "http://example.com/gitlabhq/gitlab-test",
+        "http_url": "http://example.com/gitlabhq/gitlab-test.git",
+        "id": 1,
+        "name": "Gitlab Test",
+        "namespace": "GitlabHQ",
+        "path_with_namespace": "gitlabhq/gitlab-test",
+        "ssh_url": "git@example.com:gitlabhq/gitlab-test.git",
+        "url": "http://example.com/gitlabhq/gitlab-test.git",
+        "visibility_level": 20,
+        "web_url": "http://example.com/gitlabhq/gitlab-test"
+      },
+      "repository": {
+        "description": "Aut reprehenderit ut est.",
+        "homepage": "http://example.com/gitlabhq/gitlab-test",
+        "name": "Gitlab Test",
+        "url": "http://example.com/gitlabhq/gitlab-test.git"
+      },
+      "reviewers": [
+        {
+          "avatar_url": "http://www.gravatar.com/avatar/e64c7d89f26bd1972efa854d13d7dd61?s=40&d=identicon",
+          "id": 6,
+          "name": "User1",
+          "username": "user1"
+        }
+      ],
+      "user": {
+        "avatar_url": "http://www.gravatar.com/avatar/e64c7d89f26bd1972efa854d13d7dd61?s=40&d=identicon",
+        "email": "admin@example.com",
+        "id": 1,
+        "name": "Administrator",
+        "username": "root"
+      }
+    },
+    "links": [
+      {
+        "linkKind": "storedAt",
+        "target": {
+          "subject": {
+            "id": "http://example.com/gitlabhq/gitlab-test",
+            "type": "repository"
+          }
+        }
+      }
+    ]
+  },
+  "subject": {
+    "content": {
+      "repository": {
+        "id": "http://example.com/gitlabhq/gitlab-test"
+      }
+    },
+    "id": "http://example.com/diaspora/merge_requests/1",
+    "type": "change"
+  }
+}

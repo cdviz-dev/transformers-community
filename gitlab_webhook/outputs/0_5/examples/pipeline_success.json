@@ -1,0 +1,296 @@
+{
+  "context": {
+    "id": "0",
+    "specversion": "0.5.0",
+    "timestamp": "2016-08-12T15:26:29+00:00",
+    "type": "dev.cdevents.pipelinerun.finished.0.3.0"
+  },
+  "customData": {
+    "gitlab": {
+      "builds": [
+        {
+          "allow_failure": false,
+          "artifacts_file": {
+            "filename": null,
+            "size": null
+          },
+          "created_at": "2016-08-12 15:23:28 UTC",
+          "duration": null,
+          "environment": {
+            "action": "start",
+            "deployment_tier": "production",
+            "name": "production"
+          },
+          "failure_reason": null,
+          "finished_at": null,
+          "id": 380,
+          "manual": true,
+          "name": "production",
+          "queued_duration": null,
+          "runner": null,
+          "stage": "deploy",
+          "started_at": null,
+          "status": "skipped",
+          "user": {
+            "avatar_url": "http://www.gravatar.com/avatar/e32bd13e2add097461cb96824b7a829c?s=80&d=identicon",
+            "email": "admin@example.com",
+            "id": 1,
+            "name": "Administrator",
+            "username": "root"
+          },
+          "when": "manual"
+        },
+        {
+          "allow_failure": false,
+          "artifacts_file": {
+            "filename": null,
+            "size": null
+          },
+          "created_at": "2016-08-12 15:23:28 UTC",
+          "duration": 17.0,
+          "environment": null,
+          "failure_reason": null,
+          "finished_at": "2016-08-12 15:26:29 UTC",
+          "id": 377,
+          "manual": false,
+          "name": "test-image",
+          "queued_duration": 196.0,
+          "runner": {
+            "active": true,
+            "description": "shared-runners-manager-6.gitlab.com",
+            "id": 380987,
+            "is_shared": true,
+            "runner_type": "instance_type",
+            "tags": [
+              "linux",
+              "docker",
+              "shared-runner"
+            ]
+          },
+          "stage": "test",
+          "started_at": "2016-08-12 15:26:12 UTC",
+          "status": "success",
+          "user": {
+            "avatar_url": "http://www.gravatar.com/avatar/e32bd13e2add097461cb96824b7a829c?s=80&d=identicon",
+            "email": "admin@example.com",
+            "id": 1,
+            "name": "Administrator",
+            "username": "root"
+          },
+          "when": "on_success"
+        },
+        {
+          "allow_failure": false,
+          "artifacts_file": {
+            "filename": null,
+            "size": null
+          },
+          "created_at": "2016-08-12 15:23:28 UTC",
+          "duration": 17.0,
+          "environment": null,
+          "failure_reason": "script_failure",
+          "finished_at": "2016-08-12 15:26:29 UTC",
+          "id": 378,
+          "manual": false,
+          "name": "test-build",
+          "queued_duration": 196.0,
+          "runner": {
+            "active": true,
+            "description": "shared-runners-manager-6.gitlab.com",
+            "id": 380987,
+            "is_shared": true,
+            "runner_type": "instance_type",
+            "tags": [
+              "linux",
+              "docker"
+            ]
+          },
+          "stage": "test",
+          "started_at": "2016-08-12 15:26:12 UTC",
+          "status": "failed",
+          "user": {
+            "avatar_url": "http://www.gravatar.com/avatar/e32bd13e2add097461cb96824b7a829c?s=80&d=identicon",
+            "email": "admin@example.com",
+            "id": 1,
+            "name": "Administrator",
+            "username": "root"
+          },
+          "when": "on_success"
+        },
+        {
+          "allow_failure": false,
+          "artifacts_file": {
+            "filename": null,
+            "size": null
+          },
+          "created_at": "2016-08-12 15:23:28 UTC",
+          "duration": 17.0,
+          "environment": null,
+          "failure_reason": null,
+          "finished_at": "2016-08-12 15:25:26 UTC",
+          "id": 376,
+          "manual": false,
+          "name": "build-image",
+          "queued_duration": 196.0,
+          "runner": {
+            "active": true,
+            "description": "shared-runners-manager-6.gitlab.com",
+            "id": 380987,
+            "is_shared": true,
+            "runner_type": "instance_type",
+            "tags": [
+              "linux",
+              "docker"
+            ]
+          },
+          "stage": "build",
+          "started_at": "2016-08-12 15:24:56 UTC",
+          "status": "success",
+          "user": {
+            "avatar_url": "http://www.gravatar.com/avatar/e32bd13e2add097461cb96824b7a829c?s=80&d=identicon",
+            "email": "admin@example.com",
+            "id": 1,
+            "name": "Administrator",
+            "username": "root"
+          },
+          "when": "on_success"
+        },
+        {
+          "allow_failure": false,
+          "artifacts_file": {
+            "filename": null,
+            "size": null
+          },
+          "created_at": "2016-08-12 15:23:28 UTC",
+          "duration": null,
+          "environment": {
+            "action": "start",
+            "deployment_tier": "staging",
+            "name": "staging"
+          },
+          "failure_reason": null,
+          "finished_at": null,
+          "id": 379,
+          "manual": false,
+          "name": "staging",
+          "queued_duration": null,
+          "runner": null,
+          "stage": "deploy",
+          "started_at": null,
+          "status": "created",
+          "user": {
+            "avatar_url": "http://www.gravatar.com/avatar/e32bd13e2add097461cb96824b7a829c?s=80&d=identicon",
+            "email": "admin@example.com",
+            "id": 1,
+            "name": "Administrator",
+            "username": "root"
+          },
+          "when": "on_success"
+        }
+      ],
+      "commit": {
+        "author": {
+          "email": "user@gitlab.com",
+          "name": "User"
+        },
+        "id": "bcbb5ec396a2c0f828686f14fac9b80b780504f2",
+        "message": "test\n",
+        "timestamp": "2016-08-12T17:23:21+02:00",
+        "title": "test",
+        "url": "http://example.com/gitlab-org/gitlab-test/commit/bcbb5ec396a2c0f828686f14fac9b80b780504f2"
+      },
+      "merge_request": {
+        "detailed_merge_status": "mergeable",
+        "id": 1,
+        "iid": 1,
+        "merge_status": "can_be_merged",
+        "source_branch": "test",
+        "source_project_id": 1,
+        "state": "opened",
+        "target_branch": "master",
+        "target_project_id": 1,
+        "title": "Test",
+        "url": "http://192.168.64.1:3005/gitlab-org/gitlab-test/merge_requests/1"
+      },
+      "object_attributes": {
+        "before_sha": "bcbb5ec396a2c0f828686f14fac9b80b780504f2",
+        "created_at": "2016-08-12 15:23:28 UTC",
+        "detailed_status": "passed",
+        "duration": 63,
+        "finished_at": "2016-08-12 15:26:29 UTC",
+        "id": 31,
+        "iid": 3,
+        "name": "Pipeline for branch: master",
+        "queued_duration": 10,
+        "ref": "master",
+        "sha": "bcbb5ec396a2c0f828686f14fac9b80b780504f2",
+        "source": "merge_request_event",
+        "stages": [
+          "build",
+          "test",
+          "deploy"
+        ],
+        "status": "success",
+        "tag": false,
+        "url": "http://example.com/gitlab-org/gitlab-test/-/pipelines/31",
+        "variables": [
+          {
+            "key": "NESTOR_PROD_ENVIRONMENT",
+            "value": "us-west-1"
+          }
+        ]
+      },
+      "object_kind": "pipeline",
+      "project": {
+        "avatar_url": null,
+        "ci_config_path": null,
+        "default_branch": "master",
+        "description": "Atque in sunt eos similique dolores voluptatem.",
+        "git_http_url": "http://192.168.64.1:3005/gitlab-org/gitlab-test.git",
+        "git_ssh_url": "git@192.168.64.1:gitlab-org/gitlab-test.git",
+        "id": 1,
+        "name": "Gitlab Test",
+        "namespace": "Gitlab Org",
+        "path_with_namespace": "gitlab-org/gitlab-test",
+        "visibility_level": 20,
+        "web_url": "http://192.168.64.1:3005/gitlab-org/gitlab-test"
+      },
+      "source_pipeline": {
+        "job_id": 3401,
+        "pipeline_id": 30,
+        "project": {
+          "id": 41,
+          "path_with_namespace": "gitlab-org/upstream-project",
+          "web_url": "https://gitlab.example.com/gitlab-org/upstream-project"
+        }
+      },
+      "user": {
+        "avatar_url": "http://www.gravatar.com/avatar/e32bd13e2add097461cb96824b7a829c?s=80&d=identicon",
+        "email": "user_email@gitlab.com",
+        "id": 1,
+        "name": "Administrator",
+        "username": "root"
+      }
+    },
+    "links": [
+      {
+        "linkKind": "storedAt",
+        "target": {
+          "subject": {
+            "id": "http://192.168.64.1:3005/gitlab-org/gitlab-test",
+            "type": "repository"
+          }
+        }
+      }
+    ]
+  },
+  "subject": {
+    "content": {
+      "errors": null,
+      "outcome": "success",
+      "pipelineName": "gitlab-org/gitlab-test/master",
+      "uri": "http://192.168.64.1:3005/gitlab-org/gitlab-test/-/pipelines/31"
+    },
+    "id": "http://192.168.64.1:3005/gitlab-org/gitlab-test/-/pipelines/31"
+  }
+}

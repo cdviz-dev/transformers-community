@@ -1,0 +1,196 @@
+{
+  "context": {
+    "id": "0",
+    "specversion": "0.5.0",
+    "timestamp": "2013-12-03T17:15:43+00:00",
+    "type": "dev.cdevents.ticket.created.0.2.0"
+  },
+  "customData": {
+    "gitlab": {
+      "assignee": {
+        "avatar_url": "http://www.gravatar.com/avatar/e64c7d89f26bd1972efa854d13d7dd61?s=40&d=identicon",
+        "name": "User1",
+        "username": "user1"
+      },
+      "assignees": [
+        {
+          "avatar_url": "http://www.gravatar.com/avatar/e64c7d89f26bd1972efa854d13d7dd61?s=40&d=identicon",
+          "name": "User1",
+          "username": "user1"
+        }
+      ],
+      "changes": {
+        "labels": {
+          "current": [
+            {
+              "color": "#123123",
+              "created_at": "2013-12-03T17:15:43Z",
+              "description": "Platform related issues",
+              "group_id": 41,
+              "id": 205,
+              "project_id": 14,
+              "template": false,
+              "title": "Platform",
+              "type": "ProjectLabel",
+              "updated_at": "2013-12-03T17:15:43Z"
+            }
+          ],
+          "previous": [
+            {
+              "color": "#ffffff",
+              "created_at": "2013-12-03T17:15:43Z",
+              "description": "API related issues",
+              "group_id": 41,
+              "id": 206,
+              "project_id": 14,
+              "template": false,
+              "title": "API",
+              "type": "ProjectLabel",
+              "updated_at": "2013-12-03T17:15:43Z"
+            }
+          ]
+        },
+        "updated_at": {
+          "current": "2017-09-15 16:52:00 UTC",
+          "previous": "2017-09-15 16:50:55 UTC"
+        },
+        "updated_by_id": {
+          "current": 1,
+          "previous": null
+        }
+      },
+      "event_type": "issue",
+      "labels": [
+        {
+          "color": "#ffffff",
+          "created_at": "2013-12-03T17:15:43Z",
+          "description": "API related issues",
+          "group_id": 41,
+          "id": 206,
+          "project_id": 14,
+          "template": false,
+          "title": "API",
+          "type": "ProjectLabel",
+          "updated_at": "2013-12-03T17:15:43Z"
+        }
+      ],
+      "object_attributes": {
+        "action": "open",
+        "assignee_id": 51,
+        "assignee_ids": [
+          51
+        ],
+        "author_id": 51,
+        "confidential": false,
+        "created_at": "2013-12-03T17:15:43Z",
+        "description": "Create new API for manipulations with repository",
+        "discussion_locked": true,
+        "due_date": null,
+        "duplicated_to_id": null,
+        "escalation_policy": {
+          "id": 18,
+          "name": "async policy"
+        },
+        "escalation_status": "triggered",
+        "health_status": null,
+        "human_time_change": null,
+        "human_time_estimate": null,
+        "human_total_time_spent": null,
+        "id": 301,
+        "iid": 23,
+        "labels": [
+          {
+            "color": "#ffffff",
+            "created_at": "2013-12-03T17:15:43Z",
+            "description": "API related issues",
+            "group_id": 41,
+            "id": 206,
+            "project_id": 14,
+            "template": false,
+            "title": "API",
+            "type": "ProjectLabel",
+            "updated_at": "2013-12-03T17:15:43Z"
+          }
+        ],
+        "last_edited_at": null,
+        "last_edited_by_id": null,
+        "milestone_id": null,
+        "moved_to_id": null,
+        "project_id": 14,
+        "relative_position": 0,
+        "severity": "high",
+        "state": "opened",
+        "state_id": 1,
+        "time_change": 0,
+        "time_estimate": 0,
+        "title": "New API: create/update/delete file",
+        "total_time_spent": 0,
+        "type": "ISSUE",
+        "updated_at": "2013-12-03T17:15:43Z",
+        "updated_by_id": 1,
+        "url": "http://example.com/diaspora/issues/23",
+        "weight": null
+      },
+      "object_kind": "issue",
+      "project": {
+        "avatar_url": null,
+        "ci_config_path": null,
+        "default_branch": "master",
+        "description": "Aut reprehenderit ut est.",
+        "git_http_url": "http://example.com/gitlabhq/gitlab-test.git",
+        "git_ssh_url": "git@example.com:gitlabhq/gitlab-test.git",
+        "homepage": "http://example.com/gitlabhq/gitlab-test",
+        "http_url": "http://example.com/gitlabhq/gitlab-test.git",
+        "id": 1,
+        "name": "Gitlab Test",
+        "namespace": "GitlabHQ",
+        "path_with_namespace": "gitlabhq/gitlab-test",
+        "ssh_url": "git@example.com:gitlabhq/gitlab-test.git",
+        "url": "http://example.com/gitlabhq/gitlab-test.git",
+        "visibility_level": 20,
+        "web_url": "http://example.com/gitlabhq/gitlab-test"
+      },
+      "repository": {
+        "description": "Aut reprehenderit ut est.",
+        "homepage": "http://example.com/gitlabhq/gitlab-test",
+        "name": "Gitlab Test",
+        "url": "http://example.com/gitlabhq/gitlab-test.git"
+      },
+      "user": {
+        "avatar_url": "http://www.gravatar.com/avatar/e64c7d89f26bd1972efa854d13d7dd61?s=40&d=identicon",
+        "email": "admin@example.com",
+        "id": 1,
+        "name": "Administrator",
+        "username": "root"
+      }
+    },
+    "links": [
+      {
+        "linkKind": "storedAt",
+        "target": {
+          "subject": {
+            "id": "http://example.com/gitlabhq/gitlab-test",
+            "type": "repository"
+          }
+        }
+      }
+    ]
+  },
+  "subject": {
+    "content": {
+      "assignees": [
+        "51"
+      ],
+      "creator": "51",
+      "labels": [
+        "API"
+      ],
+      "milestone": "",
+      "priority": "high",
+      "summary": "New API: create/update/delete file",
+      "ticketType": "issue",
+      "uri": "http://example.com/diaspora/issues/23"
+    },
+    "id": "http://example.com/diaspora/issues/23"
+  }
+}

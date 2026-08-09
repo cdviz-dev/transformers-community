@@ -12,6 +12,7 @@ config_roots = [
   "gitea_webhook",
   "github_events",
   "github_rest_api",
+  "gitlab_webhook",
   "kubewatch_cloudevents",
   "passthrough",
 ]
