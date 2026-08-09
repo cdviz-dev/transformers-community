@@ -8,7 +8,9 @@
     "links": {
       "self": { "href": "https://api.bitbucket.org/2.0/users/%7Bc788b2da-b4a8-4d1d-9c17-e2d6c9f1a2b3%7D" },
       "html": { "href": "https://bitbucket.org/%7Bc788b2da-b4a8-4d1d-9c17-e2d6c9f1a2b3%7D/" },
-      "avatar": { "href": "https://secure.gravatar.com/avatar/1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d?d=https%3A%2F%2Favatar-management.us-west-2.prod.public.atl-paas.net%2Finitials%2FEE-3.png" }
+      "avatar": {
+        "href": "https://secure.gravatar.com/avatar/1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d?d=https%3A%2F%2Favatar-management.us-west-2.prod.public.atl-paas.net%2Finitials%2FEE-3.png"
+      }
     }
   },
   "repository": {
@@ -57,7 +59,9 @@
         "forced": false,
         "old": null,
         "links": {
-          "commits": { "href": "https://api.bitbucket.org/2.0/repositories/acme/webhook-example/commits?include=feature%2Fadd-webhooks" },
+          "commits": {
+            "href": "https://api.bitbucket.org/2.0/repositories/acme/webhook-example/commits?include=feature%2Fadd-webhooks"
+          },
           "html": { "href": "https://bitbucket.org/acme/webhook-example/branch/feature/add-webhooks" }
         },
         "truncated": false,
@@ -78,8 +82,12 @@
               }
             },
             "links": {
-              "self": { "href": "https://api.bitbucket.org/2.0/repositories/acme/webhook-example/commit/3f2b1c9d8e7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c" },
-              "html": { "href": "https://bitbucket.org/acme/webhook-example/commits/3f2b1c9d8e7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c" }
+              "self": {
+                "href": "https://api.bitbucket.org/2.0/repositories/acme/webhook-example/commit/3f2b1c9d8e7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c"
+              },
+              "html": {
+                "href": "https://bitbucket.org/acme/webhook-example/commits/3f2b1c9d8e7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c"
+              }
             }
           }
         ],
@@ -91,8 +99,12 @@
           "default_merge_strategy": "merge_commit",
           "merge_strategies": ["merge_commit", "squash", "fast_forward"],
           "links": {
-            "self": { "href": "https://api.bitbucket.org/2.0/repositories/acme/webhook-example/refs/branches/feature/add-webhooks" },
-            "commits": { "href": "https://api.bitbucket.org/2.0/repositories/acme/webhook-example/commits/feature%2Fadd-webhooks" },
+            "self": {
+              "href": "https://api.bitbucket.org/2.0/repositories/acme/webhook-example/refs/branches/feature/add-webhooks"
+            },
+            "commits": {
+              "href": "https://api.bitbucket.org/2.0/repositories/acme/webhook-example/commits/feature%2Fadd-webhooks"
+            },
             "html": { "href": "https://bitbucket.org/acme/webhook-example/branch/feature/add-webhooks" }
           },
           "target": {
@@ -111,8 +123,12 @@
               }
             ],
             "links": {
-              "self": { "href": "https://api.bitbucket.org/2.0/repositories/acme/webhook-example/commit/3f2b1c9d8e7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c" },
-              "html": { "href": "https://bitbucket.org/acme/webhook-example/commits/3f2b1c9d8e7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c" }
+              "self": {
+                "href": "https://api.bitbucket.org/2.0/repositories/acme/webhook-example/commit/3f2b1c9d8e7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c"
+              },
+              "html": {
+                "href": "https://bitbucket.org/acme/webhook-example/commits/3f2b1c9d8e7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c"
+              }
             }
           }
         }

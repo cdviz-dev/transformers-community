@@ -34,7 +34,7 @@
     "labels": [
       {
         "id": 2,
-        "name": "aaaab",
+        "name": "aaaaa",
         "color": "ee0701",
         "description": "",
         "url": "https://forgejo.example.com/api/v1/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/labels/2"

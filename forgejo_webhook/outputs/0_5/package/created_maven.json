@@ -58,7 +58,7 @@
           "website": ""
         },
         "html_url": "https://forgejo.example.com/aaaaa-aaa/-/packages/maven/aaa.aaaaaaa:aaaaa-aaa/5.3.10",
-        "id": 111111121,
+        "id": 111111118,
         "name": "aaa.aaaaaaa:aaaaa-aaa",
         "owner": {
           "active": true,

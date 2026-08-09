@@ -57,9 +57,9 @@
           "visibility": "public",
           "website": ""
         },
-        "html_url": "https://forgejo.example.com/aaaaa-aaa/-/packages/npm/aaaaa-aae/4.17.21",
-        "id": 111111121,
-        "name": "aaaaa-aae",
+        "html_url": "https://forgejo.example.com/aaaaa-aaa/-/packages/npm/aaaaa-aad/4.17.21",
+        "id": 111111118,
+        "name": "aaaaa-aad",
         "owner": {
           "active": true,
           "avatar_url": "https://forgejo.example.com/avatars/111111111",
@@ -250,6 +250,6 @@
     "content": {
       "user": "aaaaa-aab"
     },
-    "id": "pkg:npm/aaaaa-aae@4.17.21?repository_url=https://forgejo.example.com/api/packages/aaaaa-aaa/npm"
+    "id": "pkg:npm/aaaaa-aad@4.17.21?repository_url=https://forgejo.example.com/api/packages/aaaaa-aaa/npm"
   }
 }

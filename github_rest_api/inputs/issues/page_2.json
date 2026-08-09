@@ -8,7 +8,7 @@
     "title": "aaaaa aaaaaaaa aaa",
     "user": { "login": "aaaaaa-aaaaaaa[aab]", "id": 111111113, "type": "User" },
     "labels": [
-      { "id": 111111114, "name": "bug", "color": "d73a4a", "default": true, "description": "" }
+      { "id": 111111114, "name": "aaa", "color": "d73a4a", "default": true, "description": "" }
     ],
     "state": "open",
     "state_reason": null,

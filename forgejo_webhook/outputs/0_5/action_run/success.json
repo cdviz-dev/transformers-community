@@ -15,7 +15,7 @@
         "event": "push",
         "event_payload": "",
         "html_url": "https://forgejo.example.com/aaaaa-aaa/aaaaa-aaaaaaaaa/actions/runs/42",
-        "id": 666666666,
+        "id": 111111121,
         "index_in_repo": 42,
         "is_fork_pull_request": false,
         "is_ref_deleted": false,
@@ -112,7 +112,7 @@
           "website": ""
         },
         "updated": "2025-05-21T17:35:21Z",
-        "workflow_id": "ci.yaml"
+        "workflow_id": "aa.aaaa"
       }
     },
     "inferred": true,
@@ -130,7 +130,7 @@
   },
   "subject": {
     "content": {
-      "pipelineName": "aaaaa-aaa/aaaaa-aaaaaaaaa/ci.yaml",
+      "pipelineName": "aaaaa-aaa/aaaaa-aaaaaaaaa/aa.aaaa",
       "uri": "https://forgejo.example.com/aaaaa-aaa/aaaaa-aaaaaaaaa/actions/runs/42"
     },
     "id": "https://forgejo.example.com/api/v1/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/actions/runs/42"

@@ -25,7 +25,7 @@
             "color": "ee0701",
             "description": "",
             "id": 2,
-            "name": "aaaac",
+            "name": "aaaab",
             "url": "https://forgejo.example.com/api/v1/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/labels/2"
           }
         ],
@@ -174,7 +174,7 @@
       "assignees": [],
       "creator": "aaaaa-aaa",
       "labels": [
-        "aaaac"
+        "aaaab"
       ],
       "milestone": null,
       "summary": "ccccc cccccccc ccc",

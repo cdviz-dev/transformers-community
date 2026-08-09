@@ -2,7 +2,7 @@
   "action": "created",
   "repository": null,
   "package": {
-    "id": 111111121,
+    "id": 111111118,
     "owner": {
       "id": 111111111,
       "login": "aaaaa-aaa",
@@ -53,9 +53,9 @@
       "username": "aaaaa-aab"
     },
     "type": "generic",
-    "name": "aaaaa-aaf",
+    "name": "aaaaa-aae",
     "version": "0.1.0",
-    "html_url": "https://forgejo.example.com/aaaaa-aaa/-/packages/generic/aaaaa-aaf/0.1.0",
+    "html_url": "https://forgejo.example.com/aaaaa-aaa/-/packages/generic/aaaaa-aae/0.1.0",
     "created_at": "2025-05-21T18:00:00Z"
   },
   "organization": {

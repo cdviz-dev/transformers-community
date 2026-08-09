@@ -62,15 +62,15 @@
         "draft": false,
         "hide_archive_links": false,
         "html_url": "https://forgejo.example.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/tag/a1.1.1",
-        "id": 111111122,
+        "id": 111111119,
         "name": "a1.1.1",
         "prerelease": false,
         "published_at": "2025-05-21T19:05:00Z",
         "tag_name": "a1.1.1",
         "tarball_url": "https://forgejo.example.com/aaaaa-aaa/aaaaa-aaaaaaaaa/archive/a1.1.1.tar.gz",
         "target_commitish": "main",
-        "upload_url": "https://forgejo.example.com/api/v1/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/111111122/assets",
-        "url": "https://forgejo.example.com/api/v1/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/111111122",
+        "upload_url": "https://forgejo.example.com/api/v1/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/111111119/assets",
+        "url": "https://forgejo.example.com/api/v1/repos/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/111111119",
         "zipball_url": "https://forgejo.example.com/aaaaa-aaa/aaaaa-aaaaaaaaa/archive/a1.1.1.zip"
       },
       "repository": {

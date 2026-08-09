@@ -14,30 +14,30 @@ The transformer uses VRL (Vector Remap Language) to detect event types from webh
 
 Event type detection is performed in VRL based on the `webhookEvent` field:
 
-| JIRA Event                          | CDEvent Type               | Detection Logic                                                                |
-| ----------------------------------- | -------------------------- | ------------------------------------------------------------------------------ |
-| `jira:issue_created`                | `ticket.created.0.2.0`     | `webhookEvent = "jira:issue_created"`                                          |
-| `jira:issue_updated` (status=done)  | `ticket.closed.0.2.0`      | `webhookEvent = "jira:issue_updated"` AND `status.statusCategory.key = "done"` |
-| `jira:issue_updated` (other status) | `ticket.updated.0.2.0`     | `webhookEvent = "jira:issue_updated"` AND other status category                |
-| `jira:issue_deleted` (no resolution) | `ticket.closed.0.2.0`     | `webhookEvent = "jira:issue_deleted"` AND `issue.fields.resolution` is null   |
-| `jira:issue_deleted` (with resolution) | _(skipped)_             | `webhookEvent = "jira:issue_deleted"` AND `issue.fields.resolution` is set    |
-| `jira:version_released`             | `artifact.published.0.3.0` | `webhookEvent = "jira:version_released"`                                       |
+| JIRA Event                             | CDEvent Type               | Detection Logic                                                                |
+| -------------------------------------- | -------------------------- | ------------------------------------------------------------------------------ |
+| `jira:issue_created`                   | `ticket.created.0.2.0`     | `webhookEvent = "jira:issue_created"`                                          |
+| `jira:issue_updated` (status=done)     | `ticket.closed.0.2.0`      | `webhookEvent = "jira:issue_updated"` AND `status.statusCategory.key = "done"` |
+| `jira:issue_updated` (other status)    | `ticket.updated.0.2.0`     | `webhookEvent = "jira:issue_updated"` AND other status category                |
+| `jira:issue_deleted` (no resolution)   | `ticket.closed.0.2.0`      | `webhookEvent = "jira:issue_deleted"` AND `issue.fields.resolution` is null    |
+| `jira:issue_deleted` (with resolution) | _(skipped)_                | `webhookEvent = "jira:issue_deleted"` AND `issue.fields.resolution` is set     |
+| `jira:version_released`                | `artifact.published.0.3.0` | `webhookEvent = "jira:version_released"`                                       |
 
 ### Subject Fields
 
 For **issue events** (`ticket.*`):
 
-| CDEvent Field        | JIRA Source                                  | Notes                              |
-| -------------------- | -------------------------------------------- | ---------------------------------- |
-| `subject.id`         | `<base_url>/browse/<issue.key>`              | Browse URL derived from issue.self |
-| `content.summary`    | `issue.fields.summary`                       |                                    |
-| `content.ticketType` | `issue.fields.issuetype.name` (lowercased)   | e.g. "bug", "story", "task"        |
-| `content.uri`        | `<base_url>/browse/<issue.key>`              |                                    |
-| `content.priority`   | `issue.fields.priority.name` (lowercased)    | e.g. "high", "medium", "low"       |
-| `content.creator`    | `issue.fields.reporter.accountId` or `.name` | Cloud: accountId; Server: name     |
-| `content.assignees`  | `issue.fields.assignee.accountId` or `.name` | Cloud: accountId; Server: name     |
-| `content.labels`     | `issue.fields.labels[]`                      |                                    |
-| `content.milestone`  | `issue.fields.fixVersions[0].name`           | First fix version, or null         |
+| CDEvent Field        | JIRA Source                                            | Notes                                                                            |
+| -------------------- | ------------------------------------------------------ | -------------------------------------------------------------------------------- |
+| `subject.id`         | `<base_url>/browse/<issue.key>`                        | Browse URL derived from issue.self                                               |
+| `content.summary`    | `issue.fields.summary`                                 |                                                                                  |
+| `content.ticketType` | `issue.fields.issuetype.name` (lowercased)             | e.g. "bug", "story", "task"                                                      |
+| `content.uri`        | `<base_url>/browse/<issue.key>`                        |                                                                                  |
+| `content.priority`   | `issue.fields.priority.name` (lowercased)              | e.g. "high", "medium", "low"                                                     |
+| `content.creator`    | `issue.fields.reporter.accountId` or `.name`           | Cloud: accountId; Server: name                                                   |
+| `content.assignees`  | `issue.fields.assignee.accountId` or `.name`           | Cloud: accountId; Server: name                                                   |
+| `content.labels`     | `issue.fields.labels[]`                                |                                                                                  |
+| `content.milestone`  | `issue.fields.fixVersions[0].name`                     | First fix version, or null                                                       |
 | `content.resolution` | `issue.fields.resolution.name` mapped to CDEvents enum | `ticket.closed` only; `"withdrawn"` for `issue_deleted` with no prior resolution |
 
 For **version events** (`artifact.published`):

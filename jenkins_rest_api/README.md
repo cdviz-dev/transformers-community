@@ -5,8 +5,7 @@ Transform Jenkins build history, pulled via the Jenkins Remote API, into CDEvent
 ## Overview
 
 Jenkins has no first-class outbound webhook for build events (only optional plugins, which vary by
-install), so this transformer is paired with cdviz-collector's [`http_polling`
-source](https://github.com/cdviz-dev/cdviz-collector/blob/main/src/sources/http_polling/README.md)
+install), so this transformer is paired with cdviz-collector's [`http_polling` source](https://github.com/cdviz-dev/cdviz-collector/blob/main/src/sources/http_polling/README.md)
 instead of a webhook. The source's `driver_vrl` script recursively **discovers** every job on the
 Jenkins instance and polls each one's builds; this transformer converts each polled page into
 `pipelinerun.started` / `pipelinerun.finished` CDEvents.
@@ -43,10 +42,10 @@ folders/multibranch projects, and needs no cooperation from the driver.
 
 ### Event Mapping
 
-| Build state                          | CDEvent Type            |
-| ------------------------------------- | ------------------------ |
-| `building = true` or `result = null`  | `pipelinerun.started`    |
-| `result` set                          | `pipelinerun.finished`   |
+| Build state                          | CDEvent Type           |
+| ------------------------------------ | ---------------------- |
+| `building = true` or `result = null` | `pipelinerun.started`  |
+| `result` set                         | `pipelinerun.finished` |
 
 Outcome mapping (on `finished`): `SUCCESS` → `success`, `ABORTED`/`NOT_BUILT` → `error`,
 `FAILURE`/`UNSTABLE` → `failure`.
@@ -168,7 +167,7 @@ names, at the cost of possibly missing an exotic container plugin (see Troublesh
 
 ### Deriving job identity from the build URL, not driver state
 
-http_polling's `driver_vrl` state is a *single* snapshot cloned into every request emitted by one
+http_polling's `driver_vrl` state is a _single_ snapshot cloned into every request emitted by one
 driver invocation — it can't carry different data to different fanned-out requests (e.g. one
 discovery response fanning out into many different jobs' builds requests). Deriving job
 name/url from each build's own URL in the transformer sidesteps that limitation entirely, and keeps

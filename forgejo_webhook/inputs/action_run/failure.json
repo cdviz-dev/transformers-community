@@ -1,7 +1,7 @@
 {
   "action": "failure",
   "run": {
-    "id": 666666666,
+    "id": 111111121,
     "title": "ggggg gggggggg",
     "repository": {
       "id": 111111113,
@@ -64,7 +64,7 @@
       "has_pull_requests": true,
       "has_actions": true
     },
-    "workflow_id": "ci.yaml",
+    "workflow_id": "aa.aaaa",
     "index_in_repo": 43,
     "trigger_user": {
       "id": 111111112,

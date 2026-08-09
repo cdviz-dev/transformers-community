@@ -13,21 +13,21 @@ available in the `X-Event-Key` HTTP header. The webhook source **must** therefor
 
 ### Event Mapping
 
-| `X-Event-Key`                | Condition                                             | CDEvent Type          |
-| ---------------------------- | ----------------------------------------------------- | --------------------- |
-| `repo:push`                  | change with `new.type=branch` and `created`           | branch.created        |
-| `repo:push`                  | change with `old.type=branch` and `closed`            | branch.deleted        |
-| `repo:push`                  | change with `new.type=tag` and `created`              | artifact.published    |
-| `pullrequest:created`        |                                                       | change.created        |
-| `pullrequest:updated`        |                                                       | change.updated        |
-| `pullrequest:approved`       |                                                       | change.reviewed       |
-| `pullrequest:fulfilled`      |                                                       | change.merged         |
-| `pullrequest:rejected`       |                                                       | change.abandoned      |
-| `issue:created`              |                                                       | ticket.created        |
-| `issue:updated`              | `state` in [resolved, closed, invalid, duplicate, wontfix] | ticket.closed    |
-| `issue:updated`              | other states (new, open, on hold, ...)                | ticket.updated        |
-| `repo:commit_status_created` | `state=INPROGRESS`                                    | pipelineRun.started   |
-| `repo:commit_status_updated` | `state` in [SUCCESSFUL, FAILED, STOPPED]              | pipelineRun.finished  |
+| `X-Event-Key`                | Condition                                                  | CDEvent Type         |
+| ---------------------------- | ---------------------------------------------------------- | -------------------- |
+| `repo:push`                  | change with `new.type=branch` and `created`                | branch.created       |
+| `repo:push`                  | change with `old.type=branch` and `closed`                 | branch.deleted       |
+| `repo:push`                  | change with `new.type=tag` and `created`                   | artifact.published   |
+| `pullrequest:created`        |                                                            | change.created       |
+| `pullrequest:updated`        |                                                            | change.updated       |
+| `pullrequest:approved`       |                                                            | change.reviewed      |
+| `pullrequest:fulfilled`      |                                                            | change.merged        |
+| `pullrequest:rejected`       |                                                            | change.abandoned     |
+| `issue:created`              |                                                            | ticket.created       |
+| `issue:updated`              | `state` in [resolved, closed, invalid, duplicate, wontfix] | ticket.closed        |
+| `issue:updated`              | other states (new, open, on hold, ...)                     | ticket.updated       |
+| `repo:commit_status_created` | `state=INPROGRESS`                                         | pipelineRun.started  |
+| `repo:commit_status_updated` | `state` in [SUCCESSFUL, FAILED, STOPPED]                   | pipelineRun.finished |
 
 A single `repo:push` payload can carry several changes, and therefore produce several CDEvents.
 
