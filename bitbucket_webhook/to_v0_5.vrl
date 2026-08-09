@@ -1,0 +1,264 @@
+bodies = []
+context = {
+    "id": "0",
+    "specversion": "0.5.0",
+}
+repo_full_name = to_string!(.body.repository.full_name)
+repo_full_name_fragments = split_path(repo_full_name)
+repo_name = get(repo_full_name_fragments, [-1]) ?? downcase!(to_string!(.body.repository.name))
+repo_namespace = join!(slice(repo_full_name_fragments, 0, -1) ?? [], "/")
+repo_url = to_string!(.body.repository.links.html.href)
+
+custom_data = {
+  "links": [
+    {
+      "linkKind": "storedAt",
+      "target": {
+        "subject": {
+          "type": "repository",
+          "id": repo_url,
+        }
+      }
+    }
+  ],
+  "bitbucket": .body
+}
+
+# Determine event type from the header "X-Event-Key", bitbucket does not put it in the body.
+# Header case is preserved by the `transform` subcommand but can be normalized by extractors,
+# so both spellings are looked up.
+event_type = to_string(.headers."X-Event-Key") ?? to_string(.headers."x-event-key") ?? ""
+
+# Push Events (branch & tag operations)
+if event_type == "repo:push" {
+  for_each(array!(.body.push.changes || [])) -> |_index, change| {
+    new_type = get(change, ["new", "type"]) ?? null
+    old_type = get(change, ["old", "type"]) ?? null
+
+    if new_type == "branch" && change.created == true {
+      # branch:created
+      branch_name = to_string!(change.new.name)
+      context.type = "dev.cdevents.branch.created.0.3.0"
+      context.timestamp = get(change, ["new", "target", "date"]) ?? null
+      bodies = push(bodies, {
+        "context": context,
+        "subject": {
+          "id": repo_url + "/branch/" + branch_name,
+          "content": {
+            "repository": {
+              "id": repo_url,
+            }
+          }
+        },
+        "customData": custom_data,
+      })
+    } else if old_type == "branch" && change.closed == true {
+      # branch:deleted
+      branch_name = to_string!(change.old.name)
+      context.type = "dev.cdevents.branch.deleted.0.3.0"
+      context.timestamp = get(change, ["old", "target", "date"]) ?? null
+      bodies = push(bodies, {
+        "context": context,
+        "subject": {
+          "id": repo_url + "/branch/" + branch_name,
+          "content": {
+            "repository": {
+              "id": repo_url,
+            }
+          }
+        },
+        "customData": custom_data,
+      })
+    } else if new_type == "tag" && change.created == true {
+      # artifact:published
+      pkg = purl_to_string!({
+        "type": "generic",
+        "name": repo_name,
+        "namespace": repo_namespace,
+        "version": to_string!(change.new.name),
+        "qualifiers": {"repository_url": repo_url }
+      })
+      context.type = "dev.cdevents.artifact.published.0.3.0"
+      context.timestamp = get(change, ["new", "target", "date"]) ?? null
+      bodies = push(bodies, {
+        "context": context,
+        "subject": {
+          "id": pkg,
+          "content": {
+            "user": .body.actor.display_name,
+          }
+        },
+        "customData": custom_data,
+      })
+    }
+  }
+}
+
+# Pull Request Events
+if starts_with(event_type, "pullrequest:") {
+  pr = .body.pullrequest
+
+  subject = {
+    "id": pr.links.html.href,
+    "content": {
+      "repository": {
+        "id": repo_url,
+      }
+    }
+  }
+
+  # Map pull request event key to CDEvent
+  if event_type == "pullrequest:created" {
+    # change:created
+    context.type = "dev.cdevents.change.created.0.4.0"
+    context.timestamp = pr.created_on
+    bodies = push(bodies, {
+      "context": context,
+      "subject": subject,
+      "customData": custom_data,
+    })
+  } else if event_type == "pullrequest:fulfilled" {
+    # change:merged
+    context.type = "dev.cdevents.change.merged.0.3.0"
+    context.timestamp = pr.updated_on
+    bodies = push(bodies, {
+      "context": context,
+      "subject": subject,
+      "customData": custom_data,
+    })
+  } else if event_type == "pullrequest:rejected" {
+    # change:abandoned
+    context.type = "dev.cdevents.change.abandoned.0.3.0"
+    context.timestamp = pr.updated_on
+    bodies = push(bodies, {
+      "context": context,
+      "subject": subject,
+      "customData": custom_data,
+    })
+  } else if event_type == "pullrequest:approved" {
+    # change:reviewed
+    context.type = "dev.cdevents.change.reviewed.0.3.0"
+    context.timestamp = .body.approval.date || pr.updated_on
+    bodies = push(bodies, {
+      "context": context,
+      "subject": subject,
+      "customData": custom_data,
+    })
+  } else if event_type == "pullrequest:updated" {
+    # change:updated
+    # comment_*, unapproved, changes_request_* are ignored
+    context.type = "dev.cdevents.change.updated.0.3.0"
+    context.timestamp = pr.updated_on
+    bodies = push(bodies, {
+      "context": context,
+      "subject": subject,
+      "customData": custom_data,
+    })
+  }
+}
+
+# Issue Events
+if event_type == "issue:created" || event_type == "issue:updated" {
+  issue = .body.issue
+  # bitbucket has no labels on issues, and a single optional assignee
+  assignees = filter([get(issue, ["assignee", "nickname"]) ?? null]) -> |_index, item| { !is_nullish(item) }
+
+  subject = {
+    "id": issue.links.html.href,
+    "content": {
+      "summary": issue.title,
+      "ticketType": downcase(to_string!(issue.kind)),
+      "uri": issue.links.html.href,
+      "priority": issue.priority,
+      "creator": get(issue, ["reporter", "nickname"]) ?? null,
+      "assignees": assignees,
+      "labels": [],
+    }
+  }
+
+  issue_state = downcase(to_string!(issue.state))
+  if event_type == "issue:created" {
+    # ticket:created
+    context.type = "dev.cdevents.ticket.created.0.2.0"
+    context.timestamp = issue.created_on
+    bodies = push(bodies, {
+      "context": context,
+      "subject": subject,
+      "customData": custom_data,
+    })
+  } else if includes(["resolved", "closed", "invalid", "duplicate", "wontfix"], issue_state) {
+    # ticket:closed
+    # `resolution` is required and constrained by the cdevents schema
+    subject.content.resolution = if includes(["resolved", "closed"], issue_state) { "resolved" } else { "declined" }
+    context.type = "dev.cdevents.ticket.closed.0.2.0"
+    context.timestamp = issue.updated_on
+    bodies = push(bodies, {
+      "context": context,
+      "subject": subject,
+      "customData": custom_data,
+    })
+  } else {
+    # ticket:updated (new, open, on hold, ...)
+    context.type = "dev.cdevents.ticket.updated.0.2.0"
+    context.timestamp = issue.updated_on
+    bodies = push(bodies, {
+      "context": context,
+      "subject": subject,
+      "customData": custom_data,
+    })
+  }
+}
+
+# Commit Status Events (bitbucket has no dedicated pipeline webhook, CI reports via commit status)
+if event_type == "repo:commit_status_created" || event_type == "repo:commit_status_updated" {
+  status = .body.commit_status
+
+  subject = {
+    "id": status.url,
+    "content": {
+      "pipelineName": repo_full_name + "/" + to_string!(status.key),
+      "uri": status.url,
+    }
+  }
+
+  outcome_mapping = {
+    "SUCCESSFUL": "success",
+    "FAILED": "failure",
+    "STOPPED": "error",
+  }
+  outcome = get(outcome_mapping, [to_string!(status.state)]) ?? null
+
+  if status.state == "INPROGRESS" {
+    # pipelineRun:started
+    context.type = "dev.cdevents.pipelinerun.started.0.3.0"
+    context.timestamp = status.created_on
+    bodies = push(bodies, {
+      "context": context,
+      "subject": subject,
+      "customData": custom_data,
+    })
+  } else if !is_null(outcome) {
+    # pipelineRun:finished
+    subject.content.outcome = string!(outcome)
+    context.type = "dev.cdevents.pipelinerun.finished.0.3.0"
+    context.timestamp = status.updated_on
+    bodies = push(bodies, {
+      "context": context,
+      "subject": subject,
+      "customData": custom_data,
+    })
+  }
+}
+
+# Return the transformed bodies
+map_values(bodies) -> |body| {
+    if !is_nullish(body.context.timestamp) {
+        ts = parse_timestamp!(body.context.timestamp, "%+")
+        body.context.timestamp = format_timestamp!(ts, format: "%+")
+    }
+  {
+    "metadata": .metadata,
+    "headers": .headers,
+    "body": body
+  }
+}

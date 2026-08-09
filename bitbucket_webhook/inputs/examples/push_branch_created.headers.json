@@ -1,0 +1,9 @@
+{
+  "Content-Type": "application/json",
+  "User-Agent": "Bitbucket-Webhooks/2.0",
+  "X-Attempt-Number": "1",
+  "X-Event-Key": "repo:push",
+  "X-Event-Time": "Wed, 11 Mar 2026 09:14:18 GMT",
+  "X-Hook-UUID": "9a3f4b21-0c5d-4e6f-8a7b-1c2d3e4f5a6b",
+  "X-Request-UUID": "5d4c3b2a-1f0e-4d9c-8b7a-6f5e4d3c2b1a"
+}

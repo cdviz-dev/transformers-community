@@ -1,0 +1,302 @@
+{
+  "actor": {
+    "type": "user",
+    "display_name": "Emma Example",
+    "nickname": "emma",
+    "uuid": "{c788b2da-b4a8-4d1d-9c17-e2d6c9f1a2b3}",
+    "account_id": "557058:1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+    "links": {
+      "self": {
+        "href": "https://api.bitbucket.org/2.0/users/%7Bc788b2da-b4a8-4d1d-9c17-e2d6c9f1a2b3%7D"
+      },
+      "html": {
+        "href": "https://bitbucket.org/%7Bc788b2da-b4a8-4d1d-9c17-e2d6c9f1a2b3%7D/"
+      },
+      "avatar": {
+        "href": "https://secure.gravatar.com/avatar/1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d?d=https%3A%2F%2Favatar-management.us-west-2.prod.public.atl-paas.net%2Finitials%2FEE-3.png"
+      }
+    }
+  },
+  "repository": {
+    "type": "repository",
+    "uuid": "{85d08b4e-571d-44e9-a507-fa476535aa98}",
+    "name": "webhook-example",
+    "full_name": "acme/webhook-example",
+    "is_private": true,
+    "scm": "git",
+    "website": null,
+    "project": {
+      "type": "project",
+      "key": "PROJ",
+      "uuid": "{3f6cbb3e-30dd-4a71-9a06-3a9c1d8b3a11}",
+      "name": "Acme Delivery",
+      "links": {
+        "self": {
+          "href": "https://api.bitbucket.org/2.0/workspaces/acme/projects/PROJ"
+        },
+        "html": {
+          "href": "https://bitbucket.org/acme/workspace/projects/PROJ"
+        }
+      }
+    },
+    "workspace": {
+      "type": "workspace",
+      "uuid": "{7d9c1f0a-2b3c-4d5e-8f90-a1b2c3d4e5f6}",
+      "slug": "acme",
+      "name": "Acme",
+      "links": {
+        "self": {
+          "href": "https://api.bitbucket.org/2.0/workspaces/acme"
+        },
+        "html": {
+          "href": "https://bitbucket.org/acme/"
+        }
+      }
+    },
+    "owner": {
+      "type": "team",
+      "display_name": "Acme",
+      "username": "acme",
+      "uuid": "{7d9c1f0a-2b3c-4d5e-8f90-a1b2c3d4e5f6}"
+    },
+    "links": {
+      "self": {
+        "href": "https://api.bitbucket.org/2.0/repositories/acme/webhook-example"
+      },
+      "html": {
+        "href": "https://bitbucket.org/acme/webhook-example"
+      },
+      "avatar": {
+        "href": "https://bytebucket.org/ravatar/%7B85d08b4e-571d-44e9-a507-fa476535aa98%7D?ts=default"
+      }
+    }
+  },
+  "pullrequest": {
+    "type": "pullrequest",
+    "id": 42,
+    "title": "feat: add webhook handler",
+    "description": "Adds a handler for incoming webhooks.\n",
+    "state": "MERGED",
+    "created_on": "2026-03-11T10:31:07+00:00",
+    "updated_on": "2026-03-11T14:22:03+00:00",
+    "close_source_branch": true,
+    "closed_by": {
+      "type": "user",
+      "display_name": "Emma Example",
+      "nickname": "emma",
+      "uuid": "{c788b2da-b4a8-4d1d-9c17-e2d6c9f1a2b3}",
+      "account_id": "557058:1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+      "links": {
+        "self": {
+          "href": "https://api.bitbucket.org/2.0/users/%7Bc788b2da-b4a8-4d1d-9c17-e2d6c9f1a2b3%7D"
+        },
+        "html": {
+          "href": "https://bitbucket.org/%7Bc788b2da-b4a8-4d1d-9c17-e2d6c9f1a2b3%7D/"
+        },
+        "avatar": {
+          "href": "https://secure.gravatar.com/avatar/1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d?d=https%3A%2F%2Favatar-management.us-west-2.prod.public.atl-paas.net%2Finitials%2FEE-3.png"
+        }
+      }
+    },
+    "reason": "",
+    "task_count": 0,
+    "comment_count": 1,
+    "author": {
+      "type": "user",
+      "display_name": "Emma Example",
+      "nickname": "emma",
+      "uuid": "{c788b2da-b4a8-4d1d-9c17-e2d6c9f1a2b3}",
+      "account_id": "557058:1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+      "links": {
+        "self": {
+          "href": "https://api.bitbucket.org/2.0/users/%7Bc788b2da-b4a8-4d1d-9c17-e2d6c9f1a2b3%7D"
+        },
+        "html": {
+          "href": "https://bitbucket.org/%7Bc788b2da-b4a8-4d1d-9c17-e2d6c9f1a2b3%7D/"
+        },
+        "avatar": {
+          "href": "https://secure.gravatar.com/avatar/1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d?d=https%3A%2F%2Favatar-management.us-west-2.prod.public.atl-paas.net%2Finitials%2FEE-3.png"
+        }
+      }
+    },
+    "reviewers": [],
+    "participants": [],
+    "source": {
+      "branch": {
+        "name": "feature/add-webhooks"
+      },
+      "commit": {
+        "hash": "3f2b1c9d8e7a",
+        "type": "commit",
+        "links": {
+          "html": {
+            "href": "https://bitbucket.org/acme/webhook-example/commits/3f2b1c9d8e7a"
+          },
+          "self": {
+            "href": "https://api.bitbucket.org/2.0/repositories/acme/webhook-example/commit/3f2b1c9d8e7a"
+          }
+        }
+      },
+      "repository": {
+        "type": "repository",
+        "uuid": "{85d08b4e-571d-44e9-a507-fa476535aa98}",
+        "name": "webhook-example",
+        "full_name": "acme/webhook-example",
+        "is_private": true,
+        "scm": "git",
+        "website": null,
+        "project": {
+          "type": "project",
+          "key": "PROJ",
+          "uuid": "{3f6cbb3e-30dd-4a71-9a06-3a9c1d8b3a11}",
+          "name": "Acme Delivery",
+          "links": {
+            "self": {
+              "href": "https://api.bitbucket.org/2.0/workspaces/acme/projects/PROJ"
+            },
+            "html": {
+              "href": "https://bitbucket.org/acme/workspace/projects/PROJ"
+            }
+          }
+        },
+        "workspace": {
+          "type": "workspace",
+          "uuid": "{7d9c1f0a-2b3c-4d5e-8f90-a1b2c3d4e5f6}",
+          "slug": "acme",
+          "name": "Acme",
+          "links": {
+            "self": {
+              "href": "https://api.bitbucket.org/2.0/workspaces/acme"
+            },
+            "html": {
+              "href": "https://bitbucket.org/acme/"
+            }
+          }
+        },
+        "owner": {
+          "type": "team",
+          "display_name": "Acme",
+          "username": "acme",
+          "uuid": "{7d9c1f0a-2b3c-4d5e-8f90-a1b2c3d4e5f6}"
+        },
+        "links": {
+          "self": {
+            "href": "https://api.bitbucket.org/2.0/repositories/acme/webhook-example"
+          },
+          "html": {
+            "href": "https://bitbucket.org/acme/webhook-example"
+          },
+          "avatar": {
+            "href": "https://bytebucket.org/ravatar/%7B85d08b4e-571d-44e9-a507-fa476535aa98%7D?ts=default"
+          }
+        }
+      }
+    },
+    "destination": {
+      "branch": {
+        "name": "main"
+      },
+      "commit": {
+        "hash": "9a8b7c6d5e4f",
+        "type": "commit",
+        "links": {
+          "html": {
+            "href": "https://bitbucket.org/acme/webhook-example/commits/9a8b7c6d5e4f"
+          },
+          "self": {
+            "href": "https://api.bitbucket.org/2.0/repositories/acme/webhook-example/commit/9a8b7c6d5e4f"
+          }
+        }
+      },
+      "repository": {
+        "type": "repository",
+        "uuid": "{85d08b4e-571d-44e9-a507-fa476535aa98}",
+        "name": "webhook-example",
+        "full_name": "acme/webhook-example",
+        "is_private": true,
+        "scm": "git",
+        "website": null,
+        "project": {
+          "type": "project",
+          "key": "PROJ",
+          "uuid": "{3f6cbb3e-30dd-4a71-9a06-3a9c1d8b3a11}",
+          "name": "Acme Delivery",
+          "links": {
+            "self": {
+              "href": "https://api.bitbucket.org/2.0/workspaces/acme/projects/PROJ"
+            },
+            "html": {
+              "href": "https://bitbucket.org/acme/workspace/projects/PROJ"
+            }
+          }
+        },
+        "workspace": {
+          "type": "workspace",
+          "uuid": "{7d9c1f0a-2b3c-4d5e-8f90-a1b2c3d4e5f6}",
+          "slug": "acme",
+          "name": "Acme",
+          "links": {
+            "self": {
+              "href": "https://api.bitbucket.org/2.0/workspaces/acme"
+            },
+            "html": {
+              "href": "https://bitbucket.org/acme/"
+            }
+          }
+        },
+        "owner": {
+          "type": "team",
+          "display_name": "Acme",
+          "username": "acme",
+          "uuid": "{7d9c1f0a-2b3c-4d5e-8f90-a1b2c3d4e5f6}"
+        },
+        "links": {
+          "self": {
+            "href": "https://api.bitbucket.org/2.0/repositories/acme/webhook-example"
+          },
+          "html": {
+            "href": "https://bitbucket.org/acme/webhook-example"
+          },
+          "avatar": {
+            "href": "https://bytebucket.org/ravatar/%7B85d08b4e-571d-44e9-a507-fa476535aa98%7D?ts=default"
+          }
+        }
+      }
+    },
+    "merge_commit": {
+      "hash": "1b2c3d4e5f6a",
+      "type": "commit",
+      "links": {
+        "html": {
+          "href": "https://bitbucket.org/acme/webhook-example/commits/1b2c3d4e5f6a"
+        },
+        "self": {
+          "href": "https://api.bitbucket.org/2.0/repositories/acme/webhook-example/commit/1b2c3d4e5f6a"
+        }
+      }
+    },
+    "links": {
+      "self": {
+        "href": "https://api.bitbucket.org/2.0/repositories/acme/webhook-example/pullrequests/42"
+      },
+      "html": {
+        "href": "https://bitbucket.org/acme/webhook-example/pull-requests/42"
+      },
+      "diff": {
+        "href": "https://api.bitbucket.org/2.0/repositories/acme/webhook-example/pullrequests/42/diff"
+      },
+      "comments": {
+        "href": "https://api.bitbucket.org/2.0/repositories/acme/webhook-example/pullrequests/42/comments"
+      },
+      "approve": {
+        "href": "https://api.bitbucket.org/2.0/repositories/acme/webhook-example/pullrequests/42/approve"
+      }
+    },
+    "summary": {
+      "type": "rendered",
+      "raw": "Adds a handler for incoming webhooks.\n",
+      "markup": "markdown",
+      "html": "<p>Adds a handler for incoming webhooks.</p>"
+    }
+  }
+}

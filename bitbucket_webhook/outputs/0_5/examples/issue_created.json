@@ -1,0 +1,187 @@
+{
+  "context": {
+    "id": "0",
+    "specversion": "0.5.0",
+    "timestamp": "2026-03-13T08:22:10+00:00",
+    "type": "dev.cdevents.ticket.created.0.2.0"
+  },
+  "customData": {
+    "bitbucket": {
+      "actor": {
+        "account_id": "557058:1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+        "display_name": "Emma Example",
+        "links": {
+          "avatar": {
+            "href": "https://secure.gravatar.com/avatar/1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d?d=https%3A%2F%2Favatar-management.us-west-2.prod.public.atl-paas.net%2Finitials%2FEE-3.png"
+          },
+          "html": {
+            "href": "https://bitbucket.org/%7Bc788b2da-b4a8-4d1d-9c17-e2d6c9f1a2b3%7D/"
+          },
+          "self": {
+            "href": "https://api.bitbucket.org/2.0/users/%7Bc788b2da-b4a8-4d1d-9c17-e2d6c9f1a2b3%7D"
+          }
+        },
+        "nickname": "emma",
+        "type": "user",
+        "uuid": "{c788b2da-b4a8-4d1d-9c17-e2d6c9f1a2b3}"
+      },
+      "issue": {
+        "assignee": {
+          "account_id": "557058:1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+          "display_name": "Emma Example",
+          "links": {
+            "avatar": {
+              "href": "https://secure.gravatar.com/avatar/1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d?d=https%3A%2F%2Favatar-management.us-west-2.prod.public.atl-paas.net%2Finitials%2FEE-3.png"
+            },
+            "html": {
+              "href": "https://bitbucket.org/%7Bc788b2da-b4a8-4d1d-9c17-e2d6c9f1a2b3%7D/"
+            },
+            "self": {
+              "href": "https://api.bitbucket.org/2.0/users/%7Bc788b2da-b4a8-4d1d-9c17-e2d6c9f1a2b3%7D"
+            }
+          },
+          "nickname": "emma",
+          "type": "user",
+          "uuid": "{c788b2da-b4a8-4d1d-9c17-e2d6c9f1a2b3}"
+        },
+        "component": null,
+        "content": {
+          "html": "<p>Deliveries are retried twice instead of three times.</p>",
+          "markup": "markdown",
+          "raw": "Deliveries are retried twice instead of three times.\n",
+          "type": "rendered"
+        },
+        "created_on": "2026-03-13T08:22:10+00:00",
+        "edited_on": null,
+        "id": 7,
+        "kind": "bug",
+        "links": {
+          "attachments": {
+            "href": "https://api.bitbucket.org/2.0/repositories/acme/webhook-example/issues/7/attachments"
+          },
+          "comments": {
+            "href": "https://api.bitbucket.org/2.0/repositories/acme/webhook-example/issues/7/comments"
+          },
+          "html": {
+            "href": "https://bitbucket.org/acme/webhook-example/issues/7"
+          },
+          "self": {
+            "href": "https://api.bitbucket.org/2.0/repositories/acme/webhook-example/issues/7"
+          },
+          "vote": {
+            "href": "https://api.bitbucket.org/2.0/repositories/acme/webhook-example/issues/7/vote"
+          },
+          "watch": {
+            "href": "https://api.bitbucket.org/2.0/repositories/acme/webhook-example/issues/7/watch"
+          }
+        },
+        "milestone": null,
+        "priority": "major",
+        "reporter": {
+          "account_id": "557058:1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+          "display_name": "Emma Example",
+          "links": {
+            "avatar": {
+              "href": "https://secure.gravatar.com/avatar/1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d?d=https%3A%2F%2Favatar-management.us-west-2.prod.public.atl-paas.net%2Finitials%2FEE-3.png"
+            },
+            "html": {
+              "href": "https://bitbucket.org/%7Bc788b2da-b4a8-4d1d-9c17-e2d6c9f1a2b3%7D/"
+            },
+            "self": {
+              "href": "https://api.bitbucket.org/2.0/users/%7Bc788b2da-b4a8-4d1d-9c17-e2d6c9f1a2b3%7D"
+            }
+          },
+          "nickname": "emma",
+          "type": "user",
+          "uuid": "{c788b2da-b4a8-4d1d-9c17-e2d6c9f1a2b3}"
+        },
+        "state": "new",
+        "title": "Webhook deliveries are retried twice",
+        "type": "issue",
+        "updated_on": "2026-03-13T08:22:10+00:00",
+        "version": null,
+        "votes": 0,
+        "watches": 1
+      },
+      "repository": {
+        "full_name": "acme/webhook-example",
+        "is_private": true,
+        "links": {
+          "avatar": {
+            "href": "https://bytebucket.org/ravatar/%7B85d08b4e-571d-44e9-a507-fa476535aa98%7D?ts=default"
+          },
+          "html": {
+            "href": "https://bitbucket.org/acme/webhook-example"
+          },
+          "self": {
+            "href": "https://api.bitbucket.org/2.0/repositories/acme/webhook-example"
+          }
+        },
+        "name": "webhook-example",
+        "owner": {
+          "display_name": "Acme",
+          "type": "team",
+          "username": "acme",
+          "uuid": "{7d9c1f0a-2b3c-4d5e-8f90-a1b2c3d4e5f6}"
+        },
+        "project": {
+          "key": "PROJ",
+          "links": {
+            "html": {
+              "href": "https://bitbucket.org/acme/workspace/projects/PROJ"
+            },
+            "self": {
+              "href": "https://api.bitbucket.org/2.0/workspaces/acme/projects/PROJ"
+            }
+          },
+          "name": "Acme Delivery",
+          "type": "project",
+          "uuid": "{3f6cbb3e-30dd-4a71-9a06-3a9c1d8b3a11}"
+        },
+        "scm": "git",
+        "type": "repository",
+        "uuid": "{85d08b4e-571d-44e9-a507-fa476535aa98}",
+        "website": null,
+        "workspace": {
+          "links": {
+            "html": {
+              "href": "https://bitbucket.org/acme/"
+            },
+            "self": {
+              "href": "https://api.bitbucket.org/2.0/workspaces/acme"
+            }
+          },
+          "name": "Acme",
+          "slug": "acme",
+          "type": "workspace",
+          "uuid": "{7d9c1f0a-2b3c-4d5e-8f90-a1b2c3d4e5f6}"
+        }
+      }
+    },
+    "links": [
+      {
+        "linkKind": "storedAt",
+        "target": {
+          "subject": {
+            "id": "https://bitbucket.org/acme/webhook-example",
+            "type": "repository"
+          }
+        }
+      }
+    ]
+  },
+  "subject": {
+    "content": {
+      "assignees": [
+        "emma"
+      ],
+      "creator": "emma",
+      "labels": [],
+      "priority": "major",
+      "summary": "Webhook deliveries are retried twice",
+      "ticketType": "bug",
+      "uri": "https://bitbucket.org/acme/webhook-example/issues/7"
+    },
+    "id": "https://bitbucket.org/acme/webhook-example/issues/7"
+  }
+}

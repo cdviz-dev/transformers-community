@@ -6,6 +6,7 @@ experimental = true
 [monorepo]
 config_roots = [
   "argocd_notifications",
+  "bitbucket_webhook",
   "cdevents/*",
   "forgejo_webhook",
   "gitea_webhook",
