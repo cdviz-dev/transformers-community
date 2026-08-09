@@ -1,0 +1,81 @@
+# Converts a Jenkins `builds[...]` page (as fetched by the http_polling driver
+# in cdviz-collector.toml, one page per discovered leaf job) into CDEvents
+# pipelinerun.{started,finished}.
+#
+# `job_name`/`job_url` are derived from each build's own `url` (not passed in
+# via driver state), so this transformer works whether the leaf job sits at
+# the Jenkins root or under any number of folders/multibranch projects.
+
+ts_after_str = if is_nullish(.metadata.ts_after) { "1900-01-01T00:00:00Z" } else { to_string!(.metadata.ts_after) }
+ts_before_str = if is_nullish(.metadata.ts_before) { "2999-12-31T23:59:59Z" } else { to_string!(.metadata.ts_before) }
+ts_after_ms = to_unix_timestamp!(parse_timestamp!(ts_after_str, "%+"), unit: "milliseconds")
+ts_before_ms = to_unix_timestamp!(parse_timestamp!(ts_before_str, "%+"), unit: "milliseconds")
+
+bodies = []
+
+for_each(array(.body.builds) ?? []) -> |_i, build| {
+    ts_ms = to_int!(build.timestamp)
+    if ts_ms >= ts_after_ms && ts_ms < ts_before_ms {
+        build_url = string!(build.url)
+
+        # Strip the trailing build number to get the job url, then turn the
+        # Jenkins "/job/a/job/b/job/c/" path into a flat "a/b/c" name.
+        job_url = replace(build_url, r'\d+/$', "")
+        job_path = replace(job_url, r'^https?://[^/]+/', "")
+        job_segments = filter(split(job_path, "/")) -> |_j, s| { s != "job" && s != "" }
+        job_name = join!(job_segments, "/")
+
+        context = {
+            "id": "0",
+            "specversion": "0.5.0",
+            "timestamp": format_timestamp!(from_unix_timestamp!(ts_ms, unit: "milliseconds"), format: "%+"),
+        }
+
+        subject = {
+            "id": build_url,
+            "type": "pipelineRun",
+            "content": {
+                "pipelineName": job_name,
+                "uri": build_url,
+            },
+        }
+
+        custom_data = {
+            "jenkins": {
+                "job_url": job_url,
+                "build": build,
+            },
+        }
+
+        if build.building == true || is_null(build.result) {
+            # pipelineRun:started
+            context.type = "dev.cdevents.pipelinerun.started.0.3.0"
+        } else {
+            # pipelineRun:finished
+            result = to_string!(build.result)
+            subject.content.outcome = if result == "SUCCESS" {
+                "success"
+            } else if result == "ABORTED" || result == "NOT_BUILT" {
+                "error"
+            } else {
+                # FAILURE, UNSTABLE
+                "failure"
+            }
+            context.type = "dev.cdevents.pipelinerun.finished.0.3.0"
+        }
+
+        bodies = push(bodies, {
+            "context": context,
+            "subject": subject,
+            "customData": custom_data,
+        })
+    }
+}
+
+map_values(bodies) -> |body| {
+    {
+        "metadata": .metadata,
+        "headers": .headers,
+        "body": body,
+    }
+}

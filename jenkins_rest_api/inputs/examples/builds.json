@@ -1,0 +1,29 @@
+{
+  "_class": "org.jenkinsci.plugins.workflow.job.WorkflowJob",
+  "builds": [
+    {
+      "number": 44,
+      "url": "https://jenkins.example.com/job/team-a/job/service/job/main/44/",
+      "timestamp": 1700007200000,
+      "duration": 0,
+      "result": null,
+      "building": true
+    },
+    {
+      "number": 43,
+      "url": "https://jenkins.example.com/job/team-a/job/service/job/main/43/",
+      "timestamp": 1700003600000,
+      "duration": 12000,
+      "result": "FAILURE",
+      "building": false
+    },
+    {
+      "number": 42,
+      "url": "https://jenkins.example.com/job/team-a/job/service/job/main/42/",
+      "timestamp": 1700000000000,
+      "duration": 65000,
+      "result": "SUCCESS",
+      "building": false
+    }
+  ]
+}

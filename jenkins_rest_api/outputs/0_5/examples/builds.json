@@ -1,0 +1,29 @@
+{
+  "context": {
+    "id": "0",
+    "specversion": "0.5.0",
+    "timestamp": "2023-11-15T00:13:20+00:00",
+    "type": "dev.cdevents.pipelinerun.started.0.3.0"
+  },
+  "customData": {
+    "jenkins": {
+      "build": {
+        "building": true,
+        "duration": 0,
+        "number": 44,
+        "result": null,
+        "timestamp": 1700007200000,
+        "url": "https://jenkins.example.com/job/team-a/job/service/job/main/44/"
+      },
+      "job_url": "https://jenkins.example.com/job/team-a/job/service/job/main/"
+    }
+  },
+  "subject": {
+    "content": {
+      "pipelineName": "team-a/service/main",
+      "uri": "https://jenkins.example.com/job/team-a/job/service/job/main/44/"
+    },
+    "id": "https://jenkins.example.com/job/team-a/job/service/job/main/44/",
+    "type": "pipelineRun"
+  }
+}

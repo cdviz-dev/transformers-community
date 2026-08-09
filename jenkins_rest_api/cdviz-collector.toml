@@ -1,0 +1,67 @@
+# ------------------------------------------------------------------------------
+# Example of source configuration
+#
+# Recursively discovers every Jenkins job (any folder / multibranch-pipeline
+# depth) and ingests its builds as CDEvents pipelinerun.{started,finished}.
+#
+# Discovery has no hardcoded job/pipeline names: the driver walks the job tree,
+# telling folders/multibranch projects (which must be descended into) apart
+# from buildable leaf jobs by their `_class` (containing "folder" or
+# "multibranch"). New pipelines are picked up automatically on the next poll.
+#
+# ponytail: leaf jobs are fetched via a single `builds[...]` request (whatever
+# Jenkins currently retains per the job's discard policy) - no {M,N} range
+# pagination. If a job's full history exceeds what Jenkins keeps in memory, add
+# per-job range chaining (see cdviz-collector's http_polling README "multi-pass"
+# example) using `route: "both"` and slicing the `builds[...]{start,end}` tree.
+
+# [sources.jenkins]
+# enabled = true
+# transformer_refs = ["jenkins_builds_0_5"]
+
+# [sources.jenkins.extractor]
+# type                 = "http_polling"
+# polling_interval     = "5m"
+# parser               = "json"
+# min_request_interval = "200ms"
+
+# driver_vrl = """
+# if .response == null {
+#     # bootstrap: discover jobs at the root
+#     .requests = [{
+#         "url": "https://jenkins.example.com/api/json",
+#         "query": { "tree": "jobs[name,url,_class]" },
+#         "route": "feedback"
+#     }]
+# } else {
+#     reqs = []
+#     for_each(array(.response.body.jobs) ?? []) -> |_i, job| {
+#         class = downcase(to_string(job._class) ?? "")
+#         if contains(class, "folder") || contains(class, "multibranch") {
+#             # container: descend, any depth, no hardcoded names
+#             reqs = push(reqs, {
+#                 "url": string!(job.url) + "api/json",
+#                 "query": { "tree": "jobs[name,url,_class]" },
+#                 "route": "feedback"
+#             })
+#         } else {
+#             # buildable leaf job: fetch its retained builds
+#             reqs = push(reqs, {
+#                 "url": string!(job.url) + "api/json",
+#                 "query": { "tree": "builds[number,url,timestamp,duration,result,building]" },
+#                 "route": "pipeline"
+#             })
+#         }
+#     }
+#     .requests = reqs
+# }
+# """
+
+# [sources.jenkins.extractor.headers]
+# Authorization = { type = "secret", value = "Basic BASE64_ENCODED_CREDENTIALS" }
+
+# [sources.jenkins.extractor.metadata]
+# "context.source" = "https://jenkins.example.com"
+
+[transformers]
+jenkins_builds_0_5 = { type = "vrl", template_file = "./to_v0_5.vrl" }
