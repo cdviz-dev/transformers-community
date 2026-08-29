@@ -1,0 +1,30 @@
+{
+  "services": [
+    {
+      "name": "aaaaaaaa/aaaaa-aaaaaaa/aaaaaaaaa/aa-aaaaaaa1/aaaaaaaa/aaaaa-aaaaaaa",
+      "uid": "aaaa1111-2222-3333-4444-555555555555",
+      "latestReadyRevision": "aaaaaaaa/aaaaa-aaaaaaa/aaaaaaaaa/aa-aaaaaaa1/aaaaaaaa/aaaaa-aaaaaaa/revisions/aaaaa-service-00007-xyz",
+      "updateTime": "2024-12-05T09:30:00Z",
+      "template": {
+        "containers": [
+          {
+            "image": "us-docker.pkg.dev/aaaaa-project/aaaaa-repo/aaaaa-image@sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          }
+        ]
+      }
+    },
+    {
+      "name": "aaaaaaaa/aaaaa-aaaaaaa/aaaaaaaaa/aa-aaaaaaa1/aaaaaaaa/aaaaa-aaaaaab",
+      "uid": "bbbb1111-2222-3333-4444-666666666666",
+      "latestReadyRevision": "aaaaaaaa/aaaaa-aaaaaaa/aaaaaaaaa/aa-aaaaaaa1/aaaaaaaa/aaaaa-aaaaaab/revisions/bbbbb-service-00002-abc",
+      "updateTime": "2024-12-04T14:00:00Z",
+      "template": {
+        "containers": [
+          {
+            "image": "us-docker.pkg.dev/aaaaa-project/aaaaa-repo/bbbbb-image@sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+          }
+        ]
+      }
+    }
+  ]
+}

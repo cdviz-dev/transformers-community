@@ -1,0 +1,24 @@
+{
+  "context": {
+    "specversion": "0.5.0",
+    "timestamp": "2024-12-05T09:30:00+00:00",
+    "type": "dev.cdevents.service.deployed.0.2.0"
+  },
+  "customData": {
+    "gcp_cloudrun": {
+      "latestReadyRevision": "aaaaaaaa/aaaaa-aaaaaaa/aaaaaaaaa/aa-aaaaaaa1/aaaaaaaa/aaaaa-aaaaaaa/revisions/aaaaa-service-00007-xyz",
+      "name": "aaaaaaaa/aaaaa-aaaaaaa/aaaaaaaaa/aa-aaaaaaa1/aaaaaaaa/aaaaa-aaaaaaa",
+      "uid": "aaaa1111-2222-3333-4444-555555555555",
+      "updateTime": "2024-12-05T09:30:00Z"
+    }
+  },
+  "subject": {
+    "content": {
+      "artifactId": "pkg:oci/aaaaa-image@sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc?repository_url=us-docker.pkg.dev/aaaaa-project/aaaaa-repo",
+      "environment": {
+        "id": "/aa-aaaaaaa1"
+      }
+    },
+    "id": "//run.googleapis.com/aaaaaaaa/aaaaa-aaaaaaa/aaaaaaaaa/aa-aaaaaaa1/aaaaaaaa/aaaaa-aaaaaaa"
+  }
+}

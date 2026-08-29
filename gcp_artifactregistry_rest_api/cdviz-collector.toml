@@ -1,0 +1,8 @@
+# Artifact Registry REST API transformer.
+# Use with an http_polling source for setups without a Pub/Sub push endpoint. A ready-to-use
+# source block lives in `cdviz-collector.sources.example.toml` (kept separate so this file stays
+# loadable by `cdviz-collector transform` in tests). See README.md for details and scope.
+
+[transformers.gcp_artifactregistry_rest_versions]
+type = "vrl"
+template_file = "./versions_to_v0_5.vrl"

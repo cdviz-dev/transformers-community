@@ -1,0 +1,12 @@
+{
+  "message": {
+    "data": "eyJpZCI6ICIxMTExMTExMS0yMjIyLTMzMzMtNDQ0NC01NTU1NTU1NTU1NTUiLCAicHJvamVjdElkIjogImFhYWFhLXByb2plY3QiLCAic3RhdHVzIjogIldPUktJTkciLCAiY3JlYXRlVGltZSI6ICIyMDI0LTEyLTAxVDEwOjAwOjAwWiIsICJidWlsZFRyaWdnZXJJZCI6ICJ0cmlnZ2VyLWFhYWEiLCAibG9nVXJsIjogImh0dHBzOi8vY29uc29sZS5jbG91ZC5nb29nbGUuY29tL2Nsb3VkLWJ1aWxkL2J1aWxkcy8xMTExMTExMS0yMjIyLTMzMzMtNDQ0NC01NTU1NTU1NTU1NTU/cHJvamVjdD1hYWFhYS1wcm9qZWN0IiwgInN0YXJ0VGltZSI6ICIyMDI0LTEyLTAxVDEwOjAwOjA1WiJ9",
+    "attributes": {
+      "buildId": "11111111-1111-1111-1111-111111111111",
+      "status": "WORKING"
+    },
+    "messageId": "1111111111111112",
+    "publishTime": "2024-12-01T10:00:05Z"
+  },
+  "subscription": "projects/aaaaa-project/subscriptions/cdviz-collector-cloudbuild"
+}

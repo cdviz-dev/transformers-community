@@ -1,0 +1,9 @@
+# Cloud Build REST API transformer.
+# Use with an http_polling source for backfill or polling-only setups (no Pub/Sub push endpoint
+# needed). A ready-to-use source block lives in `cdviz-collector.sources.example.toml`
+# (kept separate so this file stays loadable by `cdviz-collector transform` in tests).
+# See README.md for details.
+
+[transformers.gcp_cloudbuild_rest_builds]
+type = "vrl"
+template_file = "./builds_to_v0_5.vrl"

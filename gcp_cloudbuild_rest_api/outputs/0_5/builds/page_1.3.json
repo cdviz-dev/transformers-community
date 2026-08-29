@@ -1,0 +1,23 @@
+{
+  "context": {
+    "specversion": "0.5.0",
+    "timestamp": "2024-12-02T08:00:00+00:00",
+    "type": "dev.cdevents.pipelinerun.queued.0.3.0"
+  },
+  "customData": {
+    "gcp_cloudbuild": {
+      "buildTriggerId": "aaaaaaa-aaab",
+      "createTime": "2024-12-02T08:00:00Z",
+      "id": "11111111-1111-1111-1111-111111111112",
+      "logUrl": "https://console.cloud.google.com/cloud-build/builds/11111111-1111-1111-1111-111111111112?project=aaaaa-aaaaaaa",
+      "projectId": "aaaaa-aaaaaaa"
+    }
+  },
+  "subject": {
+    "content": {
+      "pipelineName": "aaaaa-aaaaaaa/aaaaaaa-aaab",
+      "uri": "https://console.cloud.google.com/cloud-build/builds/11111111-1111-1111-1111-111111111112?project=aaaaa-aaaaaaa"
+    },
+    "id": "//cloudbuild.googleapis.com/projects/aaaaa-aaaaaaa/builds/11111111-1111-1111-1111-111111111112"
+  }
+}

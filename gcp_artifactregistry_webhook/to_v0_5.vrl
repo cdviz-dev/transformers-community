@@ -1,0 +1,67 @@
+# Convert an Artifact Registry admin-activity audit log entry, delivered via a Pub/Sub push
+# notification (Cloud Logging sink -> Pub/Sub), to a CDEvents `artifact.published` event.
+# https://cloud.google.com/artifact-registry/docs/audit-logging
+#
+# Input: Pub/Sub push envelope delivered by cdviz-collector's `webhook` source
+#   .body = { "message": { "data": <base64 LogEntry JSON>, "attributes": {...} }, "subscription": ... }
+#   decoded .body.message.data is a Cloud Logging `LogEntry` whose `protoPayload` is an
+#   `AuditLog` for an `artifactregistry.googleapis.com` method (image/package push).
+#
+# | done | protoPayload.methodName                          | cdevent            |
+# | ---- | -------------------------------------------------- | -------------------- |
+# | [x]  | google.devtools.artifactregistry.*.UploadDockerImage / CreateDockerImage / CreateTag | artifact:published |
+#
+# Rules:
+# - context.id is computed by the collector (content-based CID)
+# - artifactId is a PURL built from the digest-form image reference (resourceName)
+# - timestamp from the log entry itself (never now())
+# - other resource types (npm, maven, generic Artifact Registry formats) are not handled yet —
+#   this package currently targets Docker/OCI image pushes only (the flow the user cares about:
+#   images built elsewhere, pushed to GCP, pulled by Cloud Run/GKE)
+
+publish_methods = [
+  "UploadDockerImage",
+  "CreateDockerImage",
+  "CreateTag",
+]
+
+entry = parse_json!(decode_base64!(string!(.body.message.data)))
+payload = entry.protoPayload
+method = to_string(payload.methodName) ?? ""
+is_publish = false
+for_each(publish_methods) -> |_index, suffix| {
+  if ends_with(method, "." + suffix) { is_publish = true }
+}
+
+output = []
+if is_publish {
+  resource_name = to_string(payload.resourceName) ?? ""
+  ts = format_timestamp!(parse_timestamp(entry.timestamp, "%+") ?? now(), format: "%+")
+
+  # resourceName for a docker image is shaped:
+  # projects/P/locations/L/repositories/R/dockerImages/NAME@sha256:DIGEST
+  matched = parse_regex(resource_name, r'^projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/repositories/(?P<repo>[^/]+)/dockerImages/(?P<name>[^@]+)@(?P<digest>sha256:[0-9a-f]+)$') ?? {}
+
+  if exists(matched.digest) {
+    repository_url = to_string!(matched.location) + "-docker.pkg.dev/" + to_string!(matched.project) + "/" + to_string!(matched.repo)
+    purl_obj = { "type": "oci", "name": to_string!(matched.name), "version": to_string!(matched.digest), "qualifiers": { "repository_url": repository_url } }
+    artifact_id = purl_to_string!(purl_obj)
+
+    output = [{
+      "metadata": .metadata,
+      "headers": .headers,
+      "body": {
+        "context": { "specversion": "0.5.0", "type": "dev.cdevents.artifact.published.0.3.0", "timestamp": ts },
+        "subject": { "id": artifact_id, "content": {} },
+        "customData": {
+          "gcp_artifactregistry": {
+            "methodName": payload.methodName,
+            "resourceName": payload.resourceName,
+            "principalEmail": payload.authenticationInfo.principalEmail,
+          },
+        },
+      },
+    }]
+  }
+}
+output

@@ -1,0 +1,20 @@
+# ------------------------------------------------------------------------------
+# Example of source configuration
+#
+# [sources.gcp_artifactregistry_webhook]
+# enabled = true
+# transformer_refs = [ "gcp_artifactregistry_webhook" ]
+#
+# [sources.gcp_artifactregistry_webhook.extractor]
+# type = "webhook"
+# id = "000-gcp-artifactregistry"
+#
+# GCP setup: create a Cloud Logging sink filtered to Artifact Registry admin-activity audit logs
+# (`protoPayload.serviceName="artifactregistry.googleapis.com"`), destination = a Pub/Sub topic,
+# and a push subscription on that topic pointing at
+# `https://<your-collector-host>/webhook/000-gcp-artifactregistry`.
+# https://cloud.google.com/logging/docs/export/configure_export_v2
+
+[transformers.gcp_artifactregistry_webhook]
+type = "vrl"
+template_file = "./to_v0_5.vrl"

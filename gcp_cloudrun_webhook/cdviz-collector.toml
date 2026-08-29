@@ -1,0 +1,21 @@
+# ------------------------------------------------------------------------------
+# Example of source configuration
+#
+# [sources.gcp_cloudrun_webhook]
+# enabled = true
+# transformer_refs = [ "gcp_cloudrun_webhook" ]
+#
+# [sources.gcp_cloudrun_webhook.extractor]
+# type = "webhook"
+# id = "000-gcp-cloudrun"
+#
+# GCP setup: create a Cloud Logging sink filtered to Cloud Run admin-activity audit logs
+# (`resource.type="cloud_run_revision" AND protoPayload.serviceName="run.googleapis.com"`,
+# or broader `logName:"cloudaudit.googleapis.com%2Factivity"` on `run.googleapis.com`), with the
+# sink destination set to a Pub/Sub topic, and a push subscription on that topic pointing at
+# `https://<your-collector-host>/webhook/000-gcp-cloudrun`.
+# https://cloud.google.com/logging/docs/export/configure_export_v2
+
+[transformers.gcp_cloudrun_webhook]
+type = "vrl"
+template_file = "./to_v0_5.vrl"

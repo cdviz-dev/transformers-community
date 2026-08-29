@@ -1,0 +1,83 @@
+# Convert a Cloud Run admin-activity audit log entry, delivered via a Pub/Sub push
+# notification (Cloud Logging sink -> Pub/Sub), to CDEvents `service` events.
+# https://cloud.google.com/run/docs/audit-logging
+#
+# Input: Pub/Sub push envelope delivered by cdviz-collector's `webhook` source
+#   .body = { "message": { "data": <base64 LogEntry JSON>, "attributes": {...} }, "subscription": ... }
+#   decoded .body.message.data is a Cloud Logging `LogEntry` whose `protoPayload` is an
+#   `AuditLog` for a `run.googleapis.com` v2 Services method:
+#   https://cloud.google.com/logging/docs/reference/audit/auditlog/rest/Shared.Types/AuditLog
+#
+# | done | protoPayload.methodName                        | cdevent               |
+# | ---- | ------------------------------------------------ | ---------------------- |
+# | [x]  | ...Services.CreateService                        | service:deployed       |
+# | [x]  | ...Services.UpdateService / ReplaceService        | service:upgraded       |
+# | [x]  | ...Services.DeleteService                        | service:removed        |
+#
+# Rules:
+# - context.id is computed by the collector (content-based CID)
+# - subject.id = Cloud Run service's fully-qualified resource name
+# - timestamp from the log entry itself (never now())
+# - artifactId (when the response carries a container image) is a PURL, digest preferred over tag
+# - "rolledback" is NOT derived here: Cloud Run's audit log doesn't self-label a traffic revert as
+#   distinct from a regular update; treating every UpdateService as "upgraded" is the safe default.
+#   Detecting rollback would need comparing the new revision against traffic history.
+
+entry = parse_json!(decode_base64!(string!(.body.message.data)))
+payload = entry.protoPayload
+method = to_string(payload.methodName) ?? ""
+
+event_type = if ends_with(method, "CreateService") {
+  "dev.cdevents.service.deployed.0.2.0"
+} else if ends_with(method, "UpdateService") || ends_with(method, "ReplaceService") {
+  "dev.cdevents.service.upgraded.0.2.0"
+} else if ends_with(method, "DeleteService") {
+  "dev.cdevents.service.removed.0.2.0"
+} else {
+  null
+}
+
+output = []
+if !is_null(event_type) {
+  resource_name = to_string(payload.resourceName) ?? ""
+  labels = object(entry.resource.labels) ?? {}
+  ts = format_timestamp!(parse_timestamp(entry.timestamp, "%+") ?? now(), format: "%+")
+
+  image = payload.response.template.containers[0].image
+  content = {
+    "environment": { "id": "/" + (to_string(labels.location) ?? "unknown") },
+  }
+  if !is_nullish(image) {
+    # GCP image refs are digest-form (repo/name@sha256:...); purl_from_oci_image() is built for
+    # tag-form refs and mis-parses the "@sha256:" suffix, so build the PURL manually here.
+    image_str = string!(image)
+    parts_at = split(image_str, "@")
+    if length(parts_at) == 2 {
+      matched = parse_regex!(parts_at[0], r'^(?P<repo>.+)/(?P<name>[^/]+)$')
+      purl_obj = { "type": "oci", "name": matched.name, "version": parts_at[1], "qualifiers": { "repository_url": matched.repo } }
+      content.artifactId = purl_to_string!(purl_obj)
+    } else {
+      content.artifactId = purl_to_string!(purl_from_oci_image!(image_str))
+    }
+  }
+
+  output = [{
+    "metadata": .metadata,
+    "headers": .headers,
+    "body": {
+      "context": { "specversion": "0.5.0", "type": event_type, "timestamp": ts },
+      "subject": {
+        "id": "//run.googleapis.com/" + resource_name,
+        "content": content,
+      },
+      "customData": {
+        "gcp_cloudrun": {
+          "methodName": payload.methodName,
+          "resourceName": payload.resourceName,
+          "principalEmail": payload.authenticationInfo.principalEmail,
+        },
+      },
+    },
+  }]
+}
+output

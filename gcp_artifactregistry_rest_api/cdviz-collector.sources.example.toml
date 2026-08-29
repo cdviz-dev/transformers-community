@@ -1,0 +1,44 @@
+# Example source — http_polling for the gcp_artifactregistry_rest_versions transformer.
+#
+# Requires a cdviz-collector with the `driver_vrl` request driver.
+# Kept separate from `cdviz-collector.toml` so the transformer test config stays loadable.
+#
+# Auth caveat: see gcp_cloudbuild_rest_api/README.md — no built-in GCP OAuth2/service-account
+# token refresh, supply and rotate the bearer token yourself.
+#
+# Routing model: discover packages in the repository -> fan out to each package's versions
+# (mirrors github_rest_api's packages -> versions discovery pattern).
+
+[sources.gcp_artifactregistry_rest_versions]
+enabled = false
+transformer_refs = ["gcp_artifactregistry_rest_versions"]
+
+[sources.gcp_artifactregistry_rest_versions.extractor]
+type              = "http_polling"
+polling_interval  = "5m"
+parser            = "json"
+driver_vrl = """
+project = "myproject"
+location = "us-central1"
+repository = "myrepo"
+base = "https://artifactregistry.googleapis.com/v1/projects/" + project + "/locations/" + location + "/repositories/" + repository
+reqs = []
+if .response == null {
+  reqs = [{ "url": base + "/packages", "route": "feedback" }]
+} else {
+  url = string(.request.url) ?? ""
+  is_versions = contains(url, "/versions")
+  next_token = to_string(.response.body.nextPageToken) ?? ""
+  if next_token != "" {
+    reqs = push(reqs, { "url": url, "query": {"pageToken": next_token}, "route": (if is_versions { "both" } else { "feedback" }) })
+  }
+  if !is_versions {
+    for_each(array!(.response.body.packages) ?? []) -> |_i, pkg| {
+      reqs = push(reqs, { "url": string!(pkg.name) + "/versions", "route": "both" })
+    }
+  }
+}
+.requests = reqs
+"""
+[sources.gcp_artifactregistry_rest_versions.extractor.headers]
+authorization = { type = "secret", value_file = "/secrets/gcp_token", prefix = "Bearer " }

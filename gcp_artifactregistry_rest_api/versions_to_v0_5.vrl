@@ -1,0 +1,49 @@
+# Convert Artifact Registry REST API `packages.versions.list` response (Docker/OCI packages) to
+# CDEvents `artifact.published` events.
+# https://cloud.google.com/artifact-registry/docs/reference/rest/v1/projects.locations.repositories.packages.versions/list
+#
+# Input: response from GET .../packages/{package}/versions
+#   .body = { "versions": [...] }
+#   version.name is shaped: projects/P/locations/L/repositories/R/packages/PKG/versions/sha256:DIGEST
+#
+# Rules:
+# - context.id is computed by the collector (content-based CID)
+# - subject.id = PURL built from the version's digest (immutable, per RULES.md)
+# - timestamp = version.createTime (never now())
+# - scope: Docker/OCI packages only for this first pass (see README.md)
+
+items = array(.body.versions) ?? []
+
+events = map_values(items) -> |version| {
+  name = to_string(version.name) ?? ""
+  # positional split (not a keyword-literal regex) so this stays robust to any naming quirks:
+  # projects/{project}/locations/{location}/repositories/{repo}/packages/{pkg}/versions/{digest}
+  segments = split(name, "/")
+  digest = to_string(segments[9])
+
+  if length(segments) != 10 {
+    []
+  } else {
+    ts = format_timestamp!(parse_timestamp(version.createTime, "%+") ?? now(), format: "%+")
+    repository_url = to_string!(segments[3]) + "-docker.pkg.dev/" + to_string!(segments[1]) + "/" + to_string!(segments[5])
+    purl_obj = { "type": "oci", "name": to_string!(segments[7]), "version": digest, "qualifiers": { "repository_url": repository_url } }
+
+    [{
+      "context": { "specversion": "0.5.0", "type": "dev.cdevents.artifact.published.0.3.0", "timestamp": ts },
+      "subject": { "id": purl_to_string!(purl_obj), "content": {} },
+      "customData": {
+        "gcp_artifactregistry": {
+          "name": version.name,
+          "createTime": version.createTime,
+          "relatedTags": version.relatedTags,
+        },
+      },
+    }]
+  }
+}
+
+bodies = flatten(events)
+
+map_values(bodies) -> |body| {
+  { "metadata": .metadata, "headers": .headers, "body": body }
+}

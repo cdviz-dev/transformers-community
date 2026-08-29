@@ -1,0 +1,18 @@
+{
+  "context": {
+    "specversion": "0.5.0",
+    "timestamp": "2024-12-06T08:15:00+00:00",
+    "type": "dev.cdevents.artifact.published.0.3.0"
+  },
+  "customData": {
+    "gcp_artifactregistry": {
+      "methodName": "google.devtools.artifactregistry.v1.ArtifactRegistry.UploadDockerImage",
+      "principalEmail": "ci-bot@aaaaa-project.iam.gserviceaccount.com",
+      "resourceName": "projects/aaaaa-project/locations/us-central1/repositories/aaaaa-repo/dockerImages/aaaaa-image@sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+    }
+  },
+  "subject": {
+    "content": {},
+    "id": "pkg:oci/aaaaa-image@sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc?repository_url=us-central1-docker.pkg.dev/aaaaa-project/aaaaa-repo"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "context": {
+    "specversion": "0.5.0",
+    "timestamp": "2024-12-01T10:00:00+00:00",
+    "type": "dev.cdevents.service.deployed.0.2.0"
+  },
+  "customData": {
+    "gcp_cloudrun": {
+      "methodName": "google.cloud.run.v2.Services.CreateService",
+      "principalEmail": "deployer@aaaaa-project.iam.gserviceaccount.com",
+      "resourceName": "projects/aaaaa-project/locations/us-central1/services/aaaaa-service"
+    }
+  },
+  "subject": {
+    "content": {
+      "artifactId": "pkg:oci/aaaaa-image@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa?repository_url=us-docker.pkg.dev/aaaaa-project/aaaaa-repo",
+      "environment": {
+        "id": "/us-central1"
+      }
+    },
+    "id": "//run.googleapis.com/projects/aaaaa-project/locations/us-central1/services/aaaaa-service"
+  }
+}

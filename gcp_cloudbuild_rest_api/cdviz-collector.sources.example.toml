@@ -1,0 +1,40 @@
+# Example source — http_polling for the gcp_cloudbuild_rest_builds transformer.
+#
+# Requires a cdviz-collector with the `driver_vrl` request driver.
+# Kept separate from `cdviz-collector.toml` so the transformer test config stays loadable.
+#
+# Auth: Cloud Build API requires an OAuth2 access token (`gcloud auth print-access-token`,
+# or a service account key exchanged for a token). cdviz-collector's http_polling engine has
+# no built-in GCP OAuth2/service-account token refresh — you must supply and rotate the token
+# yourself, e.g. a `secret` header pointed at a file refreshed by an external cron/sidecar
+# running `gcloud auth print-access-token > /secrets/gcp_token`.
+#
+# To use: merge this block into your collector config (alongside the [transformers.*]
+# definitions from cdviz-collector.toml), set `project`, point the secret header at a real
+# token file, and set `enabled = true`.
+
+[sources.gcp_cloudbuild_rest_builds]
+enabled = false
+transformer_refs = ["gcp_cloudbuild_rest_builds"]
+
+[sources.gcp_cloudbuild_rest_builds.extractor]
+type              = "http_polling"
+polling_interval  = "5m"
+parser            = "json"
+driver_vrl = """
+project = "myproject"
+reqs = []
+if .response == null {
+  ts_after = to_string(.metadata.ts_after) ?? ""
+  filter_expr = if ts_after != "" { "create_time>\\"" + ts_after + "\\"" } else { "" }
+  reqs = [{ "url": "https://cloudbuild.googleapis.com/v1/projects/" + project + "/builds", "query": {"pageSize": "100", "filter": filter_expr}, "route": "both" }]
+} else {
+  next_token = to_string(.response.body.nextPageToken) ?? ""
+  if next_token != "" {
+    reqs = [{ "url": string!(.request.url), "query": {"pageSize": "100", "pageToken": next_token}, "route": "both" }]
+  }
+}
+.requests = reqs
+"""
+[sources.gcp_cloudbuild_rest_builds.extractor.headers]
+authorization = { type = "secret", value_file = "/secrets/gcp_token", prefix = "Bearer " }

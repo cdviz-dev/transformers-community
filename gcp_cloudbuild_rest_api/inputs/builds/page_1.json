@@ -1,0 +1,35 @@
+{
+  "builds": [
+    {
+      "id": "11111111-1111-1111-1111-111111111111",
+      "projectId": "aaaaa-aaaaaaa",
+      "status": "SUCCESS",
+      "createTime": "2024-12-01T10:00:00Z",
+      "startTime": "2024-12-01T10:00:05Z",
+      "finishTime": "2024-12-01T10:02:30Z",
+      "buildTriggerId": "aaaaaaa-aaaa",
+      "logUrl": "https://console.cloud.google.com/cloud-build/builds/11111111-1111-1111-1111-111111111111?project=aaaaa-aaaaaaa",
+      "images": ["us-docker.pkg.dev/aaaaa-aaaaaaa/aaaaa-repo/aaaaa-image:aaaa"]
+    },
+    {
+      "id": "11111111-1111-1111-1111-111111111112",
+      "projectId": "aaaaa-aaaaaaa",
+      "status": "FAILURE",
+      "createTime": "2024-12-02T08:00:00Z",
+      "startTime": "2024-12-02T08:00:04Z",
+      "finishTime": "2024-12-02T08:01:12Z",
+      "buildTriggerId": "aaaaaaa-aaab",
+      "logUrl": "https://console.cloud.google.com/cloud-build/builds/11111111-1111-1111-1111-111111111112?project=aaaaa-aaaaaaa"
+    },
+    {
+      "id": "11111111-1111-1111-1111-111111111113",
+      "projectId": "aaaaa-aaaaaaa",
+      "status": "WORKING",
+      "createTime": "2024-12-03T09:00:00Z",
+      "startTime": "2024-12-03T09:00:03Z",
+      "buildTriggerId": "aaaaaaa-aaaa",
+      "logUrl": "https://console.cloud.google.com/cloud-build/builds/11111111-1111-1111-1111-111111111113?project=aaaaa-aaaaaaa"
+    }
+  ],
+  "nextPageToken": ""
+}

@@ -1,0 +1,81 @@
+# Convert a Cloud Build Pub/Sub push notification to CDEvents
+# https://cloud.google.com/build/docs/subscribe-build-notifications
+#
+# Input: Pub/Sub push envelope delivered by cdviz-collector's `webhook` source
+#   .body = { "message": { "data": <base64 Build JSON>, "attributes": {...}, "messageId": ..., "publishTime": ... }, "subscription": ... }
+#   decoded .body.message.data is a Cloud Build `Build` resource (topic `cloud-builds`):
+#   https://cloud.google.com/build/docs/api/reference/rest/v1/projects.builds#Build
+#
+# | done | Build.status                                 | cdevent               |
+# | ---- | -------------------------------------------- | ---------------------- |
+# | [x]  | QUEUED                                        | pipelineRun:queued     |
+# | [x]  | WORKING                                       | pipelineRun:queued,started |
+# | [x]  | SUCCESS/FAILURE/CANCELLED/TIMEOUT/EXPIRED/... | pipelineRun:queued,started,finished |
+#
+# Rules:
+# - context.id is computed by the collector (content-based CID)
+# - subject.id = logUrl (human) is avoided in favor of the API-shaped resource name
+# - Each phase uses its own timestamp for idempotent backfill (see RULES.md)
+# - customData.gcp_cloudbuild only includes fields stable at each phase
+
+outcome_mapping = {
+  "SUCCESS": "success",
+  "FAILURE": "failure",
+  "INTERNAL_ERROR": "error",
+  "TIMEOUT": "error",
+  "CANCELLED": "cancel",
+  "EXPIRED": "cancel",
+}
+
+build = parse_json!(decode_base64!(string!(.body.message.data)))
+
+pipeline_started_statuses = ["WORKING", "SUCCESS", "FAILURE", "INTERNAL_ERROR", "TIMEOUT", "CANCELLED", "EXPIRED"]
+pipeline_finished_statuses = ["SUCCESS", "FAILURE", "INTERNAL_ERROR", "TIMEOUT", "CANCELLED", "EXPIRED"]
+
+project_id = to_string!(build.projectId)
+build_id = to_string!(build.id)
+resource_name = "//cloudbuild.googleapis.com/projects/" + project_id + "/builds/" + build_id
+
+subject = {
+  "id": resource_name,
+  "content": {
+    "pipelineName": project_id + "/" + (to_string(build.buildTriggerId) ?? build_id),
+    "uri": to_string(build.logUrl) ?? (resource_name),
+  },
+}
+
+stable_fields = { "id": build.id, "projectId": build.projectId, "buildTriggerId": build.buildTriggerId, "createTime": build.createTime, "logUrl": build.logUrl }
+
+queued_ts = format_timestamp!(parse_timestamp(build.createTime, "%+") ?? now(), format: "%+")
+queued_event = {
+  "context": { "specversion": "0.5.0", "type": "dev.cdevents.pipelinerun.queued.0.3.0", "timestamp": queued_ts },
+  "subject": subject,
+  "customData": { "gcp_cloudbuild": stable_fields },
+}
+
+started_events = if includes(pipeline_started_statuses, to_string(build.status) ?? "") {
+  started_ts = format_timestamp!(parse_timestamp(build.startTime, "%+") ?? now(), format: "%+")
+  [{
+    "context": { "specversion": "0.5.0", "type": "dev.cdevents.pipelinerun.started.0.3.0", "timestamp": started_ts },
+    "subject": subject,
+    "customData": { "gcp_cloudbuild": merge(stable_fields, { "startTime": build.startTime }) },
+  }]
+} else { [] }
+
+finished_events = if includes(pipeline_finished_statuses, to_string(build.status) ?? "") {
+  finished_ts = format_timestamp!(parse_timestamp(build.finishTime, "%+") ?? now(), format: "%+")
+  mapped = get(outcome_mapping, [to_string!(build.status)]) ?? null
+  finished_subject = subject
+  if !is_null(mapped) { finished_subject.content.outcome = string!(mapped) }
+  [{
+    "context": { "specversion": "0.5.0", "type": "dev.cdevents.pipelinerun.finished.0.3.0", "timestamp": finished_ts },
+    "subject": finished_subject,
+    "customData": { "gcp_cloudbuild": merge(stable_fields, { "startTime": build.startTime, "finishTime": build.finishTime, "status": build.status, "images": build.images }) },
+  }]
+} else { [] }
+
+bodies = flatten([[queued_event], started_events, finished_events])
+
+map_values(bodies) -> |body| {
+  { "metadata": .metadata, "headers": .headers, "body": body }
+}

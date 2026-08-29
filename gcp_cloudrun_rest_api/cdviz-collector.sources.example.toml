@@ -1,0 +1,32 @@
+# Example source — http_polling for the gcp_cloudrun_rest_services transformer.
+#
+# Requires a cdviz-collector with the `driver_vrl` request driver.
+# Kept separate from `cdviz-collector.toml` so the transformer test config stays loadable.
+#
+# Auth caveat: see gcp_cloudbuild_rest_api/README.md — no built-in GCP OAuth2/service-account
+# token refresh, supply and rotate the bearer token yourself.
+
+[sources.gcp_cloudrun_rest_services]
+enabled = false
+transformer_refs = ["gcp_cloudrun_rest_services"]
+
+[sources.gcp_cloudrun_rest_services.extractor]
+type              = "http_polling"
+polling_interval  = "5m"
+parser            = "json"
+driver_vrl = """
+project = "myproject"
+location = "us-central1"
+reqs = []
+if .response == null {
+  reqs = [{ "url": "https://run.googleapis.com/v2/projects/" + project + "/locations/" + location + "/services", "route": "both" }]
+} else {
+  next_token = to_string(.response.body.nextPageToken) ?? ""
+  if next_token != "" {
+    reqs = [{ "url": string!(.request.url), "query": {"pageToken": next_token}, "route": "both" }]
+  }
+}
+.requests = reqs
+"""
+[sources.gcp_cloudrun_rest_services.extractor.headers]
+authorization = { type = "secret", value_file = "/secrets/gcp_token", prefix = "Bearer " }

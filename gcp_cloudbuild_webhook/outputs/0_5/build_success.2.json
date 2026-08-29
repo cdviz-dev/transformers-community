@@ -1,0 +1,30 @@
+{
+  "context": {
+    "specversion": "0.5.0",
+    "timestamp": "2024-12-01T10:02:30+00:00",
+    "type": "dev.cdevents.pipelinerun.finished.0.3.0"
+  },
+  "customData": {
+    "gcp_cloudbuild": {
+      "buildTriggerId": "trigger-aaaa",
+      "createTime": "2024-12-01T10:00:00Z",
+      "finishTime": "2024-12-01T10:02:30Z",
+      "id": "11111111-2222-3333-4444-555555555555",
+      "images": [
+        "us-docker.pkg.dev/aaaaa-project/aaaaa-repo/aaaaa-image:aaaa"
+      ],
+      "logUrl": "https://console.cloud.google.com/cloud-build/builds/11111111-2222-3333-4444-555555555555?project=aaaaa-project",
+      "projectId": "aaaaa-project",
+      "startTime": "2024-12-01T10:00:05Z",
+      "status": "SUCCESS"
+    }
+  },
+  "subject": {
+    "content": {
+      "outcome": "success",
+      "pipelineName": "aaaaa-project/trigger-aaaa",
+      "uri": "https://console.cloud.google.com/cloud-build/builds/11111111-2222-3333-4444-555555555555?project=aaaaa-project"
+    },
+    "id": "//cloudbuild.googleapis.com/projects/aaaaa-project/builds/11111111-2222-3333-4444-555555555555"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "context": {
+    "specversion": "0.5.0",
+    "timestamp": "2024-12-06T08:15:00+00:00",
+    "type": "dev.cdevents.artifact.published.0.3.0"
+  },
+  "customData": {
+    "gcp_artifactregistry": {
+      "createTime": "2024-12-06T08:15:00Z",
+      "name": "aaaaaaaa/aaaaa-aaaaaaa/aaaaaaaaa/aa-aaaaaaa1/aaaaaaaaaaaa/aaaaa-aaaa/aaaaaaaa/aaaaa-aaaaa/aaaaaaaa/aaa111:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "relatedTags": [
+        {
+          "name": "aaaaa-aaaa/aaaaa-aaaaa/aaaa/a1.1.1",
+          "version": "aaaaa-repo/aaaaa-image/versions/sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+        }
+      ]
+    }
+  },
+  "subject": {
+    "content": {},
+    "id": "pkg:oci/aaaaa-aaaaa@aaa111:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa?repository_url=aa-aaaaaaa1-docker.pkg.dev/aaaaa-aaaaaaa/aaaaa-aaaa"
+  }
+}

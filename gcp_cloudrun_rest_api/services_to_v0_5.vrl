@@ -1,0 +1,61 @@
+# Convert Cloud Run Admin API `services.list` response to CDEvents `service.deployed` events
+# https://cloud.google.com/run/docs/reference/rest/v2/projects.locations.services/list
+#
+# Input: response from GET /v2/projects/{project}/locations/{location}/services
+#   .body = { "services": [...] }
+#
+# Rules:
+# - context.id is computed by the collector (content-based CID)
+# - subject.id = the service's fully-qualified resource name
+# - timestamp = service.updateTime (never now())
+# - artifactId = PURL built from the serving container image (digest-form)
+#
+# Unlike the webhook package, this REST snapshot has no create/update/delete distinction — every
+# poll just reports current state, so every service is emitted as `service.deployed`. Because
+# context.id is content-based, re-polling an unchanged service produces an identical (dedupable)
+# event; only a real change in the serving revision/image produces a new event. Detecting
+# `removed`/`upgraded`/`rolledback` distinctly needs the audit-log-based `gcp_cloudrun_webhook/`
+# package instead.
+
+items = array(.body.services) ?? []
+
+events = map_values(items) -> |svc| {
+  name = to_string(svc.name) ?? ""
+  location_parts = split(name, "/")
+  location = to_string(location_parts[3])
+  ts = format_timestamp!(parse_timestamp(svc.updateTime, "%+") ?? now(), format: "%+")
+
+  content = { "environment": { "id": "/" + location } }
+
+  image = svc.template.containers[0].image
+  if !is_nullish(image) {
+    image_str = string!(image)
+    parts_at = split(image_str, "@")
+    if length(parts_at) == 2 {
+      matched = parse_regex!(parts_at[0], r'^(?P<repo>.+)/(?P<name>[^/]+)$')
+      purl_obj = { "type": "oci", "name": matched.name, "version": parts_at[1], "qualifiers": { "repository_url": matched.repo } }
+      content.artifactId = purl_to_string!(purl_obj)
+    } else {
+      content.artifactId = purl_to_string!(purl_from_oci_image!(image_str))
+    }
+  }
+
+  {
+    "context": { "specversion": "0.5.0", "type": "dev.cdevents.service.deployed.0.2.0", "timestamp": ts },
+    "subject": { "id": "//run.googleapis.com/" + name, "content": content },
+    "customData": {
+      "gcp_cloudrun": {
+        "name": svc.name,
+        "uid": svc.uid,
+        "latestReadyRevision": svc.latestReadyRevision,
+        "updateTime": svc.updateTime,
+      },
+    },
+  }
+}
+
+bodies = flatten(events)
+
+map_values(bodies) -> |body| {
+  { "metadata": .metadata, "headers": .headers, "body": body }
+}

@@ -1,0 +1,12 @@
+{
+  "message": {
+    "data": "eyJpZCI6ICIxMTExMTExMS0yMjIyLTMzMzMtNDQ0NC01NTU1NTU1NTU1NTUiLCAicHJvamVjdElkIjogImFhYWFhLXByb2plY3QiLCAic3RhdHVzIjogIlNVQ0NFU1MiLCAiY3JlYXRlVGltZSI6ICIyMDI0LTEyLTAxVDEwOjAwOjAwWiIsICJidWlsZFRyaWdnZXJJZCI6ICJ0cmlnZ2VyLWFhYWEiLCAibG9nVXJsIjogImh0dHBzOi8vY29uc29sZS5jbG91ZC5nb29nbGUuY29tL2Nsb3VkLWJ1aWxkL2J1aWxkcy8xMTExMTExMS0yMjIyLTMzMzMtNDQ0NC01NTU1NTU1NTU1NTU/cHJvamVjdD1hYWFhYS1wcm9qZWN0IiwgInN0YXJ0VGltZSI6ICIyMDI0LTEyLTAxVDEwOjAwOjA1WiIsICJmaW5pc2hUaW1lIjogIjIwMjQtMTItMDFUMTA6MDI6MzBaIiwgImltYWdlcyI6IFsidXMtZG9ja2VyLnBrZy5kZXYvYWFhYWEtcHJvamVjdC9hYWFhYS1yZXBvL2FhYWFhLWltYWdlOmFhYWEiXX0=",
+    "attributes": {
+      "buildId": "11111111-1111-1111-1111-111111111111",
+      "status": "SUCCESS"
+    },
+    "messageId": "1111111111111113",
+    "publishTime": "2024-12-01T10:02:30Z"
+  },
+  "subscription": "projects/aaaaa-project/subscriptions/cdviz-collector-cloudbuild"
+}

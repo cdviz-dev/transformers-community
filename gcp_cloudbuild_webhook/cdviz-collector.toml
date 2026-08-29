@@ -1,0 +1,19 @@
+# ------------------------------------------------------------------------------
+# Example of source configuration
+#
+# [sources.gcp_cloudbuild_webhook]
+# enabled = true
+# transformer_refs = [ "gcp_cloudbuild_webhook" ]
+#
+# [sources.gcp_cloudbuild_webhook.extractor]
+# type = "webhook"
+# id = "000-gcp-cloudbuild"
+#
+# GCP setup: create a Pub/Sub push subscription on the built-in `cloud-builds` topic
+# (created automatically the first time Cloud Build runs in a project) pointing at
+# `https://<your-collector-host>/webhook/000-gcp-cloudbuild`.
+# https://cloud.google.com/build/docs/subscribe-build-notifications
+
+[transformers.gcp_cloudbuild_webhook]
+type = "vrl"
+template_file = "./to_v0_5.vrl"
