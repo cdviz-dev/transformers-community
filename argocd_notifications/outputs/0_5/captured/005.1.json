@@ -314,7 +314,7 @@
   },
   "subject": {
     "content": {
-      "artifactId": "pkg:oci/aaaaa-aa-pg?repository_url=ghcr.io/aaaab-dev&tag=17.4",
+      "artifactId": "pkg:oci/aaaaa-aa-pg?repository_url=ghcr.io%2Faaaab-dev&tag=17.4",
       "environment": {
         "id": "https://kubernetes.default.svc"
       }

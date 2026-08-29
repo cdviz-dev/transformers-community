@@ -682,7 +682,7 @@
   },
   "subject": {
     "content": {
-      "artifactId": "pkg:oci/kubewatch?repository_url=docker.io/robustadev&tag=v2.9.0",
+      "artifactId": "pkg:oci/kubewatch?repository_url=docker.io%2Frobustadev&tag=v2.9.0",
       "environment": {
         "id": "https://kubernetes.default.svc"
       }

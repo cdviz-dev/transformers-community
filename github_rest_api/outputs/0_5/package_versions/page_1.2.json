@@ -17,6 +17,6 @@
   },
   "subject": {
     "content": {},
-    "id": "pkg:npm/aaaaa-aaa/aaaaa-aa@1.11.3?repository_url=https://npm.pkg.github.com"
+    "id": "pkg:npm/aaaaa-aaa/aaaaa-aa@1.11.3?repository_url=https:%2F%2Fnpm.pkg.github.com"
   }
 }

@@ -250,6 +250,6 @@
     "content": {
       "user": "aaaaa-aab"
     },
-    "id": "pkg:oci/aaaaa-aac@1.2.3?repository_url=forgejo.example.com/aaaaa-aaa&tag=1.2.3"
+    "id": "pkg:oci/aaaaa-aac@1.2.3?repository_url=forgejo.example.com%2Faaaaa-aaa&tag=1.2.3"
   }
 }

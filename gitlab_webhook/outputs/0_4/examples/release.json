@@ -90,7 +90,7 @@
     "content": {
       "user": null
     },
-    "id": "pkg:generic/gitlab-org/release-webhook-example@v1.1?repository_url=https://example.com/gitlab-org/release-webhook-example",
+    "id": "pkg:generic/gitlab-org/release-webhook-example@v1.1?repository_url=https:%2F%2Fexample.com%2Fgitlab-org%2Frelease-webhook-example",
     "type": "artifact"
   }
 }

@@ -120,6 +120,6 @@
     "content": {
       "user": null
     },
-    "id": "pkg:generic/aaaaa-aae@0.1.0?repository_url=https://forgejo.example.com/api/packages/aaaaa-aaa/generic"
+    "id": "pkg:generic/aaaaa-aae@0.1.0?repository_url=https:%2F%2Fforgejo.example.com%2Fapi%2Fpackages%2Faaaaa-aaa%2Fgeneric"
   }
 }

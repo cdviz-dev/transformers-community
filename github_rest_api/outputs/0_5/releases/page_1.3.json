@@ -30,6 +30,6 @@
     "content": {
       "user": "aaaaaa-aaaaaaa[aab]"
     },
-    "id": "pkg:generic/aaaaa-aaa/aaaaa-aaaaaaaaa/aaaaa-aaaaaaaaa-aaaaa11-aaaaaaa-aaaaa-aaa.aaa.aa@1.11.3?checksum=sha256:9cf3ba790e258aa14591b125be06d434834aa159c7e341b4f06b4f8a200a6afd&download_url=https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.11.3/aaaaa-aaaaaaaaa-aaaaa11-aaaaaaa-aaaaa-aaa.aaa.aa"
+    "id": "pkg:generic/aaaaa-aaa/aaaaa-aaaaaaaaa/aaaaa-aaaaaaaaa-aaaaa11-aaaaaaa-aaaaa-aaa.aaa.aa@1.11.3?checksum=sha256:9cf3ba790e258aa14591b125be06d434834aa159c7e341b4f06b4f8a200a6afd&download_url=https:%2F%2Fgithub.com%2Faaaaa-aaa%2Faaaaa-aaaaaaaaa%2Freleases%2Fdownload%2F1.11.3%2Faaaaa-aaaaaaaaa-aaaaa11-aaaaaaa-aaaaa-aaa.aaa.aa"
   }
 }

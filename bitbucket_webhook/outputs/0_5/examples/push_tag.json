@@ -143,6 +143,6 @@
     "content": {
       "user": "Emma Example"
     },
-    "id": "pkg:generic/acme/webhook-example@v1.4.0?repository_url=https://bitbucket.org/acme/webhook-example"
+    "id": "pkg:generic/acme/webhook-example@v1.4.0?repository_url=https:%2F%2Fbitbucket.org%2Facme%2Fwebhook-example"
   }
 }

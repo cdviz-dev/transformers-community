@@ -250,6 +250,6 @@
     "content": {
       "user": "aaaaa-aab"
     },
-    "id": "pkg:maven/aaa.aaaaaaa/aaaaa-aaa@5.3.10?repository_url=https://forgejo.example.com/api/packages/aaaaa-aaa/maven"
+    "id": "pkg:maven/aaa.aaaaaaa/aaaaa-aaa@5.3.10?repository_url=https:%2F%2Fforgejo.example.com%2Fapi%2Fpackages%2Faaaaa-aaa%2Fmaven"
   }
 }

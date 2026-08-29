@@ -447,7 +447,7 @@
   },
   "subject": {
     "content": {
-      "artifactId": "pkg:oci/aaaaaaa?repository_url=ghcr.io/stefanprodan&tag=6.9.0",
+      "artifactId": "pkg:oci/aaaaaaa?repository_url=ghcr.io%2Fstefanprodan&tag=6.9.0",
       "environment": {
         "id": "https://kubernetes.default.svc"
       }

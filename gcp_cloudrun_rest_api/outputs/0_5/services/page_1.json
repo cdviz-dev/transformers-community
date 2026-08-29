@@ -14,7 +14,7 @@
   },
   "subject": {
     "content": {
-      "artifactId": "pkg:oci/aaaaa-image@sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc?repository_url=us-docker.pkg.dev/aaaaa-project/aaaaa-repo",
+      "artifactId": "pkg:oci/aaaaa-image@sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc?repository_url=us-docker.pkg.dev%2Faaaaa-project%2Faaaaa-repo",
       "environment": {
         "id": "/aa-aaaaaaa1"
       }

@@ -250,6 +250,6 @@
     "content": {
       "user": "aaaaa-aab"
     },
-    "id": "pkg:npm/aaaaa-aad@4.17.21?repository_url=https://forgejo.example.com/api/packages/aaaaa-aaa/npm"
+    "id": "pkg:npm/aaaaa-aad@4.17.21?repository_url=https:%2F%2Fforgejo.example.com%2Fapi%2Fpackages%2Faaaaa-aaa%2Fnpm"
   }
 }

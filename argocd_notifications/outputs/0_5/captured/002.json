@@ -637,7 +637,7 @@
   },
   "subject": {
     "content": {
-      "artifactId": "pkg:oci/aaaaaaaa-aaaaaaa@0.6.3?repository_url=ghcr.io/aaaab-dev/charts",
+      "artifactId": "pkg:oci/aaaaaaaa-aaaaaaa@0.6.3?repository_url=ghcr.io%2Faaaab-dev%2Fcharts",
       "environment": {
         "id": "https://kubernetes.default.svc"
       }

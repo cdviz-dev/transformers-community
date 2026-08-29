@@ -682,7 +682,7 @@
   },
   "subject": {
     "content": {
-      "artifactId": "pkg:oci/aaaaa-aaaaaaaaa?repository_url=ghcr.io/aaaab-dev&tag=0.8.0",
+      "artifactId": "pkg:oci/aaaaa-aaaaaaaaa?repository_url=ghcr.io%2Faaaab-dev&tag=0.8.0",
       "environment": {
         "id": "https://kubernetes.default.svc"
       }

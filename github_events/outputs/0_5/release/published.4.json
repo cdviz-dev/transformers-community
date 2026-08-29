@@ -181,6 +181,6 @@
     "content": {
       "user": "aaaaaa-aaaaaaa[aaa]"
     },
-    "id": "pkg:generic/aaaaa-aaa/aaaaa-aaaaaaaaa/aaaaa-aaaaaaaaa-a11_11-aaaaaaa-aaaaa-aaaa.aaa.aa@1.1.1?download_url=https://github.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/1.1.1/aaaaa-aaaaaaaaa-a11_11-aaaaaaa-aaaaa-aaaa.aaa.aa"
+    "id": "pkg:generic/aaaaa-aaa/aaaaa-aaaaaaaaa/aaaaa-aaaaaaaaa-a11_11-aaaaaaa-aaaaa-aaaa.aaa.aa@1.1.1?download_url=https:%2F%2Fgithub.com%2Faaaaa-aaa%2Faaaaa-aaaaaaaaa%2Freleases%2Fdownload%2F1.1.1%2Faaaaa-aaaaaaaaa-a11_11-aaaaaaa-aaaaa-aaaa.aaa.aa"
   }
 }

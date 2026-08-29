@@ -22,6 +22,6 @@
     "content": {
       "user": null
     },
-    "id": "pkg:generic/PROJ@1.0.0?repository_url=https://example.atlassian.net"
+    "id": "pkg:generic/PROJ@1.0.0?repository_url=https:%2F%2Fexample.atlassian.net"
   }
 }

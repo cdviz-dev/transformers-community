@@ -27,7 +27,7 @@
   },
   "subject": {
     "content": {
-      "artifactId": "pkg:oci/cloudnative-pg?repository_url=ghcr.io/cloudnative-pg&tag=1.25.1",
+      "artifactId": "pkg:oci/cloudnative-pg?repository_url=ghcr.io%2Fcloudnative-pg&tag=1.25.1",
       "environment": {
         "id": "https://kubernetes.default.svc"
       }

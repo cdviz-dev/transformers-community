@@ -68,6 +68,6 @@
     "content": {
       "user": "John Smith"
     },
-    "id": "pkg:generic/jsmith/example@v1.0.0?repository_url=http://example.com/jsmith/example"
+    "id": "pkg:generic/jsmith/example@v1.0.0?repository_url=http:%2F%2Fexample.com%2Fjsmith%2Fexample"
   }
 }

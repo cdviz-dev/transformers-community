@@ -23,6 +23,6 @@
   },
   "subject": {
     "content": {},
-    "id": "pkg:oci/aaaaa-aaaaaaaaa@aaa111:1111111a111a1111111aa1aaaaa1111a1a11a111111aa11a111111aa11aaaaa1?repository_url=ghcr.io/aaaaa-aaa&tag=latest"
+    "id": "pkg:oci/aaaaa-aaaaaaaaa@aaa111:1111111a111a1111111aa1aaaaa1111a1a11a111111aa11a111111aa11aaaaa1?repository_url=ghcr.io%2Faaaaa-aaa&tag=latest"
   }
 }

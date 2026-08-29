@@ -175,6 +175,6 @@
     "content": {
       "user": "aaaaa-aab"
     },
-    "id": "pkg:generic/aaaaa-aaa/aaaaa-aaaaaaaaa/aaa-aaaaaa-aaa11.aaa.aa@a1.1.1?download_url=https://gitea.example.com/aaaaa-aaa/aaaaa-aaaaaaaaa/releases/download/a1.1.1/aaa-aaaaaa-aaa11.aaa.aa"
+    "id": "pkg:generic/aaaaa-aaa/aaaaa-aaaaaaaaa/aaa-aaaaaa-aaa11.aaa.aa@a1.1.1?download_url=https:%2F%2Fgitea.example.com%2Faaaaa-aaa%2Faaaaa-aaaaaaaaa%2Freleases%2Fdownload%2Fa1.1.1%2Faaa-aaaaaa-aaa11.aaa.aa"
   }
 }

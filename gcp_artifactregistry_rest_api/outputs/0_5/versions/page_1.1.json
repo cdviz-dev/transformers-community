@@ -13,6 +13,6 @@
   },
   "subject": {
     "content": {},
-    "id": "pkg:oci/aaaaa-aaaaa@aaa111:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa?repository_url=aa-aaaaaaa1-docker.pkg.dev/aaaaa-aaaaaaa/aaaaa-aaaa"
+    "id": "pkg:oci/aaaaa-aaaaa@aaa111:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa?repository_url=aa-aaaaaaa1-docker.pkg.dev%2Faaaaa-aaaaaaa%2Faaaaa-aaaa"
   }
 }
