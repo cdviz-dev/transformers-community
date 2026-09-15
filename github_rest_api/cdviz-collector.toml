@@ -8,6 +8,10 @@
 type = "vrl"
 template_file = "./workflow_runs_to_v0_5.vrl"
 
+[transformers.github_rest_workflow_jobs]
+type = "vrl"
+template_file = "./workflow_jobs_to_v0_5.vrl"
+
 [transformers.github_rest_pull_requests]
 type = "vrl"
 template_file = "./pull_requests_to_v0_5.vrl"

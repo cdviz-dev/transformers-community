@@ -22,6 +22,21 @@ run = """cdviz-collector \
   --output ./outputs/0_5/workflow_runs
 """
 
+[tasks."test:workflow_jobs"]
+description = "test workflow_jobs transformer (use `--mode review` to update expected outputs)"
+usage = """
+flag "--mode <mode>" default="check" help="transform mode: check or review"
+"""
+run = """cdviz-collector \
+  transform \
+  --disable-otel \
+  --mode ${usage_mode} \
+  --config ./cdviz-collector.toml \
+  -t github_rest_workflow_jobs \
+  --input ./inputs/workflow_jobs \
+  --output ./outputs/0_5/workflow_jobs
+"""
+
 [tasks."test:pull_requests"]
 description = "test pull_requests transformer (use `--mode review` to update expected outputs)"
 usage = """
@@ -168,6 +183,10 @@ echo "Capturing GitHub REST API responses for $REPO ($TS_AFTER → $TS_BEFORE) .
 # gh api "repos/$REPO/actions/runs?created=>$TS_AFTER&created=<$TS_BEFORE&per_page=3" \
 #   > inputs/workflow_runs/page_1.json
 echo "  workflow_runs: skip"
+
+# needs a concrete run id; capture with:
+#   gh api "repos/$REPO/actions/runs/<RUN_ID>/jobs?per_page=3" > inputs/workflow_jobs/page_1.json
+echo "  workflow_jobs: skip"
 
 gh api "repos/$REPO/pulls?state=all&sort=updated&direction=asc&since=$TS_AFTER&per_page=3" \
   > inputs/pull_requests/page_1.json

@@ -1,0 +1,53 @@
+{
+  "context": {
+    "specversion": "0.5.0",
+    "timestamp": "2026-09-15T19:36:53+00:00",
+    "type": "dev.cdevents.taskrun.started.0.3.0"
+  },
+  "customData": {
+    "github": {
+      "workflow_job": {
+        "head_branch": "main",
+        "head_sha": "9f1c0b7a5d3e2f4a6b8c0d1e2f3a4b5c6d7e8f90",
+        "id": 98765432101,
+        "name": "build",
+        "run_attempt": 1,
+        "run_id": 35014668166,
+        "run_url": "https://api.github.com/repos/ooakdata-org/alexandria/actions/runs/35014668166",
+        "started_at": "2026-09-15T19:36:53Z",
+        "url": "https://api.github.com/repos/ooakdata-org/alexandria/actions/jobs/98765432101",
+        "workflow_name": "CI"
+      }
+    },
+    "links": [
+      {
+        "linkKind": "storedAt",
+        "target": {
+          "subject": {
+            "id": "https://api.github.com/repos/ooakdata-org/alexandria",
+            "type": "repository"
+          }
+        }
+      },
+      {
+        "linkKind": "runsIn",
+        "target": {
+          "subject": {
+            "id": "https://api.github.com/repos/ooakdata-org/alexandria/actions/runs/35014668166/attempts/1",
+            "type": "pipelinerun"
+          }
+        }
+      }
+    ]
+  },
+  "subject": {
+    "content": {
+      "pipelineRun": {
+        "id": "https://api.github.com/repos/ooakdata-org/alexandria/actions/runs/35014668166/attempts/1"
+      },
+      "taskName": "ooakdata-org/alexandria/CI/build",
+      "uri": "https://github.com/ooakdata-org/alexandria/actions/runs/35014668166/job/98765432101"
+    },
+    "id": "https://api.github.com/repos/ooakdata-org/alexandria/actions/jobs/98765432101"
+  }
+}

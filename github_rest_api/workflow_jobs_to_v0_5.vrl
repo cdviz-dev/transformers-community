@@ -1,0 +1,94 @@
+# Convert GitHub REST API /repos/{owner}/{repo}/actions/runs/{run_id}/jobs response to CDEvents
+#
+# Input: paginated response from GET /repos/{owner}/{repo}/actions/runs/{run_id}/jobs
+#   .body = { "total_count": N, "jobs": [...] }
+#
+# | done | GitHub REST field     | CDEvent(s) emitted                |
+# | ---- | --------------------- | --------------------------------- |
+# | [x]  | status == queued      | (none — no taskRun:queued in spec) |
+# | [x]  | status == in_progress | taskRun:started                   |
+# | [x]  | status == completed   | taskRun:started + finished        |
+#
+# Rules:
+# - context.id is computed by the collector (content-based CID)
+# - subject.id = job.url (API URL) — MUST match github_events/to_v0_5.vrl so a job seen live
+#   (workflow_job webhook) and the same job seen by backfill collapse onto one subject
+# - taskName and the `runsIn` link are built exactly like the webhook transformer
+# - Each phase uses its own timestamp for idempotent backfill (see RULES.md)
+# - customData.github only includes fields stable at each phase (no status/conclusion for started)
+#
+# `repository.full_name` is absent from this endpoint's payload, so it is recovered from
+# `run_url` (https://api.github.com/repos/{owner}/{repo}/actions/runs/{id}) to keep taskName
+# byte-identical to the webhook path.
+
+outcome_mapping = {
+  "cancelled": "cancel", "skipped": "cancel", "stale": "cancel",
+  "timed_out": "error", "startup_failure": "error", "action_required": "error",
+  "success": "success", "neutral": "success",
+  "failure": "failure"
+}
+
+items = array(.body.jobs) ?? []
+events = map_values(items) -> |job| {
+  if job.status != "in_progress" && job.status != "completed" {
+    []
+  } else {
+    run_url = to_string!(job.run_url)
+    matched = parse_regex(run_url, r'/repos/(?P<full_name>[^/]+/[^/]+)/actions/runs/') ?? {}
+    repo_full_name = to_string(matched.full_name)
+    repo_url = if repo_full_name == "" { "" } else {
+      "https://api.github.com/repos/" + repo_full_name
+    }
+    pipeline_run_id = run_url + "/attempts/" + to_string!(job.run_attempt)
+    # define an "absolute" name to avoid conflicts with other entities from other contexts
+    # same fallback as github_events/to_v0_5.vrl: bare job name when workflow_name is absent
+    task_name = (repo_full_name + "/" + job.workflow_name + "/" + job.name) ?? to_string!(job.name)
+    links = [
+      { "linkKind": "storedAt", "target": { "subject": { "type": "repository", "id": repo_url } } },
+      { "linkKind": "runsIn", "target": { "subject": { "type": "pipelinerun", "id": pipeline_run_id } } },
+    ]
+    subject = {
+      "id": to_string!(job.url),
+      "content": {
+        "taskName": task_name,
+        "uri": to_string!(job.html_url),
+        "pipelineRun": { "id": pipeline_run_id },
+      },
+    }
+
+    # started — emitted for in_progress and completed
+    started_ts = format_timestamp!(parse_timestamp(job.started_at, "%+") ?? now(), format: "%+")
+    started_event = {
+      "context": { "specversion": "0.5.0", "type": "dev.cdevents.taskrun.started.0.3.0", "timestamp": started_ts },
+      "subject": subject,
+      "customData": {
+        "links": links,
+        "github": { "workflow_job": { "id": job.id, "name": job.name, "url": job.url, "run_id": job.run_id, "run_url": job.run_url, "run_attempt": job.run_attempt, "workflow_name": job.workflow_name, "head_branch": job.head_branch, "head_sha": job.head_sha, "started_at": job.started_at } },
+      },
+    }
+
+    # finished — emitted only when completed; conclusion is stable at this point
+    finished_events = if job.status == "completed" {
+      finished_ts = format_timestamp!(parse_timestamp(job.completed_at, "%+") ?? now(), format: "%+")
+      mapped = get(outcome_mapping, [to_string!(job.conclusion)]) ?? null
+      finished_subject = subject
+      if !is_null(mapped) { finished_subject.content.outcome = string!(mapped) }
+      [{
+        "context": { "specversion": "0.5.0", "type": "dev.cdevents.taskrun.finished.0.3.0", "timestamp": finished_ts },
+        "subject": finished_subject,
+        "customData": {
+          "links": links,
+          "github": { "workflow_job": { "id": job.id, "name": job.name, "url": job.url, "run_id": job.run_id, "run_url": job.run_url, "run_attempt": job.run_attempt, "workflow_name": job.workflow_name, "head_branch": job.head_branch, "head_sha": job.head_sha, "conclusion": job.conclusion, "started_at": job.started_at, "completed_at": job.completed_at } },
+        },
+      }]
+    } else { [] }
+
+    flatten([[started_event], finished_events])
+  }
+}
+bodies = flatten(events)
+bodies = filter(bodies) -> |_index, body| { !is_null(body) }
+
+map_values(bodies) -> |body| {
+  { "metadata": .metadata, "headers": .headers, "body": body }
+}
