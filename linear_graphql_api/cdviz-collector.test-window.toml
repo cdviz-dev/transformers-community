@@ -1,0 +1,14 @@
+# Test only: run `linear_graphql_api` with a fixed poll window, like `http_polling` sets it.
+# (`cdviz-collector transform` provides no window metadata.)
+
+[transformers.test_window]
+type = "vrl"
+template = """
+.metadata.ts_after = "2025-01-16T00:00:00Z"
+.metadata.ts_before = "2025-01-17T00:00:00Z"
+[.]
+"""
+
+[transformers.linear_graphql_api]
+type = "vrl"
+template_file = "./to_v0_5.vrl"

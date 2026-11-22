@@ -2,32 +2,46 @@
   "context": {
     "source": "http://cdviz-collector.example.com?source=cli-transform",
     "specversion": "0.5.0",
-    "timestamp": "2025-01-20T08:00:00+00:00",
-    "type": "dev.cdevents.ticket.closed.0.2.0"
+    "timestamp": "2025-01-17T08:00:00+00:00",
+    "type": "dev.cdevents.ticket.created.0.2.0"
   },
   "customData": {
     "linear": {
       "issue": {
+        "cycle": null,
         "id": "issue-uuid-0004",
         "identifier": "ENG-126",
         "number": 126,
+        "project": {
+          "id": "project-id-001",
+          "name": "Q1 Stability"
+        },
         "state": {
-          "id": "state-id-canceled",
-          "name": "Canceled",
-          "type": "canceled"
+          "id": "state-id-started",
+          "name": "In Progress",
+          "type": "started"
         },
         "team": {
           "id": "team-id-eng",
           "key": "ENG",
           "name": "Engineering"
-        }
+        },
+        "url": "https://linear.app/acme/issue/ENG-126/migrate-to-v2-api"
       }
     }
   },
   "subject": {
     "content": {
+      "assignees": [
+        "user-id-002"
+      ],
       "creator": "user-id-001",
-      "resolution": "withdrawn",
+      "labels": [
+        "tech-debt",
+        "api"
+      ],
+      "milestone": "Beta",
+      "priority": "high",
       "summary": "Migrate to v2 API",
       "ticketType": "issue",
       "uri": "https://linear.app/acme/issue/ENG-126"
