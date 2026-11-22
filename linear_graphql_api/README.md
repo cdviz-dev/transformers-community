@@ -49,7 +49,8 @@ See the commented source in [`cdviz-collector.toml`](./cdviz-collector.toml). Th
 
 1. Requests issues updated since `ts_after` (included, millisecond precision), 100 per page, archived issues included.
    There is no upper bound: Linear knows only the last `updatedAt` of an issue, so an upper bound would drop an issue edited again before the query runs, and lose its events of the window.
-   The transformer emits only the events in the window. An issue edited during paging can come back twice in the same poll: at worst a rare duplicate event, not a lost one.
+   The transformer emits only the events in the window.
+   Pages are sorted by `createdAt`, which never changes: an issue edited during paging keeps its place, so the page cursor does not skip it or return it twice.
 2. Feeds each page back (`route = "both"`) and requests the next page while `pageInfo.hasNextPage` is true.
 3. Holds the window on HTTP `400` and `429` (Linear GraphQL errors and rate limit): the next poll retries it.
 

@@ -20,13 +20,15 @@
 # min_request_interval = "3s"
 # # ts_after = "2025-01-01T00:00:00Z"
 # driver_vrl = """
-# query = "query($after: String, $filter: IssueFilter) { issues(first: 100, after: $after, filter: $filter, orderBy: updatedAt, includeArchived: true) { nodes { id identifier number title url priorityLabel createdAt updatedAt completedAt canceledAt creator { id } assignee { id } state { id name type } team { id key name } labels { nodes { name } } projectMilestone { name } project { id name } cycle { id number } } pageInfo { hasNextPage endCursor } } }"
+# query = "query($after: String, $filter: IssueFilter) { issues(first: 100, after: $after, filter: $filter, orderBy: createdAt, includeArchived: true) { nodes { id identifier number title url priorityLabel createdAt updatedAt completedAt canceledAt creator { id } assignee { id } state { id name type } team { id key name } labels { nodes { name } } projectMilestone { name } project { id name } cycle { id number } } pageInfo { hasNextPage endCursor } } }"
 # # millisecond precision, like Linear's DateTime
 # ts_format = "%Y-%m-%dT%H:%M:%S%.3fZ"
 # ts_after = to_string!(.metadata.ts_after)
 # # Issues updated since `ts_after`, with no upper bound: Linear knows only the last `updatedAt`,
 # # so an upper bound would drop an issue edited again before this query runs, and lose its
 # # events of this window. The transformer emits only the events in [ts_after, ts_before).
+# # `orderBy: createdAt`, not `updatedAt`: createdAt never changes, so an issue edited during
+# # paging keeps its place and is not skipped by the page cursor.
 # # `gte`, not `gt`: an issue updated exactly at the previous `ts_before` is not lost.
 # # ts_after defaults to the beginning of time (a negative year), Linear rejects it: no filter
 # filter = null
