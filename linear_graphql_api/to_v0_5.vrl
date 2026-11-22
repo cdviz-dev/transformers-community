@@ -1,0 +1,99 @@
+# Convert a Linear GraphQL API `issues` page to CDEvents.
+# Use with an `http_polling` source, for backfill or in place of the webhook.
+# https://linear.app/developers/graphql
+#
+# Input: one page of the `issues` query (see cdviz-collector.toml for the query)
+#   .body = { "data": { "issues": { "nodes": [...], "pageInfo": {...} } } }
+#
+# | done | issue state                        | CDEvent(s) emitted       |
+# | ---- | ---------------------------------- | ------------------------ |
+# | [x]  | any issue                          | ticket:created           |
+# | [x]  | completedAt or canceledAt is set   | ticket:created + closed  |
+#
+# Rules:
+# - context.id is computed by the collector (content-based CID)
+# - subject.id is the same as in `linear_webhook` (issue url without the title slug),
+#   so events from the webhook and from polling are about the same subject
+# - each phase uses its own timestamp (createdAt, completedAt / canceledAt), never now()
+# - no ticket:updated: a snapshot is a state, not a change
+# - ticket:created is emitted for every issue, including closed ones, so backfill keeps the
+#   start of the lifecycle (issue age, time to resolution)
+
+nodes = array(.body.data.issues.nodes) ?? []
+
+events = map_values(nodes) -> |issue| {
+  uri = replace(to_string!(issue.url), r'^(https://[^/]+/[^/]+/issue/[^/]+).*$', "$1")
+  creator = if !is_nullish(issue.creator) { issue.creator.id } else { null }
+  assignees = if !is_nullish(issue.assignee) { [to_string!(issue.assignee.id)] } else { [] }
+  labels = map_values(array(issue.labels.nodes) ?? []) -> |label| { to_string!(label.name) }
+  milestone = if !is_nullish(issue.projectMilestone) { issue.projectMilestone.name } else { null }
+
+  content = {
+    "summary": issue.title,
+    "ticketType": "issue",
+    "uri": uri,
+    "priority": downcase(to_string(issue.priorityLabel) ?? "no priority"),
+    "creator": creator,
+    "assignees": assignees,
+    "labels": labels,
+    "milestone": milestone,
+  }
+
+  custom_data = {
+    "linear": {
+      "issue": {
+        "id": issue.id,
+        "identifier": issue.identifier,
+        "number": issue.number,
+        "url": issue.url,
+        "team": issue.team,
+        "project": issue.project,
+        "cycle": issue.cycle,
+      },
+    },
+  }
+
+  created = {
+    "context": {
+      "specversion": "0.5.0",
+      "source": .metadata.context.source,
+      "type": "dev.cdevents.ticket.created.0.2.0",
+      "timestamp": format_timestamp!(parse_timestamp!(issue.createdAt, "%+"), format: "%+"),
+    },
+    "subject": { "id": uri, "content": content },
+    "customData": custom_data,
+  }
+
+  closed_at = if !is_nullish(issue.completedAt) { issue.completedAt } else { issue.canceledAt }
+  closed = if !is_nullish(closed_at) {
+    resolution = if !is_nullish(issue.completedAt) {
+      "completed"
+    } else if downcase(to_string(issue.state.name) ?? "") == "duplicate" {
+      "duplicate"
+    } else {
+      "withdrawn"
+    }
+    closed_content = content
+    closed_content.resolution = resolution
+    closed_custom_data = custom_data
+    closed_custom_data.linear.issue.state = issue.state
+    [{
+      "context": {
+        "specversion": "0.5.0",
+        "source": .metadata.context.source,
+        "type": "dev.cdevents.ticket.closed.0.2.0",
+        "timestamp": format_timestamp!(parse_timestamp!(closed_at, "%+"), format: "%+"),
+      },
+      "subject": { "id": uri, "content": closed_content },
+      "customData": closed_custom_data,
+    }]
+  } else {
+    []
+  }
+
+  flatten([[created], closed])
+}
+
+map_values(flatten(events)) -> |body| {
+  { "metadata": .metadata, "headers": .headers, "body": body }
+}

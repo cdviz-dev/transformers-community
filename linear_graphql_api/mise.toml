@@ -1,0 +1,14 @@
+[tasks."test"]
+description = "run the transformation example linear_graphql_api (use `--mode review` to review and update)"
+usage = """
+flag "--mode <mode>" default="check" help="transform mode: check or review"
+"""
+run = """cdviz-collector \
+  transform \
+  --disable-otel \
+  --mode ${usage_mode} \
+  --config ./cdviz-collector.toml \
+  -t linear_graphql_api \
+  --input ./inputs \
+  --output ./outputs/0_5
+"""

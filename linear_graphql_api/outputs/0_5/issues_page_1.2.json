@@ -1,0 +1,41 @@
+{
+  "context": {
+    "source": "http://cdviz-collector.example.com?source=cli-transform",
+    "specversion": "0.5.0",
+    "timestamp": "2025-01-16T09:00:00+00:00",
+    "type": "dev.cdevents.ticket.created.0.2.0"
+  },
+  "customData": {
+    "linear": {
+      "issue": {
+        "cycle": null,
+        "id": "issue-uuid-0002",
+        "identifier": "ENG-124",
+        "number": 124,
+        "project": {
+          "id": "project-id-001",
+          "name": "Q1 Stability"
+        },
+        "team": {
+          "id": "team-id-eng",
+          "key": "ENG",
+          "name": "Engineering"
+        },
+        "url": "https://linear.app/acme/issue/ENG-124/add-dark-mode"
+      }
+    }
+  },
+  "subject": {
+    "content": {
+      "assignees": [],
+      "creator": "user-id-001",
+      "labels": [],
+      "milestone": null,
+      "priority": "high",
+      "summary": "Add dark mode",
+      "ticketType": "issue",
+      "uri": "https://linear.app/acme/issue/ENG-124"
+    },
+    "id": "https://linear.app/acme/issue/ENG-124"
+  }
+}

@@ -23,6 +23,7 @@ config_roots = [
   "jenkins_rest_api",
   "jira_webhook",
   "kubewatch_cloudevents",
+  "linear_graphql_api",
   "linear_webhook",
   "passthrough",
 ]
