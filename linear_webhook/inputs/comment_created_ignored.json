@@ -1,0 +1,22 @@
+{
+  "action": "create",
+  "type": "Comment",
+  "createdAt": "2025-01-15T10:30:00.000Z",
+  "actor": {
+    "id": "user-id-001",
+    "type": "user",
+    "name": "Alice Developer"
+  },
+  "data": {
+    "id": "comment-id-001",
+    "body": "Looking into it",
+    "issueId": "issue-uuid-0001",
+    "userId": "user-id-002",
+    "createdAt": "2025-01-15T10:30:00.000Z",
+    "updatedAt": "2025-01-15T10:30:00.000Z"
+  },
+  "url": "https://linear.app/acme/issue/ENG-123/fix-critical-login-bug#comment-001",
+  "organizationId": "org-id-acme",
+  "webhookTimestamp": 1736937000123,
+  "webhookId": "webhook-id-001"
+}

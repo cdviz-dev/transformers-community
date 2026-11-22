@@ -1,0 +1,74 @@
+# ------------------------------------------------------------------------------
+# Example of source configuration
+#
+# Polls Linear's GraphQL API for issues updated since `ts_after` and follows the
+# `pageInfo.endCursor` pagination. The transformer emits the events of the time window
+# (`ts_after` .. `ts_before`).
+# Linear has no REST API: requests are GraphQL `POST`.
+# For a backfill, set `ts_after` to a past date (no lower bound when unset).
+# `includeArchived: true` also returns the issues Linear auto-archived after closing.
+
+# [sources.linear_graphql_api]
+# enabled = true
+# transformer_refs = ["linear_graphql_api"]
+
+# [sources.linear_graphql_api.extractor]
+# type                 = "http_polling"
+# polling_interval     = "10m"
+# parser               = "json"
+# # Linear API rate limit: 1500 requests / hour per API key
+# min_request_interval = "3s"
+# # ts_after = "2025-01-01T00:00:00Z"
+# driver_vrl = """
+# query = "query($after: String, $filter: IssueFilter) { issues(first: 100, after: $after, filter: $filter, orderBy: createdAt, includeArchived: true) { nodes { id identifier number title url priorityLabel createdAt updatedAt completedAt canceledAt creator { id } assignee { id } state { id name type } team { id key name } labels { nodes { name } } projectMilestone { name } project { id name } cycle { id number } } pageInfo { hasNextPage endCursor } } }"
+# # millisecond precision, like Linear's DateTime
+# ts_format = "%Y-%m-%dT%H:%M:%S%.3fZ"
+# ts_after = to_string!(.metadata.ts_after)
+# # Issues updated since `ts_after`, with no upper bound: Linear knows only the last `updatedAt`,
+# # so an upper bound would drop an issue edited again before this query runs, and lose its
+# # events of this window. The transformer emits only the events in [ts_after, ts_before).
+# # `orderBy: createdAt`, not `updatedAt`: createdAt never changes, so an issue edited during
+# # paging keeps its place and is not skipped by the page cursor.
+# # `gte`, not `gt`: an issue updated exactly at the previous `ts_before` is not lost.
+# # ts_after defaults to the beginning of time (a negative year), Linear rejects it: no filter
+# filter = null
+# if !starts_with(ts_after, "-") {
+#   filter = { "updatedAt": { "gte": format_timestamp!(parse_timestamp!(ts_after, "%+"), format: ts_format) } }
+# }
+# variables = { "after": null, "filter": filter }
+# cont = true
+# if .response != null {
+#   if exists(.response.body.errors) {
+#     # GraphQL error with a 2xx status: fail the driver call, so the collector logs a warning
+#     # ("driver feedback execution failed"). The window still advances: the next pages of
+#     # this window are not fetched again, re-run a backfill for that period.
+#     abort
+#   }
+#   cont = .response.body.data.issues.pageInfo.hasNextPage == true
+#   variables.after = .response.body.data.issues.pageInfo.endCursor
+# }
+# .requests = if cont {
+#   [{
+#     "url": "https://api.linear.app/graphql",
+#     "method": "POST",
+#     "headers": { "content-type": "application/json" },
+#     "body": encode_json({ "query": query, "variables": variables }),
+#     "route": "both",
+#   }]
+# } else {
+#   []
+# }
+# """
+
+# [sources.linear_graphql_api.extractor.on_status]
+# # Linear answers GraphQL errors (including rate limit, RATELIMITED) with 400:
+# # keep the window and retry it on the next poll, instead of the default `skip`
+# "400" = "hold"
+# "429" = "hold"
+
+# [sources.linear_graphql_api.extractor.headers]
+# # personal API key: the key itself, no "Bearer " prefix (OAuth token: "Bearer <token>")
+# authorization = { type = "secret", value = "lin_api_replace_me" }
+
+[transformers]
+linear_graphql_api = { type = "vrl", template_file = "./to_v0_5.vrl" }

@@ -1,0 +1,63 @@
+{
+  "context": {
+    "source": "http://cdviz-collector.example.com?source=cli-transform",
+    "specversion": "0.5.0",
+    "timestamp": "2025-01-16T09:00:00+00:00",
+    "type": "dev.cdevents.ticket.closed.0.2.0"
+  },
+  "customData": {
+    "linear": {
+      "action": "remove",
+      "actor": {
+        "id": "user-id-001",
+        "name": "Alice Developer",
+        "type": "user"
+      },
+      "issue": {
+        "cycle": null,
+        "id": "issue-uuid-0001",
+        "identifier": "ENG-123",
+        "number": 123,
+        "project": {
+          "id": "project-id-001",
+          "name": "Q1 Stability"
+        },
+        "state": {
+          "color": "#f2c94c",
+          "id": "state-id-started",
+          "name": "In Progress",
+          "type": "started"
+        },
+        "team": {
+          "id": "team-id-eng",
+          "key": "ENG",
+          "name": "Engineering"
+        },
+        "url": "https://linear.app/acme/issue/ENG-123/fix-critical-sso-login-bug"
+      },
+      "organizationId": "org-id-acme",
+      "type": "Issue",
+      "updatedFrom": null,
+      "webhookId": "webhook-id-001"
+    }
+  },
+  "subject": {
+    "content": {
+      "assignees": [
+        "user-id-002"
+      ],
+      "creator": "user-id-001",
+      "labels": [
+        "Bug",
+        "auth"
+      ],
+      "milestone": "Beta",
+      "priority": "high",
+      "resolution": "withdrawn",
+      "summary": "Fix critical SSO login bug",
+      "ticketType": "issue",
+      "uri": "https://linear.app/acme/issue/ENG-123"
+    },
+    "id": "https://linear.app/acme/issue/ENG-123"
+  }
+}

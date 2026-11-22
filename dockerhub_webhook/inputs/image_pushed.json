@@ -1,0 +1,25 @@
+{
+  "callback_url": "https://registry.hub.docker.com/u/acme/my-app/hook/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/",
+  "push_data": {
+    "pushed_at": 1736935200,
+    "pusher": "ci-bot",
+    "tag": "v1.2.3"
+  },
+  "repository": {
+    "comment_count": 0,
+    "date_created": 1704067200,
+    "description": "My application",
+    "dockerfile": "",
+    "full_description": "",
+    "is_official": false,
+    "is_private": true,
+    "is_trusted": false,
+    "name": "my-app",
+    "namespace": "acme",
+    "owner": "acme",
+    "repo_name": "acme/my-app",
+    "repo_url": "https://hub.docker.com/r/acme/my-app",
+    "star_count": 0,
+    "status": "Active"
+  }
+}

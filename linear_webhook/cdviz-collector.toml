@@ -1,0 +1,19 @@
+# ------------------------------------------------------------------------------
+# Example of source configuration
+#
+# [sources.linear_webhook]
+# enabled = true
+# transformer_refs = ["linear_webhook"]
+
+# [sources.linear_webhook.extractor]
+# type = "webhook"
+# id = "000-linear"
+# headers_to_keep = []
+
+# [sources.linear_webhook.extractor.headers]
+# # linear signs with HMAC-SHA256, hex encoded, over the raw body, without prefix
+# # https://linear.app/developers/webhooks#securing-webhooks
+# "linear-signature" = { type = "signature", signature_encoding = "hex", signature_on = "body", token = "changeme" }
+
+[transformers]
+linear_webhook = { type = "vrl", template_file = "./to_v0_5.vrl" }

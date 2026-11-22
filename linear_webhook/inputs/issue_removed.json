@@ -1,0 +1,73 @@
+{
+  "action": "remove",
+  "type": "Issue",
+  "createdAt": "2025-01-16T09:00:00.000Z",
+  "actor": {
+    "id": "user-id-001",
+    "type": "user",
+    "name": "Alice Developer"
+  },
+  "data": {
+    "id": "issue-uuid-0001",
+    "createdAt": "2025-01-15T10:00:00.000Z",
+    "updatedAt": "2025-01-15T11:00:00.000Z",
+    "number": 123,
+    "identifier": "ENG-123",
+    "title": "Fix critical SSO login bug",
+    "description": "Users cannot log in with SSO.",
+    "priority": 2,
+    "priorityLabel": "High",
+    "url": "https://linear.app/acme/issue/ENG-123/fix-critical-sso-login-bug",
+    "creatorId": "user-id-001",
+    "assigneeId": "user-id-002",
+    "assignee": {
+      "id": "user-id-002",
+      "name": "Bob Engineer"
+    },
+    "stateId": "state-id-started",
+    "state": {
+      "id": "state-id-started",
+      "name": "In Progress",
+      "type": "started",
+      "color": "#f2c94c"
+    },
+    "teamId": "team-id-eng",
+    "team": {
+      "id": "team-id-eng",
+      "key": "ENG",
+      "name": "Engineering"
+    },
+    "labelIds": [
+      "label-id-bug",
+      "label-id-auth"
+    ],
+    "labels": [
+      {
+        "id": "label-id-bug",
+        "name": "Bug",
+        "color": "#eb5757"
+      },
+      {
+        "id": "label-id-auth",
+        "name": "auth",
+        "color": "#5e6ad2"
+      }
+    ],
+    "projectId": "project-id-001",
+    "project": {
+      "id": "project-id-001",
+      "name": "Q1 Stability"
+    },
+    "projectMilestone": {
+      "id": "milestone-id-001",
+      "name": "Beta"
+    },
+    "cycle": null,
+    "archivedAt": "2025-01-16T09:00:00.000Z",
+    "trashed": true
+  },
+  "url": "https://linear.app/acme/issue/ENG-123/fix-critical-sso-login-bug",
+  "organizationId": "org-id-acme",
+  "webhookTimestamp": 1736935200123,
+  "webhookId": "webhook-id-001"
+}

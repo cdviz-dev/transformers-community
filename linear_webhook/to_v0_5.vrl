@@ -1,0 +1,108 @@
+# Convert Linear webhook events to CDEvents.
+# https://linear.app/developers/webhooks
+#
+# | done | type  | action                                    | cdevent        |
+# | ---- | ----- | ----------------------------------------- | -------------- |
+# | [x]  | Issue | create                                    | ticket:created |
+# | [x]  | Issue | update (state moved to completed/canceled) | ticket:closed  |
+# | [x]  | Issue | update (other)                            | ticket:updated |
+# | [x]  | Issue | remove (not already completed/canceled)   | ticket:closed  |
+#
+# Other webhook types (Comment, Project, Cycle, ...) are ignored.
+
+bodies = []
+
+if .body.type == "Issue" {
+  issue = .body.data
+  action = to_string!(.body.action)
+
+  # Linear issue URLs end with a title slug (`/issue/ENG-123/fix-login-bug`).
+  # Strip it, so the id does not change when the title changes.
+  uri = to_string!(issue.url)
+  uri = replace(uri, r'^(https://[^/]+/[^/]+/issue/[^/]+).*$', "$1")
+
+  assignees = if !is_nullish(issue.assigneeId) { [to_string!(issue.assigneeId)] } else { [] }
+  labels = map_values(array(issue.labels) ?? []) -> |label| { to_string!(label.name) }
+  milestone = if !is_nullish(issue.projectMilestone) { issue.projectMilestone.name } else { null }
+
+  subject = {
+    "id": uri,
+    "content": {
+      "summary": issue.title,
+      "ticketType": "issue",
+      "uri": uri,
+      "priority": downcase(to_string(issue.priorityLabel) ?? "no priority"),
+      "creator": issue.creatorId,
+      "assignees": assignees,
+      "labels": labels,
+      "milestone": milestone,
+    },
+  }
+
+  context = {
+    "specversion": "0.5.0",
+    "source": .metadata.context.source,
+    "timestamp": format_timestamp!(parse_timestamp!(.body.createdAt, "%+"), format: "%+"),
+  }
+
+  custom_data = {
+    "linear": {
+      "action": .body.action,
+      "type": .body.type,
+      "organizationId": .body.organizationId,
+      "webhookId": .body.webhookId,
+      "actor": .body.actor,
+      "updatedFrom": .body.updatedFrom,
+      "issue": {
+        "id": issue.id,
+        "identifier": issue.identifier,
+        "number": issue.number,
+        "url": issue.url,
+        "state": issue.state,
+        "team": issue.team,
+        "project": issue.project,
+        "cycle": issue.cycle,
+      },
+    },
+  }
+
+  # Linear workflow state types: triage, backlog, unstarted, started, completed, canceled
+  state_type = to_string(issue.state.type) ?? ""
+  is_closed = includes(["completed", "canceled"], state_type)
+  resolution = if state_type == "completed" {
+    "completed"
+  } else if downcase(to_string(issue.state.name) ?? "") == "duplicate" {
+    "duplicate"
+  } else {
+    "withdrawn"
+  }
+
+  if action == "create" {
+    context.type = "dev.cdevents.ticket.created.0.2.0"
+    bodies = push(bodies, { "context": context, "subject": subject, "customData": custom_data })
+  } else if action == "update" {
+    # Emit ticket:closed only on the transition into a closed state,
+    # so later edits of a closed issue are ticket:updated.
+    if is_closed && exists(.body.updatedFrom.stateId) {
+      context.type = "dev.cdevents.ticket.closed.0.2.0"
+      subject.content.resolution = resolution
+    } else {
+      context.type = "dev.cdevents.ticket.updated.0.2.0"
+    }
+    bodies = push(bodies, { "context": context, "subject": subject, "customData": custom_data })
+  } else if action == "remove" && !is_closed {
+    # Deleted without prior closure => withdrawn.
+    # When already closed, the update event emitted ticket:closed earlier.
+    context.type = "dev.cdevents.ticket.closed.0.2.0"
+    subject.content.resolution = "withdrawn"
+    bodies = push(bodies, { "context": context, "subject": subject, "customData": custom_data })
+  }
+}
+
+map_values(bodies) -> |body| {
+  {
+    "metadata": .metadata,
+    "headers": .headers,
+    "body": body,
+  }
+}

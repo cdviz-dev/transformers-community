@@ -1,0 +1,15 @@
+# ------------------------------------------------------------------------------
+# Example of source configuration
+#
+# [sources.dockerhub_webhook]
+# enabled = true
+# transformer_refs = ["dockerhub_webhook"]
+
+# [sources.dockerhub_webhook.extractor]
+# type = "webhook"
+# id = "000-dockerhub"
+# headers_to_keep = []
+# # Docker Hub does not sign webhooks: use a hard to guess `id` and keep the URL secret.
+
+[transformers]
+dockerhub_webhook = { type = "vrl", template_file = "./to_v0_5.vrl" }
