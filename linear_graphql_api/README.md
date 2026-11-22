@@ -18,19 +18,31 @@ No `ticket.updated` is emitted.
 
 ## Subject Fields
 
-The fields are the same as in [`linear_webhook`](../linear_webhook/README.md#subject-fields), so events from both transformers are about the same subject:
+`subject.id` is the same as in [`linear_webhook`](../linear_webhook/README.md#subject-fields), so events from both transformers are about the same subject.
 
-- `subject.id` = issue `url` without the title slug (`https://linear.app/<workspace>/issue/<identifier>`).
-- `content.resolution` (`ticket.closed` only): `completedAt` set → `completed`; canceled state named `Duplicate` → `duplicate`; other canceled → `withdrawn`.
+| CDEvent Field        | Linear Source                | Notes                                                                                                          |
+| -------------------- | ---------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `subject.id`         | `url` without the title slug | `https://linear.app/<workspace>/issue/<identifier>`                                                            |
+| `content.summary`    | `title`                      |                                                                                                                |
+| `content.ticketType` | `"issue"`                    | Linear has no issue type                                                                                       |
+| `content.uri`        | same as `subject.id`         |                                                                                                                |
+| `content.creator`    | `creator.id`                 |                                                                                                                |
+| `content.resolution` | `completedAt`, `state`       | `ticket.closed` only: `completedAt` set → `completed`; canceled `Duplicate` → `duplicate`; other → `withdrawn` |
 
-`customData.linear.issue` keeps `id`, `identifier`, `number`, `url`, `team`, `project`, `cycle` (and `state` for `ticket.closed`).
+`customData.linear.issue` keeps `id`, `identifier`, `number`, `team` (and `state` for `ticket.closed`).
+
+Only fields that do not change after creation are kept (`summary` is required by CDEvents).
+Linear returns an issue again after each edit, and the collector computes `context.id` from the event content:
+a changed field would give the same lifecycle step a new id, so a duplicate event.
+Labels, assignees, priority, milestone, project and cycle are not polled: use [`linear_webhook`](../linear_webhook/) for them.
 
 ## Polling setup
 
 See the commented source in [`cdviz-collector.toml`](./cdviz-collector.toml). The driver:
 
-1. Requests issues with `updatedAt` in the poll time window (`ts_after` .. `ts_before`), 100 per page, archived issues included.
+1. Requests issues with `updatedAt` in the poll time window (`ts_after` included .. `ts_before` excluded, millisecond precision), 100 per page, archived issues included.
 2. Feeds each page back (`route = "both"`) and requests the next page while `pageInfo.hasNextPage` is true.
+3. Holds the window on HTTP `400` and `429` (Linear GraphQL errors and rate limit): the next poll retries it.
 
 | Setting                | Notes                                                                             |
 | ---------------------- | --------------------------------------------------------------------------------- |
@@ -38,7 +50,11 @@ See the commented source in [`cdviz-collector.toml`](./cdviz-collector.toml). Th
 | `ts_after`             | Set to a past date for a bounded backfill. Unset: the first poll reads all issues |
 | `min_request_interval` | Linear allows 1500 requests per hour per API key: `3s` stays below it             |
 
-The same issue is returned again each time it is updated. The collector computes `context.id` from the event content, so a re-polled event with unchanged content gets the same id. A change of title, labels, assignee, ... makes a new event for the same lifecycle step.
+## Limits
+
+- **Title change**: `summary` is required, so a title edit gives a new `ticket.created` (and `ticket.closed`) event for the issue.
+- **GraphQL errors with a `2xx` status**: the driver fails and the collector logs `driver feedback execution failed`, but the window still advances. The remaining pages of that window are not fetched: run a backfill (`ts_after`, `ts_before_limit`) for that period.
+- **Do not run with `linear_webhook` at the same time**: both emit `ticket.created` and `ticket.closed` with different content and timestamps, so each step is stored twice. Use polling to backfill up to a date, then the webhook.
 
 ## Testing
 

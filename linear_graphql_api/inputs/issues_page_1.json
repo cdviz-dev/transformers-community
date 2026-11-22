@@ -8,17 +8,11 @@
           "number": 123,
           "title": "Fix critical SSO login bug",
           "url": "https://linear.app/acme/issue/ENG-123/fix-critical-sso-login-bug",
-          "priority": 2,
-          "priorityLabel": "High",
           "createdAt": "2025-01-15T10:00:00.000Z",
-          "updatedAt": "2025-01-15T12:00:00.000Z",
           "completedAt": "2025-01-15T12:00:00.000Z",
           "canceledAt": null,
           "creator": {
             "id": "user-id-001"
-          },
-          "assignee": {
-            "id": "user-id-002"
           },
           "state": {
             "id": "state-id-done",
@@ -29,22 +23,7 @@
             "id": "team-id-eng",
             "key": "ENG",
             "name": "Engineering"
-          },
-          "labels": {
-            "nodes": [
-              {
-                "name": "Bug"
-              }
-            ]
-          },
-          "projectMilestone": {
-            "name": "Beta"
-          },
-          "project": {
-            "id": "project-id-001",
-            "name": "Q1 Stability"
-          },
-          "cycle": null
+          }
         },
         {
           "id": "issue-uuid-0002",
@@ -52,16 +31,12 @@
           "number": 124,
           "title": "Add dark mode",
           "url": "https://linear.app/acme/issue/ENG-124/add-dark-mode",
-          "priority": 2,
-          "priorityLabel": "High",
           "createdAt": "2025-01-16T09:00:00.000Z",
-          "updatedAt": "2025-01-16T09:00:00.000Z",
           "completedAt": null,
           "canceledAt": null,
           "creator": {
             "id": "user-id-001"
           },
-          "assignee": null,
           "state": {
             "id": "state-id-todo",
             "name": "Todo",
@@ -71,16 +46,7 @@
             "id": "team-id-eng",
             "key": "ENG",
             "name": "Engineering"
-          },
-          "labels": {
-            "nodes": []
-          },
-          "projectMilestone": null,
-          "project": {
-            "id": "project-id-001",
-            "name": "Q1 Stability"
-          },
-          "cycle": null
+          }
         },
         {
           "id": "issue-uuid-0003",
@@ -88,17 +54,11 @@
           "number": 125,
           "title": "Login fails on Safari",
           "url": "https://linear.app/acme/issue/ENG-125/login-fails-on-safari",
-          "priority": 2,
-          "priorityLabel": "High",
           "createdAt": "2025-01-16T10:00:00.000Z",
-          "updatedAt": "2025-01-16T11:00:00.000Z",
           "completedAt": null,
           "canceledAt": "2025-01-16T11:00:00.000Z",
           "creator": {
             "id": "user-id-001"
-          },
-          "assignee": {
-            "id": "user-id-002"
           },
           "state": {
             "id": "state-id-dup",
@@ -109,22 +69,7 @@
             "id": "team-id-eng",
             "key": "ENG",
             "name": "Engineering"
-          },
-          "labels": {
-            "nodes": [
-              {
-                "name": "Bug"
-              }
-            ]
-          },
-          "projectMilestone": {
-            "name": "Beta"
-          },
-          "project": {
-            "id": "project-id-001",
-            "name": "Q1 Stability"
-          },
-          "cycle": null
+          }
         },
         {
           "id": "issue-uuid-0004",
@@ -132,17 +77,11 @@
           "number": 126,
           "title": "Migrate to v2 API",
           "url": "https://linear.app/acme/issue/ENG-126/migrate-to-v2-api",
-          "priority": 2,
-          "priorityLabel": "High",
           "createdAt": "2025-01-17T08:00:00.000Z",
-          "updatedAt": "2025-01-20T08:00:00.000Z",
           "completedAt": null,
           "canceledAt": "2025-01-20T08:00:00.000Z",
           "creator": {
             "id": "user-id-001"
-          },
-          "assignee": {
-            "id": "user-id-002"
           },
           "state": {
             "id": "state-id-canceled",
@@ -153,25 +92,7 @@
             "id": "team-id-eng",
             "key": "ENG",
             "name": "Engineering"
-          },
-          "labels": {
-            "nodes": [
-              {
-                "name": "tech-debt"
-              },
-              {
-                "name": "api"
-              }
-            ]
-          },
-          "projectMilestone": {
-            "name": "Beta"
-          },
-          "project": {
-            "id": "project-id-001",
-            "name": "Q1 Stability"
-          },
-          "cycle": null
+          }
         }
       ],
       "pageInfo": {

@@ -18,25 +18,24 @@
 # - no ticket:updated: a snapshot is a state, not a change
 # - ticket:created is emitted for every issue, including closed ones, so backfill keeps the
 #   start of the lifecycle (issue age, time to resolution)
+# - content and customData hold only stable fields: an issue is polled again after each edit,
+#   and unstable fields would make a new event (new content-based id) for the same step
 
 nodes = array(.body.data.issues.nodes) ?? []
 
 events = map_values(nodes) -> |issue| {
   uri = replace(to_string!(issue.url), r'^(https://[^/]+/[^/]+/issue/[^/]+).*$', "$1")
   creator = if !is_nullish(issue.creator) { issue.creator.id } else { null }
-  assignees = if !is_nullish(issue.assignee) { [to_string!(issue.assignee.id)] } else { [] }
-  labels = map_values(array(issue.labels.nodes) ?? []) -> |label| { to_string!(label.name) }
-  milestone = if !is_nullish(issue.projectMilestone) { issue.projectMilestone.name } else { null }
 
+  # Only fields that do not change after creation (and the required `summary`):
+  # an issue is polled again after each edit, and other content would give the
+  # same lifecycle step a new content-based `context.id` (a duplicate event).
+  # Use `linear_webhook` for labels, assignees, priority, milestone, project, cycle.
   content = {
     "summary": issue.title,
     "ticketType": "issue",
     "uri": uri,
-    "priority": downcase(to_string(issue.priorityLabel) ?? "no priority"),
     "creator": creator,
-    "assignees": assignees,
-    "labels": labels,
-    "milestone": milestone,
   }
 
   custom_data = {
@@ -45,10 +44,7 @@ events = map_values(nodes) -> |issue| {
         "id": issue.id,
         "identifier": issue.identifier,
         "number": issue.number,
-        "url": issue.url,
         "team": issue.team,
-        "project": issue.project,
-        "cycle": issue.cycle,
       },
     },
   }

@@ -19,14 +19,26 @@
 # min_request_interval = "3s"
 # # ts_after = "2025-01-01T00:00:00Z"
 # driver_vrl = """
-# query = "query($after: String, $filter: IssueFilter) { issues(first: 100, after: $after, filter: $filter, orderBy: updatedAt, includeArchived: true) { nodes { id identifier number title url priorityLabel createdAt completedAt canceledAt creator { id } assignee { id } state { id name type } team { id key name } labels { nodes { name } } projectMilestone { name } project { id name } cycle { id number } } pageInfo { hasNextPage endCursor } } }"
+# query = "query($after: String, $filter: IssueFilter) { issues(first: 100, after: $after, filter: $filter, orderBy: updatedAt, includeArchived: true) { nodes { id identifier number title url createdAt completedAt canceledAt creator { id } state { id name type } team { id key name } } pageInfo { hasNextPage endCursor } } }"
+# # millisecond precision, like Linear's DateTime
+# ts_format = "%Y-%m-%dT%H:%M:%S%.3fZ"
 # ts_after = to_string!(.metadata.ts_after)
-# updated_at = { "lt": to_string!(.metadata.ts_before) }
+# updated_at = { "lt": format_timestamp!(parse_timestamp!(.metadata.ts_before, "%+"), format: ts_format) }
+# # `gte`, not `gt`: an issue updated exactly at the previous `ts_before` is not lost.
+# # The overlap is harmless: the same event content gives the same `context.id`.
 # # ts_after defaults to the beginning of time (a negative year), Linear rejects it
-# if !starts_with(ts_after, "-") { updated_at.gt = ts_after }
+# if !starts_with(ts_after, "-") {
+#   updated_at.gte = format_timestamp!(parse_timestamp!(ts_after, "%+"), format: ts_format)
+# }
 # variables = { "after": null, "filter": { "updatedAt": updated_at } }
 # cont = true
 # if .response != null {
+#   if exists(.response.body.errors) {
+#     # GraphQL error with a 2xx status: fail the driver call, so the collector logs a warning
+#     # ("driver feedback execution failed"). The window still advances: the next pages of
+#     # this window are not fetched again, re-run a backfill for that period.
+#     abort
+#   }
 #   cont = .response.body.data.issues.pageInfo.hasNextPage == true
 #   variables.after = .response.body.data.issues.pageInfo.endCursor
 # }
@@ -42,6 +54,12 @@
 #   []
 # }
 # """
+
+# [sources.linear_graphql_api.extractor.on_status]
+# # Linear answers GraphQL errors (including rate limit, RATELIMITED) with 400:
+# # keep the window and retry it on the next poll, instead of the default `skip`
+# "400" = "hold"
+# "429" = "hold"
 
 # [sources.linear_graphql_api.extractor.headers]
 # # personal API key: the key itself, no "Bearer " prefix (OAuth token: "Bearer <token>")

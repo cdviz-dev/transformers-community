@@ -8,35 +8,20 @@
   "customData": {
     "linear": {
       "issue": {
-        "cycle": null,
         "id": "issue-uuid-0004",
         "identifier": "ENG-126",
         "number": 126,
-        "project": {
-          "id": "project-id-001",
-          "name": "Q1 Stability"
-        },
         "team": {
           "id": "team-id-eng",
           "key": "ENG",
           "name": "Engineering"
-        },
-        "url": "https://linear.app/acme/issue/ENG-126/migrate-to-v2-api"
+        }
       }
     }
   },
   "subject": {
     "content": {
-      "assignees": [
-        "user-id-002"
-      ],
       "creator": "user-id-001",
-      "labels": [
-        "tech-debt",
-        "api"
-      ],
-      "milestone": "Beta",
-      "priority": "high",
       "summary": "Migrate to v2 API",
       "ticketType": "issue",
       "uri": "https://linear.app/acme/issue/ENG-126"

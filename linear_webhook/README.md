@@ -62,6 +62,7 @@ mise run test -- --mode review  # review and update outputs/0_5
 
 ## Limits
 
+- Do not run with [`linear_graphql_api`](../linear_graphql_api/) at the same time: both emit `ticket.created` and `ticket.closed` with different content and timestamps, so each step is stored twice. Use polling to backfill up to a date, then the webhook.
 - `subject.id` uses the issue identifier (`ENG-123`). When an issue moves to another team, Linear gives it a new identifier, so later events have a new `subject.id`. `customData.linear.issue.id` stays stable.
 
 ## References

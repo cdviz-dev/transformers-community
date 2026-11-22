@@ -8,34 +8,20 @@
   "customData": {
     "linear": {
       "issue": {
-        "cycle": null,
         "id": "issue-uuid-0001",
         "identifier": "ENG-123",
         "number": 123,
-        "project": {
-          "id": "project-id-001",
-          "name": "Q1 Stability"
-        },
         "team": {
           "id": "team-id-eng",
           "key": "ENG",
           "name": "Engineering"
-        },
-        "url": "https://linear.app/acme/issue/ENG-123/fix-critical-sso-login-bug"
+        }
       }
     }
   },
   "subject": {
     "content": {
-      "assignees": [
-        "user-id-002"
-      ],
       "creator": "user-id-001",
-      "labels": [
-        "Bug"
-      ],
-      "milestone": "Beta",
-      "priority": "high",
       "summary": "Fix critical SSO login bug",
       "ticketType": "issue",
       "uri": "https://linear.app/acme/issue/ENG-123"

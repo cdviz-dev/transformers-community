@@ -8,14 +8,9 @@
   "customData": {
     "linear": {
       "issue": {
-        "cycle": null,
         "id": "issue-uuid-0003",
         "identifier": "ENG-125",
         "number": 125,
-        "project": {
-          "id": "project-id-001",
-          "name": "Q1 Stability"
-        },
         "state": {
           "id": "state-id-dup",
           "name": "Duplicate",
@@ -25,22 +20,13 @@
           "id": "team-id-eng",
           "key": "ENG",
           "name": "Engineering"
-        },
-        "url": "https://linear.app/acme/issue/ENG-125/login-fails-on-safari"
+        }
       }
     }
   },
   "subject": {
     "content": {
-      "assignees": [
-        "user-id-002"
-      ],
       "creator": "user-id-001",
-      "labels": [
-        "Bug"
-      ],
-      "milestone": "Beta",
-      "priority": "high",
       "resolution": "duplicate",
       "summary": "Login fails on Safari",
       "ticketType": "issue",
