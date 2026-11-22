@@ -1,0 +1,61 @@
+# Convert Docker Hub repository webhooks (image push) to CDEvents.
+# https://docs.docker.com/docker-hub/repos/manage/webhooks/
+#
+# | done | trigger    | cdevent            |
+# | ---- | ---------- | ------------------ |
+# | [x]  | image push | artifact:published |
+#
+# Rules:
+# - Docker Hub sends no image digest, so the PURL has no version:
+#   `pkg:oci/<name>?repository_url=docker.io/<namespace>/<name>&tag=<tag>`.
+#   The id is mutable (a tag can move). Resolve the digest in a later step if needed.
+# - timestamp from `push_data.pushed_at` (epoch seconds), never now()
+# - `callback_url` is not kept: it allows anybody to post a validation status to the webhook.
+
+output = []
+if exists(.body.push_data) && exists(.body.repository.repo_name) {
+  repo_name = to_string!(.body.repository.repo_name)
+  tag = to_string!(.body.push_data.tag)
+  pusher = to_string(.body.push_data.pusher) ?? null
+
+  artifact_id = purl_to_string!({
+    "type": "oci",
+    "name": to_string!(.body.repository.name),
+    "qualifiers": { "repository_url": "docker.io/" + repo_name, "tag": tag },
+  })
+
+  ts = from_unix_timestamp!(to_int!(.body.push_data.pushed_at), unit: "seconds")
+
+  output = [{
+    "metadata": .metadata,
+    "headers": .headers,
+    "body": {
+      "context": {
+        "specversion": "0.5.0",
+        "source": .metadata.context.source,
+        "type": "dev.cdevents.artifact.published.0.3.0",
+        "timestamp": format_timestamp!(ts, format: "%+"),
+      },
+      "subject": {
+        "id": artifact_id,
+        "content": { "user": pusher },
+      },
+      "customData": {
+        "dockerhub": {
+          "push_data": .body.push_data,
+          "repository": {
+            "repo_name": .body.repository.repo_name,
+            "namespace": .body.repository.namespace,
+            "name": .body.repository.name,
+            "owner": .body.repository.owner,
+            "repo_url": .body.repository.repo_url,
+            "is_private": .body.repository.is_private,
+            "is_official": .body.repository.is_official,
+            "status": .body.repository.status,
+          },
+        },
+      },
+    },
+  }]
+}
+output

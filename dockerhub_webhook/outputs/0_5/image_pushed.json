@@ -1,0 +1,33 @@
+{
+  "context": {
+    "source": "http://cdviz-collector.example.com?source=cli-transform",
+    "specversion": "0.5.0",
+    "timestamp": "2025-01-15T10:00:00+00:00",
+    "type": "dev.cdevents.artifact.published.0.3.0"
+  },
+  "customData": {
+    "dockerhub": {
+      "push_data": {
+        "pushed_at": 1736935200,
+        "pusher": "ci-bot",
+        "tag": "v1.2.3"
+      },
+      "repository": {
+        "is_official": false,
+        "is_private": true,
+        "name": "my-app",
+        "namespace": "acme",
+        "owner": "acme",
+        "repo_name": "acme/my-app",
+        "repo_url": "https://hub.docker.com/r/acme/my-app",
+        "status": "Active"
+      }
+    }
+  },
+  "subject": {
+    "content": {
+      "user": "ci-bot"
+    },
+    "id": "pkg:oci/my-app?repository_url=docker.io%2Facme%2Fmy-app&tag=v1.2.3"
+  }
+}

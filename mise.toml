@@ -8,6 +8,7 @@ config_roots = [
   "argocd_notifications",
   "bitbucket_webhook",
   "cdevents/*",
+  "dockerhub_webhook",
   "forgejo_webhook",
   "gcp_artifactregistry_rest_api",
   "gcp_artifactregistry_webhook",
@@ -22,6 +23,7 @@ config_roots = [
   "jenkins_rest_api",
   "jira_webhook",
   "kubewatch_cloudevents",
+  "linear_webhook",
   "passthrough",
 ]
 
